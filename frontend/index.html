@@ -3,9 +3,10 @@
   DAIRY MANAGEMENT SYSTEM - Homepage / Dashboard
   ASSIGNMENT 2 : Semantic HTML tags demonstration
 
-  Pages that exist so far (Phase 2):
-    index.html           -> Home / Dashboard (this file)
-    pages/about.html     -> About Dairy (Assignment 1)
+  Pages that exist so far (Phase 3):
+    index.html           -> Home / Dashboard (this file) - Assignment 2 + 3
+    pages/about.html     -> About Dairy (Assignment 1) + 3
+    css/style.css        -> External stylesheet (Assignment 3)
 
   NOTE: Dashboard, Farmers and Milk Collection pages do not exist
         yet. They will be added in later phases. For now the nav
@@ -17,6 +18,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dairy Management System - manage farmers, daily milk collection, fat, SNF, payments and reports.">
     <title>Home | Dairy Management System</title>
+
+    <!-- ============================================================
+         ASSIGNMENT 3 : EXTERNAL CSS
+         Linking an external stylesheet with a <link> tag. The whole
+         file frontend/css/style.css holds the shared page styles.
+    ============================================================ -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- ============================================================
+         ASSIGNMENT 3 : INTERNAL CSS
+         Styles written inside a <style> tag in this page's <head>.
+         These apply ONLY to this page. External + Internal + Inline
+         all work together. When they conflict, the rule closest to
+         the element wins: external < internal < inline.
+    ============================================================ -->
+    <style>
+        /* Notice Board (the <aside>) - cream paper look, dashed gold border */
+        aside {
+            background-color: #fff6dd;
+            border: 2px dashed #d9a441;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 20px;
+        }
+
+        /* Every list item inside the aside gets a small gap */
+        aside ul li {
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
 
@@ -57,7 +88,10 @@
              heading. Here: the welcome/intro section.
         ======================================================== -->
         <section>
-            <h2>Welcome to the Dairy Management System</h2>
+            <!-- ASSIGNMENT 3 : INLINE CSS
+                 style="..." written directly on this tag. This overrides
+                 the external stylesheet for THIS element only. -->
+            <h2 style="color: #7a4a21;">Welcome to the Dairy Management System</h2>
             <p>
                 This system helps dairy cooperative societies manage their daily operations
                 in one place. It records milk collected from every farmer each day, notes the
@@ -68,6 +102,12 @@
                 The project is being developed step-by-step as a college course project.
                 Every page you see here demonstrates one practical assignment which is
                 documented in <code>docs/assignment-mapping.md</code>.
+            </p>
+
+            <!-- The .btn class comes from the EXTERNAL stylesheet (style.css).
+                 It turns a normal link into a button. -->
+            <p>
+                <a class="btn" href="pages/about.html">Learn More About Dairy</a>
             </p>
         </section>
 
@@ -96,7 +136,9 @@
                 <p>4.2% average fat content this week.</p>
             </article>
 
-            <article>
+            <!-- ASSIGNMENT 3 : INLINE CSS - highlight this one card.
+                 Inline style beats the stylesheet for this single element. -->
+            <article style="background-color: #fde8d7; border: 2px solid #d98c5f;">
                 <h3>Payments Pending</h3>
                 <p>52,400 Rs to be paid for the last fortnight.</p>
             </article>

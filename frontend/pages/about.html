@@ -9,12 +9,21 @@
     - Ordered list (ol > li)   -> "How milk collection works"
     - Unordered list (ul > li)  -> "Farmer services"
     - Images (img)              -> from frontend/assets/
+
+  ASSIGNMENT 3 features on this page:
+    - External CSS   -> ../css/style.css (shared stylesheet)
+    - Inline CSS     -> style="..." on each image below (rounded corners)
 ============================================================ -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Dairy | Dairy Management System</title>
+
+    <!-- ASSIGNMENT 3 : EXTERNAL CSS
+         The same shared stylesheet as the home page.
+         ../css/ means "go up one folder from pages/, then into css/". -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -74,9 +83,12 @@
          src  -> path to the image file
          alt  -> text shown if image fails or for screen readers
          width/height -> display size of the image -->
-    <img src="../assets/cow.svg" alt="Dairy cow illustration" width="160" height="145">
-    <img src="../assets/farm.svg" alt="Dairy farm illustration" width="160" height="145">
-    <img src="../assets/milk-can.svg" alt="Milk can illustration" width="130" height="160">
+    <!-- ASSIGNMENT 3 : INLINE CSS on images
+         style="..." gives each image rounded corners and a soft shadow.
+         This overrides the default <img> style from style.css for corners. -->
+    <img src="../assets/cow.svg" alt="Dairy cow illustration" width="160" height="145" style="border-radius: 12px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);">
+    <img src="../assets/farm.svg" alt="Dairy farm illustration" width="160" height="145" style="border-radius: 12px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);">
+    <img src="../assets/milk-can.svg" alt="Milk can illustration" width="130" height="160" style="border-radius: 12px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);">
 
     <!-- ASSIGNMENT 1: Another paragraph closing the page -->
     <p>
@@ -84,8 +96,9 @@
         for the future. This project brings all of that into one simple web system.
     </p>
 
-    <!-- Link back to the home page -->
-    <p><a href="../index.html">Back to Home</a></p>
+    <!-- Link back to the home page - the .btn class (external CSS) makes
+         it look like a button. -->
+    <p><a class="btn" href="../index.html">Back to Home</a></p>
 
 </body>
 </html>

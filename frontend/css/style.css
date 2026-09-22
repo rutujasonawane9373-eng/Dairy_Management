@@ -1,0 +1,181 @@
+/* ============================================================
+   DAIRY MANAGEMENT SYSTEM - External Stylesheet
+   ASSIGNMENT 3 : EXTERNAL CSS
+
+   This file styles every page that links to it. The home page
+   (frontend/index.html) and the about page
+   (frontend/pages/about.html) both load it with a <link> tag.
+
+   CSS is read top to bottom. Later rules override earlier ones
+   when they target the same element with equal "weight".
+
+   Priority order (lowest -> highest):
+     External (this file)
+       -> Internal (<style> tag inside <head>)
+       -> Inline (style="..." on a tag)
+   ============================================================ */
+
+/* ---------- BODY : base styles for the whole page ---------- */
+body {
+    margin: 0;                      /* remove browser default margin */
+    padding: 0;
+    background-color: #fdf6ec;      /* soft cream "milk" background */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #3f2f1e;                 /* dark brown text */
+}
+
+/* ---------- HEADER ---------- */
+/* The coloured top bar of every page. */
+header {
+    background-color: #e8b84b;          /* warm "butter" gold */
+    text-align: center;                 /* centre the header text */
+    padding: 25px 10px;                 /* space around the text */
+    border-bottom: 4px solid #c98a2d;   /* darker strip below */
+}
+
+/* The main title inside the header */
+header h1 {
+    margin: 0;
+    color: #4b2e0e;                     /* dark brown title */
+    font-size: 34px;
+}
+
+/* The tagline under the title */
+header p {
+    margin: 8px 0 0 0;
+    color: #5c3a12;
+    font-size: 16px;
+}
+
+/* ---------- NAVIGATION ---------- */
+/* The menu bar. No Flexbox/Grid yet - that comes in Assignment 4. */
+nav {
+    background-color: #6b4226;      /* dark chocolate bar */
+    text-align: center;
+    padding: 12px 0;
+}
+
+/* Remove the bullet dots from the <ul> inside <nav> */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Put the menu items side by side on one line */
+nav li {
+    display: inline-block;          /* items sit next to each other */
+    margin: 0 15px;                 /* gap between items */
+}
+
+/* Style the links in the menu */
+nav a {
+    color: #ffffff;                 /* white link text */
+    text-decoration: none;          /* remove underline */
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+/* Hover effect: change the colour when the mouse is over a link */
+nav a:hover {
+    background-color: #e8b84b;      /* gold pill on hover */
+    color: #4b2e0e;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+main {
+    max-width: 1100px;              /* keep the page readable */
+    margin: 20px auto;              /* centre it horizontally */
+    padding: 0 15px;
+}
+
+/* Section heading colour */
+section h2 {
+    color: #7a4a21;
+    border-bottom: 2px solid #d9c4a3;   /* underline decoration */
+    padding-bottom: 6px;
+}
+
+/* ---------- SECTIONS / CARDS ---------- */
+/* Each <section> is a white card on the cream page */
+section {
+    background-color: #ffffff;      /* white background */
+    border: 1px solid #e0cda8;
+    border-radius: 10px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);   /* soft drop shadow */
+}
+
+/* Each <article> stat card inside a section */
+article {
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-left: 6px solid #e8b84b;    /* gold left accent */
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 12px 0;
+}
+
+/* Card headings */
+article h3 {
+    margin: 0 0 6px 0;
+    color: #6b4226;
+}
+
+/* Card text */
+article p {
+    margin: 0;
+    color: #5b4a36;
+}
+
+/* ---------- BUTTONS ---------- */
+/* Class .btn turns a normal link into a button.
+   Used on: index.html ("Learn More About Dairy") and
+            about.html   ("Back to Home") */
+.btn {
+    display: inline-block;
+    background-color: #6b4226;      /* chocolate fill */
+    color: #ffffff;                 /* white text */
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;          /* no underline */
+    font-weight: bold;
+}
+
+/* Button hover effect */
+.btn:hover {
+    background-color: #c98a2d;      /* gold when hovered */
+}
+
+/* ---------- LINKS (normal text links) ---------- */
+a {
+    color: #a05f14;
+}
+
+a:hover {
+    color: #6b4226;
+}
+
+/* ---------- IMAGES ---------- */
+/* Default look for all <img> tags on the pages */
+img {
+    border: 3px solid #e8b84b;      /* gold frame */
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin: 5px;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background-color: #4b2e0e;      /* dark brown */
+    color: #f5e6c8;                 /* light cream text */
+    text-align: center;
+    padding: 18px 10px;
+    margin-top: 20px;
+}
+
+footer p {
+    margin: 4px 0;
+}
