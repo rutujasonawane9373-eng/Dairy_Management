@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  DAIRY MANAGEMENT SYSTEM - Homepage / Dashboard
+  ASSIGNMENT 2 : Semantic HTML tags demonstration
+
+  Pages that exist so far (Phase 2):
+    index.html           -> Home / Dashboard (this file)
+    pages/about.html     -> About Dairy (Assignment 1)
+
+  NOTE: Dashboard, Farmers and Milk Collection pages do not exist
+        yet. They will be added in later phases. For now the nav
+        links to them are just placeholders.
+============================================================ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dairy Management System - manage farmers, daily milk collection, fat, SNF, payments and reports.">
+    <title>Home | Dairy Management System</title>
+</head>
+<body>
+
+    <!-- ============================================================
+         SEMANTIC TAG: <header>
+         The top part of the page - holds the site title/branding.
+    ============================================================ -->
+    <header>
+        <h1>Dairy Management System</h1>
+        <p>Your daily partner for milk collection, fat &amp; SNF tracking and farmer payments.</p>
+    </header>
+
+    <!-- ============================================================
+         SEMANTIC TAG: <nav>
+         Link to all main pages. Navigation should always be wrapped
+         in <nav> so browsers and screen readers recognize it.
+    ============================================================ -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pages/about.html">About</a></li>
+            <li><a href="pages/dashboard.html">Dashboard</a></li>
+            <li><a href="pages/farmers.html">Farmers</a></li>
+            <li><a href="pages/milk.html">Milk Collection</a></li>
+        </ul>
+    </nav>
+
+    <!-- ============================================================
+         SEMANTIC TAG: <main>
+         The main content area of the page. There must be only ONE
+         <main> per page. It holds the most important content.
+    ============================================================ -->
+    <main>
+
+        <!-- ========================================================
+             SEMANTIC TAG: <section>
+             A section groups related content together with its own
+             heading. Here: the welcome/intro section.
+        ======================================================== -->
+        <section>
+            <h2>Welcome to the Dairy Management System</h2>
+            <p>
+                This system helps dairy cooperative societies manage their daily operations
+                in one place. It records milk collected from every farmer each day, notes the
+                fat and SNF (% non-fat solids) quality of the milk, calculates payments and
+                generates reports.
+            </p>
+            <p>
+                The project is being developed step-by-step as a college course project.
+                Every page you see here demonstrates one practical assignment which is
+                documented in <code>docs/assignment-mapping.md</code>.
+            </p>
+        </section>
+
+        <!-- ========================================================
+             SEMANTIC TAG: <section> (dashboard overview)
+             This section will later hold the live dashboard cards.
+             For now it contains static sample data.
+        ======================================================== -->
+        <section>
+            <h2>Today's Overview</h2>
+
+            <!-- Semantics: each stat/card below is an <article> because
+                 it is an independent, self-contained piece of content. -->
+            <article>
+                <h3>Total Farmers</h3>
+                <p>125 registered milk producers in the village area.</p>
+            </article>
+
+            <article>
+                <h3>Milk Collected Today</h3>
+                <p>1,050 litres from 98 farmers.</p>
+            </article>
+
+            <article>
+                <h3>Average Fat</h3>
+                <p>4.2% average fat content this week.</p>
+            </article>
+
+            <article>
+                <h3>Payments Pending</h3>
+                <p>52,400 Rs to be paid for the last fortnight.</p>
+            </article>
+        </section>
+
+        <!-- ========================================================
+             SEMANTIC TAG: <section> (latest collections + aside)
+             Left side shows the latest milk collections; the right
+             side (<aside>) shows a quick notice.
+        ======================================================== -->
+        <section>
+            <h2>Latest Milk Collections</h2>
+
+            <!-- Each collection record is an independent article -->
+            <article>
+                <h3>Farmer: Ramesh Patil</h3>
+                <p>Milk Quantity: 18.5 litres &nbsp;|&nbsp; Fat: 4.6% &nbsp;|&nbsp; SNF: 8.9%</p>
+                <p>Date: 21 September 2026 &nbsp;|&nbsp; Shift: Morning</p>
+            </article>
+
+            <article>
+                <h3>Farmer: Sunita Jadhav</h3>
+                <p>Milk Quantity: 12.0 litres &nbsp;|&nbsp; Fat: 3.8% &nbsp;|&nbsp; SNF: 8.2%</p>
+                <p>Date: 21 September 2026 &nbsp;|&nbsp; Shift: Morning</p>
+            </article>
+
+            <article>
+                <h3>Farmer: Vilas More</h3>
+                <p>Milk Quantity: 22.5 litres &nbsp;|&nbsp; Fat: 4.9% &nbsp;|&nbsp; SNF: 9.1%</p>
+                <p>Date: 21 September 2026 &nbsp;|&nbsp; Shift: Evening</p>
+            </article>
+
+            <!-- ====================================================
+                 SEMANTIC TAG: <aside>
+                 Side content that is related to the section but not
+                 the main focus - like notices, tips or ads.
+            ==================================================== -->
+            <aside>
+                <h3>Notice Board</h3>
+                <ul>
+                    <li>Milk rate for today: 42 Rs/litre (fat above 3.5%).</li>
+                    <li>Payment distribution for last week on Friday 26 September.</li>
+                    <li>New farmer registration opens every Monday at 9:00 AM.</li>
+                </ul>
+            </aside>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         SEMANTIC TAG: <footer>
+         Bottom of the page - usually contact info, copyright, links.
+    ============================================================ -->
+    <footer>
+        <p>Contact: Dairy Cooperative Society Office, Main Road, Village &nbsp;|&nbsp; Phone: 98765 43210</p>
+        <p>&copy; 2026 Dairy Management System - College Web Development Project</p>
+    </footer>
+
+</body>
+</html>

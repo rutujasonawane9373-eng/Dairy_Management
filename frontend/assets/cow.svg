@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" width="200" height="180">
+  <title>Dairy Cow</title>
+  <!-- Cow body -->
+  <ellipse cx="100" cy="110" rx="60" ry="38" fill="#f5f0e6" stroke="#5a4a3a" stroke-width="3"/>
+  <!-- Cow head -->
+  <circle cx="50" cy="80" r="24" fill="#f5f0e6" stroke="#5a4a3a" stroke-width="3"/>
+  <!-- Ears -->
+  <path d="M35 65 L25 50 L45 60 Z" fill="#d9b6a0" stroke="#5a4a3a" stroke-width="2"/>
+  <path d="M50 55 L45 38 L62 50 Z" fill="#d9b6a0" stroke="#5a4a3a" stroke-width="2"/>
+  <!-- Snout -->
+  <ellipse cx="40" cy="88" rx="10" ry="8" fill="#e8bfae" stroke="#5a4a3a" stroke-width="2"/>
+  <!-- Eyes -->
+  <circle cx="48" cy="74" r="3" fill="#3a2a1a"/>
+  <circle cx="60" cy="74" r="3" fill="#3a2a1a"/>
+  <!-- Horns -->
+  <path d="M45 58 L38 42 L48 52 Z" fill="#d9c9a0" stroke="#5a4a3a" stroke-width="2"/>
+  <!-- Legs -->
+  <rect x="65" y="140" width="12" height="22" fill="#f5f0e6" stroke="#5a4a3a" stroke-width="2"/>
+  <rect x="125" y="140" width="12" height="22" fill="#f5f0e6" stroke="#5a4a3a" stroke-width="2"/>
+  <!-- Tail -->
+  <path d="M158 100 Q180 110 174 130" fill="none" stroke="#5a4a3a" stroke-width="3"/>
+  <!-- Udder -->
+  <ellipse cx="90" cy="140" rx="16" ry="8" fill="#e8bfae" stroke="#5a4a3a" stroke-width="2"/>
+  <!-- Milk spots -->
+  <circle cx="85" cy="100" r="6" fill="#e8dcc8"/>
+  <circle cx="115" cy="122" r="5" fill="#e8dcc8"/>
+</svg>
