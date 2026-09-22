@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  DAIRY MANAGEMENT SYSTEM - Dashboard page
+  ASSIGNMENT 4 : Responsive Web Design
+  Flexbox + CSS Grid + Media Queries
+
+  Pages that exist now (Phase 4):
+    index.html                -> Home        - Assignments 2 & 3
+    pages/about.html          -> About       - Assignments 1 & 3
+    pages/dashboard.html      -> Dashboard   - Assignment 4 (this file)
+    css/style.css             -> stylesheet  - Assignments 3 & 4
+
+  What THIS page demonstrates (all in frontend/css/style.css):
+    1. FLEXBOX       -> the nav <ul> menu and the .flex-row
+                        summary strips below the stats.
+    2. CSS GRID      -> .stats-grid holds the 4 stat cards in a
+                        4-column grid (grid-template-columns).
+    3. MEDIA QUERIES -> the same page switches between desktop /
+                        tablet / mobile layouts as the screen
+                        shrinks (@media max-width rules).
+  ============================================================ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dairy Management System dashboard - total farmers, daily milk collection, pending payments and milk collection summary.">
+    <title>Dashboard | Dairy Management System</title>
+
+    <!-- ASSIGNMENT 3: EXTERNAL CSS. This one stylesheet also holds
+         every Assignment 4 (Flexbox / Grid / Media Query) rule. -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Site title - same header on every page -->
+    <header>
+        <h1>Dairy Management System</h1>
+        <p>Dashboard - the milk business at a glance</p>
+    </header>
+
+    <!-- ASSIGNMENT 4 : FLEXBOX - the menu is a flex container.
+         The <ul> inside <nav> has display:flex in style.css, so the
+         menu items line up horizontally and wrap on narrow screens. -->
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../pages/about.html">About</a></li>
+            <li><a href="../pages/dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="../pages/farmers.html">Farmers</a></li>
+            <li><a href="../pages/milk.html">Milk Collection</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- ========================================================
+             CSS GRID SECTION : the four stat cards
+             .stats-grid has display:grid; grid-template-columns:
+             repeat(4, 1fr) in style.css. On a desktop all four
+             cards sit in one row of four columns. Each card here is
+             an <article> = one grid item.
+        ======================================================== -->
+        <section>
+            <h2>Key Statistics</h2>
+            <p>Live numbers for today's dairy operations.</p>
+
+            <div class="stats-grid">
+
+                <article class="stat-card">
+                    <h3>Total Farmers</h3>
+                    <p class="stat-number">125</p>
+                    <p class="stat-label">registered milk producers</p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Today's Milk Collection</h3>
+                    <p class="stat-number">1,050 L</p>
+                    <p class="stat-label">from 98 farmers</p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Pending Payments</h3>
+                    <p class="stat-number">&#8377; 52,400</p>
+                    <p class="stat-label">for the last fortnight</p>
+                </article>
+
+                <article class="stat-card">
+                    <h3>Average Fat</h3>
+                    <p class="stat-number">4.2%</p>
+                    <p class="stat-label">this week's average</p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             FLEXBOX SECTION : milk collection summary
+             .flex-row has display:flex; in style.css, so its three
+             children (.flex-item) sit side by side in one row.
+        ======================================================== -->
+        <section>
+            <h2>Milk Collection Summary</h2>
+
+            <div class="flex-row">
+
+                <div class="flex-item">
+                    <h3>Morning Shift</h3>
+                    <p>650 litres from 62 farmers</p>
+                    <p>Average fat 4.1% | SNF 8.7%</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>Evening Shift</h3>
+                    <p>400 litres from 36 farmers</p>
+                    <p>Average fat 4.4% | SNF 9.0%</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>This Month</h3>
+                    <p>28,300 litres collected</p>
+                    <p>9,500 farmer payments processed</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- A quick note that helps explain this assignment -->
+        <aside>
+            <h3>Where each tool is used on this page</h3>
+            <ul>
+                <li><strong>Flexbox</strong>: the navigation menu and the three summary blocks above (display: flex).</li>
+                <li><strong>CSS Grid</strong>: the four stat cards at the top (display: grid + grid-template-columns).</li>
+                <li><strong>Media Queries</strong>: @media max-width rules in style.css switch 4 columns &rarr; 2 &rarr; 1.</li>
+            </ul>
+        </aside>
+
+    </main>
+
+    <!-- Same footer as the other pages -->
+    <footer>
+        <p>Contact: Dairy Cooperative Society Office, Main Road, Village &nbsp;|&nbsp; Phone: 98765 43210</p>
+        <p>&copy; 2026 Dairy Management System - College Web Development Project</p>
+    </footer>
+
+</body>
+</html>

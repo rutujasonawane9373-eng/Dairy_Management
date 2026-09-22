@@ -13,6 +13,12 @@
      External (this file)
        -> Internal (<style> tag inside <head>)
        -> Inline (style="..." on a tag)
+
+   ASSIGNMENT 4 : This file is also the home of the Responsive Web
+   Design rules. The "ASSIGNMENT 4" sections at the bottom add
+   Flexbox (nav menu + dashboard strips), CSS Grid (stat cards)
+   and Media Queries (desktop / tablet / mobile layouts) that
+   are used by frontend/pages/dashboard.html.
    ============================================================ */
 
 /* ---------- BODY : base styles for the whole page ---------- */
@@ -48,24 +54,29 @@ header p {
 }
 
 /* ---------- NAVIGATION ---------- */
-/* The menu bar. No Flexbox/Grid yet - that comes in Assignment 4. */
+/* The menu bar. From Assignment 4 the menu is a FLEX container,
+   so text-align is no longer needed - flexbox centres it for us. */
 nav {
     background-color: #6b4226;      /* dark chocolate bar */
-    text-align: center;
     padding: 12px 0;
 }
 
-/* Remove the bullet dots from the <ul> inside <nav> */
+/* ASSIGNMENT 4 : FLEXBOX
+   The <ul> is the FLEX CONTAINER. Its children (the menu links)
+   are flex items and line up automatically in a horizontal row.
+   flex-wrap lets the row wrap onto a new line on narrow screens. */
 nav ul {
+    display: flex;                  /* activate Flexbox on the menu */
+    flex-wrap: wrap;                /* wrap items when they don't fit */
+    justify-content: center;        /* centre the whole menu */
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-/* Put the menu items side by side on one line */
+/* Each menu item is a FLEX ITEM (a direct child of the container). */
 nav li {
-    display: inline-block;          /* items sit next to each other */
-    margin: 0 15px;                 /* gap between items */
+    margin: 4px 15px;               /* small gap around every item */
 }
 
 /* Style the links in the menu */
@@ -80,6 +91,13 @@ nav a {
 /* Hover effect: change the colour when the mouse is over a link */
 nav a:hover {
     background-color: #e8b84b;      /* gold pill on hover */
+    color: #4b2e0e;
+}
+
+/* The link for the page you are currently on
+   (dashboard.html marks its own nav link with class="active") */
+nav a.active {
+    background-color: #e8b84b;
     color: #4b2e0e;
 }
 
@@ -178,4 +196,126 @@ footer {
 
 footer p {
     margin: 4px 0;
+}
+
+/* ============================================================
+   ASSIGNMENT 4 : RESPONSIVE WEB DESIGN
+   Flexbox + CSS Grid + Media Queries
+   The rules below are used by frontend/pages/dashboard.html,
+   and the Flexbox menu also improves the home page.
+   ============================================================ */
+
+/* box-sizing: border-box makes a card's width INCLUDE its padding
+   and border. This stops grid/flex cards from overflowing their
+   space when we add padding. */
+* {
+    box-sizing: border-box;
+}
+
+/* ---------- ASSIGNMENT 4 : CSS GRID ---------- */
+/* The statistics area. .stats-grid is the GRID CONTAINER.
+   grid-template-columns creates 4 equal columns (1fr = 1 fraction
+   of the available width). Each .stat-card (a child) automatically
+   lands in one grid cell, so we never hand-place the cards. */
+.stats-grid {
+    display: grid;                       /* activate CSS Grid      */
+    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+    gap: 20px;                           /* spacing between cells  */
+    margin-top: 15px;
+}
+
+/* Each stat card is one GRID ITEM (a child of the grid container). */
+.stats-grid .stat-card {
+    margin: 0;                           /* remove default <article> margin */
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-left: 6px solid #e8b84b;      /* gold accent strip */
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+}
+
+/* The big number inside every stat card */
+.stat-number {
+    font-size: 42px;
+    font-weight: bold;
+    color: #6b4226;
+    margin: 6px 0;
+}
+
+/* The small label line below the number */
+.stat-label {
+    margin: 0;
+    font-size: 14px;
+    color: #7a6428;
+}
+
+/* ---------- ASSIGNMENT 4 : FLEXBOX (dashboard section) ---------- */
+/* .flex-row is a FLEX CONTAINER. Its children (.flex-item) are laid
+   out side by side in one horizontal row. */
+.flex-row {
+    display: flex;               /* activate Flexbox       */
+    flex-wrap: wrap;             /* allow wrapping if tight */
+    gap: 20px;                   /* space between the items */
+    margin-top: 15px;
+}
+
+/* Each block is a FLEX ITEM (a direct child of .flex-row).
+   flex: 1 1 200px means:  grow equally, shrink if needed, and each
+   item keeps a minimum width of 200px before wrapping. */
+.flex-item {
+    flex: 1 1 200px;             /* grow | shrink | basis */
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-left: 6px solid #c98a2d;   /* darker gold accent */
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+
+.flex-item h3 {
+    margin: 0 0 6px 0;
+    color: #6b4226;
+}
+
+.flex-item p {
+    margin: 4px 0;
+    color: #5b4a36;
+}
+
+/* ---------- ASSIGNMENT 4 : MEDIA QUERIES ---------- */
+/* The layout above is the DESKTOP layout (the default).
+   The @media rules below override some rules when the screen gets
+   smaller, so the SAME page changes shape for desktops, tablets
+   and mobiles. Order matters: later rules override earlier ones. */
+
+/* TABLET layout: screen width is 900px or less */
+@media (max-width: 900px) {
+    /* 4 stat cards no longer fit in one row -> show 2 per row */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* MOBILE layout: screen width is 600px or less */
+@media (max-width: 600px) {
+    /* 2 cards per row also get tight -> stack to 1 per row */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Summary blocks stack one below the other */
+    .flex-row {
+        flex-direction: column;
+    }
+
+    /* The menu becomes a vertical stack instead of a row */
+    nav ul {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Shrink the big numbers slightly for small screens */
+    .stat-number {
+        font-size: 32px;
+    }
 }

@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 3 — CSS (Assignment 3)
+Current project phase: Phase 4 — CSS (Assignment 4)
 
 ## Assignment → File/Feature
 
@@ -12,7 +12,7 @@ Current project phase: Phase 3 — CSS (Assignment 3)
 | 1 | Basic HTML (headings, paragraphs, ordered/unordered lists, images) | `frontend/pages/about.html` | ✅ Done |
 | 2 | Semantic HTML tags (header, nav, main, section, article, aside, footer) | `frontend/index.html` | ✅ Done |
 | 3 | CSS - inline, internal, external | External: `frontend/css/style.css`; Internal: `<style>` in `frontend/index.html`; Inline: `style=""` in `frontend/index.html` & `frontend/pages/about.html` | ✅ Done |
-| 4 | Responsive design - Flexbox, Grid, Media Queries | `frontend/pages/dashboard.html` (planned) | ⏳ Pending |
+| 4 | Responsive design - Flexbox, Grid, Media Queries | `frontend/pages/dashboard.html` + `frontend/css/style.css` (Flexbox nav & summary, Grid stat cards, 3 media-query layouts) | ✅ Done |
 | 5 | CSS positions and other properties | Various UI elements (planned) | ⏳ Pending |
 | 6 | JavaScript events + array functions | `frontend/js/main.js` (planned) | ⏳ Pending |
 | 7 | JavaScript form validations | `frontend/js/main.js` (planned) | ⏳ Pending |
@@ -26,23 +26,24 @@ Current project phase: Phase 3 — CSS (Assignment 3)
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 3)
+## Project structure (as of Phase 4)
 
 ```
 Dairy_Management/
 ├── AGENTS.md
 ├── frontend/
-│   ├── index.html          # Assignment 2 homepage (semantic HTML) + Assignment 3 CSS
+│   ├── index.html
 │   ├── pages/
-│   │   └── about.html      # Assignment 1 about page + Assignment 3 CSS
+│   │   ├── about.html
+│   │   └── dashboard.html
 │   ├── css/
-│   │   └── style.css       # Assignment 3 external stylesheet
-│   ├── js/                 # empty - JS added in Phase 5 (Assignment 6)
+│   │   └── style.css
+│   ├── js/
 │   └── assets/
 │       ├── cow.svg
 │       ├── farm.svg
 │       └── milk-can.svg
 ├── docs/
 │   └── assignment-mapping.md
-└── (react-app/, node-backend/, php/, database/ added in later phases)
+└── later-phase folders are not created yet
 ```
