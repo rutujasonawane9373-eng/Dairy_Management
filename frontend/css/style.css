@@ -582,3 +582,240 @@ body.page-centre footer {
         padding-bottom: 150px;
     }
 }
+
+/* ============================================================
+   ASSIGNMENT 6 : STYLES FOR THE JAVASCRIPT PARTS
+   Used by the "Today's Collection Register" section on
+   frontend/pages/dashboard.html, which is drawn by
+   frontend/js/main.js.
+
+   Everything in this block is NEW. No rule above this line has
+   been changed, so Assignments 1-5 look exactly the same.
+
+   The register table itself needs no rules of its own - it reuses
+   .log-window, so it already has the border, the scrollbar and the
+   sticky header row from Assignment 5.
+   ============================================================ */
+
+/* ---------- the toolbar: label + dropdown + search + button ---------- */
+/* A small flex row, so the controls line up and wrap on a phone. */
+.register-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 14px 0;
+    padding: 12px 14px;
+    border: 1px dashed #d9a441;
+    border-radius: 10px;
+    background-color: #fffdf8;
+}
+
+.register-tools label {
+    font-weight: bold;
+    color: #6b4226;
+}
+
+.register-tools select,
+.register-tools input {
+    padding: 7px 10px;
+    border: 1px solid #ddc9a5;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #3f2f1e;
+    font-size: 14px;
+}
+
+.register-tools select:focus,
+.register-tools input:focus {
+    outline: 2px solid #e8b84b;       /* keyboard focus is visible */
+}
+
+/* .btn (Assignment 3) already colours the button; this only makes
+   sure a <button> element looks the same as the link buttons. */
+.register-tools button {
+    border: 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ---------- the status strip written by every event ---------- */
+/* Same look as .centre-note from Assignment 5, so the page keeps
+   one consistent style. */
+.register-status {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-left: 5px solid #c98a2d;
+    border-radius: 8px;
+    background-color: #fff6dd;
+    color: #5b4a36;
+    font-size: 14px;
+}
+
+/* ---------- the big value in each totals block ---------- */
+.total-value {
+    margin: 6px 0;
+    font-size: 26px;
+    font-weight: bold;
+    color: #6b4226;
+}
+
+/* ---------- the "selected" highlight ---------- */
+/* main.js adds the class "selected" to a statistic card, a shift
+   block or a register row when it is clicked, and removes it when
+   it is clicked again. The descendant selectors keep the same
+   specificity rules that already apply to these elements. */
+.stats-grid .stat-card.selected,
+.flex-item.selected,
+.log-window tbody tr.selected {
+    background-color: #fde8d7;
+    border-color: #d98c5f;
+    box-shadow: 0 0 0 2px #e8b84b;
+}
+
+.log-window tbody tr {
+    cursor: pointer;
+}
+
+/* ============================================================
+   ASSIGNMENT 7 : STYLES FOR THE FARMER REGISTRATION FORM
+   Used by frontend/pages/farmers.html, whose form is checked by
+   frontend/js/main.js.
+
+   Everything in this block is NEW. No rule above this line has
+   been changed, so Assignments 1-6 look exactly the same.
+
+   Three states are styled here:
+     1. NORMAL   - the plain box of every field
+     2. ERROR    - main.js adds .field-error to a rejected input
+                   and writes the message under it
+     3. SUCCESS  - main.js adds .ok to the message box above the
+                   form after a registration is accepted
+   ============================================================ */
+
+/* ---------- the form and its two-column grid ---------- */
+/* .form-grid is a CSS GRID container (same idea as .stats-grid
+   from Assignment 4), so the six fields sit in two columns on a
+   desktop screen and stack in one column on a phone. */
+.farmer-form {
+    margin-top: 16px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 22px;
+}
+
+/* ---------- one field: label, input, hint, error message ---------- */
+.form-row label {
+    display: block;                 /* label on its own line       */
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #6b4226;
+}
+
+.form-row input {
+    width: 100%;                    /* fill the grid cell          */
+    padding: 9px 11px;
+    border: 1px solid #cbb083;
+    border-radius: 6px;
+    background-color: #fffdf8;
+    color: #3f2f1e;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+/* Keyboard focus must stay visible (accessibility). */
+.form-row input:focus {
+    outline: 2px solid #e8b84b;
+    background-color: #ffffff;
+}
+
+/* The small grey explanation under a field. */
+.field-hint {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: #7a6428;
+}
+
+/* ---------- ERROR STATE ---------- */
+/* main.js adds this class to an input whose value was rejected. */
+.form-row input.field-error {
+    border: 2px solid #b03a2e;
+    background-color: #fdecea;
+}
+
+/* The red message JavaScript writes under the rejected field.
+   min-height keeps the rows of the form lined up even when a
+   field has no message. */
+.error-message {
+    margin: 6px 0 0 0;
+    min-height: 18px;
+    color: #b03a2e;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* The red * beside a compulsory field label. */
+.required-mark {
+    color: #b03a2e;
+}
+
+/* ---------- SUCCESS STATE ---------- */
+/* The message box above the form reuses .register-status from
+   Assignment 6; these two classes give it the outcome colour. */
+.form-message.ok {
+    border-left: 5px solid #1e7e34;
+    background-color: #eef8ef;
+    color: #1e5c26;
+    font-weight: bold;
+}
+
+.form-message.error {
+    border-left: 5px solid #b03a2e;
+    background-color: #fdecea;
+    color: #8c2a20;
+    font-weight: bold;
+}
+
+/* ---------- the two buttons ---------- */
+.form-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+/* <button> needs border: 0 and cursor: pointer to look like the
+   .btn link buttons of Assignment 3. */
+.form-buttons button {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+/* The "Clear Form" button - a light version of .btn, so the
+   Register button stays the main one. */
+.btn-light {
+    background-color: #f4e9d4;
+    color: #6b4226;
+    border: 1px solid #ddc9a5;
+}
+
+.btn-light:hover {
+    background-color: #e8b84b;
+}
+
+/* ---------- ASSIGNMENT 7 : MEDIA QUERY (mobile friendly) ---------- */
+/* MOBILE: two columns are too narrow, so the fields stack. */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-buttons button {
+        width: 100%;                 /* full-width tap targets */
+    }
+}

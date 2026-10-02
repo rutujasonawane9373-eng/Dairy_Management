@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  DAIRY MANAGEMENT SYSTEM - Farmers page
+
+  A normal working screen of the society: a new farmer is
+  registered here, and the farmers registered in this session
+  are listed underneath the form.
+
+  ASSIGNMENT 7 : JAVASCRIPT FRONTEND FUNCTIONALITY AND
+                 FORM VALIDATION
+  The "Farmer Registration" form below is checked by
+  frontend/js/main.js. Nothing is sent anywhere - Assignments 12
+  and 13 (PHP / MySQL) have not been written yet, so a
+  successful registration is only kept in the browser.
+
+  What this page demonstrates:
+    1. A real <form> with <label>, input types, required /
+       minlength / maxlength / pattern / min / max attributes
+    2. JavaScript validation with its own error messages
+       (not the browser's built-in bubbles)
+    3. submit / input / blur / reset events
+    4. A success message plus the new row in the table below
+
+  Assignments 1-6 features used on this page:
+    - Assignment 2 : semantic header / nav / main / section / aside / footer
+    - Assignment 3 : external CSS (../css/style.css)
+    - Assignment 4 : .flex-row (Flexbox) + media queries
+    - Assignment 5 : .log-window for the table + .centre-note strip
+    - Assignment 6 : js/main.js also draws the list of farmers
+                      registered here, using forEach() and reduce()
+  ============================================================ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dairy Management System - register a new farmer with name, mobile, village, daily milk quantity and fat percentage, with JavaScript form validation.">
+    <title>Farmers | Dairy Management System</title>
+
+    <!-- ASSIGNMENT 3 : EXTERNAL CSS. The shared stylesheet also
+         holds the Assignment 4, 5, 6 and 7 rules. -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Dairy Management System</h1>
+        <p>Farmers - registration and daily milk details</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../pages/about.html">About</a></li>
+            <li><a href="../pages/dashboard.html">Dashboard</a></li>
+            <li><a href="../pages/collection-centre.html">Collection Centre</a></li>
+            <li><a href="../pages/farmers.html" class="active">Farmers</a></li>
+            <li><a href="../pages/milk.html">Milk Collection</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- ========================================================
+             ASSIGNMENT 7 : THE REGISTRATION FORM
+             Every field has:
+               - a <label for="..."> so clicking the label focuses
+                 the right input
+               - a matching id and a meaningful name (the name is
+                 what a server would receive later)
+               - HTML5 attributes (required, pattern, min, max...)
+             Below each input is an empty <p> box. JavaScript puts
+             the error message into that box, so the message always
+             appears right next to the field it belongs to.
+        ======================================================== -->
+        <section>
+            <h2>Farmer Registration</h2>
+
+            <!-- Assignment 5 style information strip -->
+            <p class="centre-note">
+                New farmer registration &bull; fields marked <span class="required-mark">*</span>
+                are compulsory &bull; the form is checked in your browser before the
+                record is accepted
+            </p>
+
+            <!-- The one message box for the whole form. JavaScript
+                 gives it the class "ok" (green) or "error" (red). -->
+            <p class="register-status form-message" id="farmer-form-status">
+                Fill in the farmer's details and press "Register Farmer".
+            </p>
+
+            <!-- novalidate: the browser's own pop-up messages are
+                 switched off on purpose, so that the JavaScript
+                 messages written next to each field are the ones
+                 the farmer actually sees. The HTML5 attributes are
+                 still written on the inputs. -->
+            <form id="farmer-form" class="farmer-form" novalidate>
+
+                <div class="form-grid">
+
+                    <!-- ---- Farmer Name ---- -->
+                    <div class="form-row">
+                        <!-- ASSIGNMENT 1/2 : <label> is connected to its
+                             input with for="farmer-name" -->
+                        <label for="farmer-name">Farmer Name <span class="required-mark">*</span></label>
+                        <!-- required + minlength + maxlength + pattern
+                             are the HTML5 rules. JavaScript checks the
+                             same rules again with its own message. -->
+                        <input type="text" id="farmer-name" name="farmerName"
+                               placeholder="e.g. Ramesh Patil"
+                               autocomplete="name"
+                               required minlength="3" maxlength="40"
+                               pattern="[A-Za-z][A-Za-z .'-]{2,}">
+                        <p class="error-message" id="farmer-name-error"></p>
+                    </div>
+
+                    <!-- ---- Mobile Number ---- -->
+                    <div class="form-row">
+                        <label for="farmer-mobile">Mobile Number <span class="required-mark">*</span></label>
+                        <!-- type="tel" + inputmode="numeric" gives the
+                             number keypad on a phone. pattern forces
+                             10 digits starting with 6, 7, 8 or 9. -->
+                        <input type="tel" id="farmer-mobile" name="mobile"
+                               placeholder="10-digit mobile number"
+                               autocomplete="tel"
+                               inputmode="numeric" maxlength="10"
+                               required pattern="[6-9][0-9]{9}">
+                        <p class="error-message" id="farmer-mobile-error"></p>
+                    </div>
+
+                    <!-- ---- Email (optional) ---- -->
+                    <div class="form-row">
+                        <label for="farmer-email">Email</label>
+                        <!-- type="email" gives the @ keyboard on a phone.
+                             This field is NOT required, but if the farmer
+                             does type something it must look like an
+                             email address. -->
+                        <input type="email" id="farmer-email" name="email"
+                               placeholder="optional - name@example.com"
+                               autocomplete="email" maxlength="60">
+                        <p class="field-hint">Optional - leave it blank if the farmer has no email.</p>
+                        <p class="error-message" id="farmer-email-error"></p>
+                    </div>
+
+                    <!-- ---- Village / Address ---- -->
+                    <div class="form-row">
+                        <label for="farmer-village">Village / Address <span class="required-mark">*</span></label>
+                        <input type="text" id="farmer-village" name="village"
+                               placeholder="e.g. Wadgaon, Tal. Shahada"
+                               required minlength="3" maxlength="60">
+                        <p class="error-message" id="farmer-village-error"></p>
+                    </div>
+
+                    <!-- ---- Milk Quantity ---- -->
+                    <div class="form-row">
+                        <label for="milk-quantity">Average Milk per Day (L) <span class="required-mark">*</span></label>
+                        <!-- type="number" + min + max + step.
+                             step="0.5" allows 18.5 but not 18.3. -->
+                        <input type="number" id="milk-quantity" name="milkQuantity"
+                               placeholder="e.g. 18.5"
+                               required min="0.5" max="100" step="0.5">
+                        <p class="field-hint">Litres the farmer brings on an average day.</p>
+                        <p class="error-message" id="milk-quantity-error"></p>
+                    </div>
+
+                    <!-- ---- Fat Percentage ---- -->
+                    <div class="form-row">
+                        <label for="fat-percentage">Fat Percentage <span class="required-mark">*</span></label>
+                        <!-- The society only pays between 3% and 8% fat,
+                             so min and max match the rate board. -->
+                        <input type="number" id="fat-percentage" name="fatPercentage"
+                               placeholder="e.g. 4.6"
+                               required min="3" max="8" step="0.1">
+                        <p class="field-hint">Fat % of the milk sample. 3.5% and above is paid at 42 Rs/litre.</p>
+                        <p class="error-message" id="fat-percentage-error"></p>
+                    </div>
+
+                    <!-- ---- Submit and Reset buttons ---- -->
+                    <div class="form-buttons">
+                        <!-- type="submit" fires the submit event, which is
+                             where the final validation happens. -->
+                        <button type="submit" class="btn">Register Farmer</button>
+                        <!-- type="reset" empties the boxes and fires the
+                             reset event, which clears our messages. -->
+                        <button type="reset" class="btn btn-light">Clear Form</button>
+                    </div>
+
+                </div>
+            </form>
+        </section>
+
+        <!-- ========================================================
+             WHERE A SUCCESSFUL REGISTRATION APPEARS
+             This table is empty in the HTML. When the form passes
+             validation, main.js adds one <tr> per registered farmer
+             with forEach() and updates the line above the table.
+             It reuses the Assignment 5 .log-window box, so it gets
+             the same border, scrollbar and sticky header row.
+        ======================================================== -->
+        <section>
+            <h2>Farmers Registered in This Session</h2>
+
+            <p class="register-status" id="registered-count">No farmer registered yet in this session.</p>
+
+            <div class="log-window">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Farmer</th>
+                            <th>Mobile</th>
+                            <th>Village</th>
+                            <th>Milk (L)</th>
+                            <th>Fat %</th>
+                            <th>Rate (Rs)</th>
+                            <th>Amount (Rs)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registered-body"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Reminders for the society staff who fill this form. -->
+        <aside>
+            <h3>Before you register a farmer</h3>
+            <ul>
+                <li>Check the farmer's name against the society record book.</li>
+                <li>Ask for a mobile number - it is used for payment alerts.</li>
+                <li>Enter the fat % from the lab test of that farmer's milk.</li>
+                <li>Records entered here are cleared when the page is closed, because there is no database yet.</li>
+            </ul>
+        </aside>
+
+        <p><a class="btn" href="../index.html">Back to Home</a></p>
+
+    </main>
+
+    <footer>
+        <p>Contact: Dairy Cooperative Society Office, Main Road, Village &nbsp;|&nbsp; Phone: 98765 43210</p>
+        <p>&copy; 2026 Dairy Management System - College Web Development Project</p>
+    </footer>
+
+    <!-- ============================================================
+         ASSIGNMENT 7 : THE SAME EXTERNAL SCRIPT AS ASSIGNMENT 6
+         There is still only ONE JavaScript file in the project.
+         It is loaded at the END of <body> so that the form and all
+         of its inputs are already on the page when the script runs.
+         ".." goes up from pages/ to frontend/, then into js/.
+    ============================================================ -->
+    <script src="../js/main.js"></script>
+
+</body>
+</html>
