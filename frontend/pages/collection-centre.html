@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  DAIRY MANAGEMENT SYSTEM - Collection Centre page
+
+  A normal working screen for the collection centre: tank status,
+  today's collection log, shift summary, equipment and the rate
+  board that stays visible while you work.
+
+  ASSIGNMENT 5 : CSS POSITIONS AND OTHER CSS PROPERTIES
+  Every positioning rule used here lives in the "ASSIGNMENT 5"
+  section of frontend/css/style.css:
+
+    position: sticky    -> the main menu (nav), and the header row
+                            of the collection log table
+    position: static    -> .centre-note shift information strips
+    position: relative  -> .tank-card, .photo-frame
+    position: absolute  -> .status-badge, .photo-caption
+    position: fixed     -> .rate-ticker rate board
+    plus z-index, top/right/bottom/left, width/height, margin,
+    padding, border, border-radius, box-shadow, overflow, opacity
+
+  Assignments 1-4 features used on this page:
+    - Assignment 1 : headings, paragraphs, lists, image
+    - Assignment 2 : semantic header / nav / main / section / aside / footer
+    - Assignment 3 : external CSS (../css/style.css)
+    - Assignment 4 : .stats-grid and .flex-row (Grid + Flexbox)
+                      with the shared media-query layouts
+  ============================================================ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Collection centre working screen - chilling tank levels, quality testing status, payment counter, today's collection log and the current milk rate.">
+    <title>Collection Centre | Dairy Management System</title>
+
+    <!-- ASSIGNMENT 3 : EXTERNAL CSS. The shared stylesheet also holds
+         the Assignment 3, 4 and 5 rules. -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<!-- The page-centre class adds bottom padding on this page only, so
+     the fixed rate board never covers the footer text. -->
+<body class="page-centre">
+
+    <header>
+        <h1>Dairy Management System</h1>
+        <p>Collection Centre - tank status, collection log and rate board</p>
+    </header>
+
+    <!-- ASSIGNMENT 5 : this menu is position: sticky, so it stays at
+         the top of the screen while the page scrolls (on phones it
+         scrolls away normally, see the mobile media query). -->
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../pages/about.html">About</a></li>
+            <li><a href="../pages/dashboard.html">Dashboard</a></li>
+            <li><a href="../pages/collection-centre.html" class="active">Collection Centre</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- ========================================================
+             TANK / EQUIPMENT STATUS
+             The four cards below reuse the Assignment 4 CSS Grid
+             (.stats-grid). Each card is .tank-card (position:
+             relative) so its .status-badge (position: absolute)
+             stays pinned to the card's top-right corner.
+             ======================================================== -->
+        <section>
+            <h2>Centre Status</h2>
+
+            <p class="centre-note">
+                Duty supervisor: Ramesh Patil &nbsp;|&nbsp; Morning shift &nbsp;|&nbsp;
+                Board updated 21 September 2026, 8:30 AM
+            </p>
+
+            <div class="stats-grid">
+
+                <article class="stat-card tank-card">
+                    <span class="status-badge">FULL</span>
+                    <h3>Chilling Tank A</h3>
+                    <p class="stat-number">920 L</p>
+                    <p class="stat-label">92% of capacity &bull; holding at 4&deg;C</p>
+                    <div class="tank-gauge"><div class="tank-fill gauge-92"></div></div>
+                </article>
+
+                <article class="stat-card tank-card">
+                    <span class="status-badge ok">OK</span>
+                    <h3>Chilling Tank B</h3>
+                    <p class="stat-number">740 L</p>
+                    <p class="stat-label">74% of capacity &bull; holding at 4&deg;C</p>
+                    <div class="tank-gauge"><div class="tank-fill gauge-74"></div></div>
+                </article>
+
+                <article class="stat-card tank-card">
+                    <span class="status-badge info">TESTING</span>
+                    <h3>Quality Testing Lab</h3>
+                    <p class="stat-number">6</p>
+                    <p class="stat-label">milk samples waiting for fat &amp; SNF</p>
+                    <div class="tank-gauge"><div class="tank-fill gauge-58"></div></div>
+                </article>
+
+                <article class="stat-card tank-card">
+                    <span class="status-badge ok">OPEN</span>
+                    <h3>Payment Counter</h3>
+                    <p class="stat-number">&#8377; 52,400</p>
+                    <p class="stat-label">fortnightly payout &bull; closes 5:00 PM</p>
+                    <div class="tank-gauge"><div class="tank-fill gauge-35"></div></div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             TODAY'S COLLECTION LOG
+             A long list of collections, so the box has a limited
+             height with its own scrollbar (overflow: auto) instead of
+             making the page endless. The header row is
+             position: sticky, so the column titles stay visible while
+             the farmer rows scroll.
+             ======================================================== -->
+        <section>
+            <h2>Today's Collection Log</h2>
+
+            <p class="centre-note">
+                Morning shift &bull; 62 farmers registered till 8:30 AM &bull;
+                weighbridge and lab entries are added as milk arrives
+            </p>
+
+            <div class="log-window">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Farmer</th>
+                            <th>Quantity (L)</th>
+                            <th>Fat %</th>
+                            <th>SNF %</th>
+                            <th>Rate (Rs)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Ramesh Patil</td><td>18.5</td><td>4.6</td><td>8.9</td><td>44</td><td>Paid</td></tr>
+                        <tr><td>Sunita Jadhav</td><td>12.0</td><td>3.8</td><td>8.2</td><td>40</td><td>Paid</td></tr>
+                        <tr><td>Vilas More</td><td>22.5</td><td>4.9</td><td>9.1</td><td>45</td><td>Paid</td></tr>
+                        <tr><td>Anita Deshmukh</td><td>15.0</td><td>4.2</td><td>8.6</td><td>42</td><td>Paid</td></tr>
+                        <tr><td>Ganesh Pawar</td><td>9.5</td><td>3.9</td><td>8.4</td><td>40</td><td>Pending</td></tr>
+                        <tr><td>Meena Kulkarni</td><td>20.0</td><td>4.7</td><td>9.0</td><td>44</td><td>Paid</td></tr>
+                        <tr><td>Ravi Chavan</td><td>11.5</td><td>4.0</td><td>8.5</td><td>41</td><td>Paid</td></tr>
+                        <tr><td>Shalini Joshi</td><td>17.5</td><td>4.4</td><td>8.8</td><td>43</td><td>Pending</td></tr>
+                        <tr><td>Imran Shaikh</td><td>13.0</td><td>3.7</td><td>8.1</td><td>39</td><td>Paid</td></tr>
+                        <tr><td>Pratiksha Mane</td><td>19.0</td><td>4.5</td><td>8.9</td><td>44</td><td>Paid</td></tr>
+                        <tr><td>Datta Shinde</td><td>8.5</td><td>3.6</td><td>8.0</td><td>39</td><td>Pending</td></tr>
+                        <tr><td>Farida Sayyed</td><td>14.5</td><td>4.1</td><td>8.7</td><td>42</td><td>Paid</td></tr>
+                        <tr><td>Balaji Naik</td><td>21.0</td><td>4.8</td><td>9.2</td><td>45</td><td>Paid</td></tr>
+                        <tr><td>Kavita Rane</td><td>10.5</td><td>3.8</td><td>8.3</td><td>40</td><td>Pending</td></tr>
+                        <tr><td>Suresh Gaikwad</td><td>16.0</td><td>4.3</td><td>8.6</td><td>42</td><td>Paid</td></tr>
+                        <tr><td>Lata Bhosale</td><td>12.5</td><td>4.0</td><td>8.4</td><td>41</td><td>Paid</td></tr>
+                        <tr><td>Nitin Dhage</td><td>24.0</td><td>4.9</td><td>9.3</td><td>45</td><td>Pending</td></tr>
+                        <tr><td>Asha Kadam</td><td>9.0</td><td>3.8</td><td>8.2</td><td>40</td><td>Paid</td></tr>
+                        <tr><td>Vijay Thorat</td><td>18.0</td><td>4.5</td><td>8.9</td><td>44</td><td>Paid</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             SHIFT SUMMARY
+             Plain working content in the Assignment 4 Flexbox layout
+             (.flex-row / .flex-item).
+             ======================================================== -->
+        <section>
+            <h2>Shift Summary</h2>
+
+            <p class="centre-note">
+                Rates are revised by the society every fortnight and
+                published on the rate board in the corner of the screen.
+            </p>
+
+            <div class="flex-row">
+
+                <div class="flex-item">
+                    <h3>Morning Shift</h3>
+                    <p>650 litres from 62 farmers</p>
+                    <p>Average fat 4.1% &nbsp;|&nbsp; SNF 8.7%</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>Evening Shift</h3>
+                    <p>400 litres from 36 farmers</p>
+                    <p>Average fat 4.4% &nbsp;|&nbsp; SNF 9.0%</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>This Month</h3>
+                    <p>28,300 litres collected</p>
+                    <p>9,500 farmer payments processed</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================
+             EQUIPMENT
+             .photo-frame is a fixed-size relative box with
+             overflow: hidden, so the picture is clipped neatly inside
+             it. .photo-caption is absolutely placed over the bottom
+             of the picture on a see-through background.
+             ======================================================== -->
+        <section>
+            <h2>Chilling Unit</h2>
+
+            <div class="photo-frame">
+                <img src="../assets/milk-can.svg" alt="Milk can ready for weighing at the collection centre">
+                <p class="photo-caption">Milk can - washed, weighed and ready for the morning shift.</p>
+            </div>
+        </section>
+
+        <!-- Operational reminders for the centre staff. -->
+        <aside>
+            <h3>Centre Instructions</h3>
+            <ul>
+                <li>Weigh and test every can before it goes into the chilling tank.</li>
+                <li>Record fat and SNF for every collection - payments depend on it.</li>
+                <li>Keep Tank A and Tank B at or below 4&deg;C at all times.</li>
+                <li>Close the payment counter at 5:00 PM with the day's total.</li>
+            </ul>
+        </aside>
+
+        <p><a class="btn" href="../index.html">Back to Home</a></p>
+
+    </main>
+
+    <footer>
+        <p>Contact: Dairy Cooperative Society Office, Main Road, Village &nbsp;|&nbsp; Phone: 98765 43210</p>
+        <p>&copy; 2026 Dairy Management System - College Web Development Project</p>
+    </footer>
+
+    <!-- ASSIGNMENT 5 : position: fixed - the rate board stays in the
+         corner of the screen while the centre staff scroll the log.
+         (style.css -> .rate-ticker, z-index: 100) -->
+    <div class="rate-ticker">
+        <h3>Today's Milk Rate</h3>
+        <p>Fat 3.5% and above &rarr; 42 Rs / litre</p>
+        <p>Fat below 3.5% &rarr; 40 Rs / litre</p>
+        <p>Last updated: 21 September 2026, 8:30 AM</p>
+    </div>
+
+</body>
+</html>

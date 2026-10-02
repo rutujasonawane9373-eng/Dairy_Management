@@ -319,3 +319,266 @@ footer p {
         font-size: 32px;
     }
 }
+
+/* ============================================================
+   ASSIGNMENT 5 : CSS POSITIONS AND OTHER CSS PROPERTIES
+   Used by frontend/pages/collection-centre.html, plus the sticky
+   navigation which now appears on every page.
+
+   position: static    -> .centre-note (shift information strip)
+   position: sticky    -> nav, .log-window thead th
+   position: relative  -> .tank-card, .photo-frame, .rate-ticker
+                          children are placed against it
+   position: absolute  -> .status-badge, .photo-caption
+   position: fixed     -> .rate-ticker
+
+   Other properties used here:
+   z-index, top/right/bottom/left, width/height, margin, padding,
+   border, border-radius, box-shadow, overflow, opacity
+   ============================================================ */
+
+/* ---------- position: STICKY : the main menu ---------- */
+/* The dark menu bar stays at the top of the screen while the page
+   scrolls, so every page can be navigated at any time. It behaves
+   like position: relative until it reaches top: 0. */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;                    /* above cards, gauges, badges */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- position: STATIC : shift information strip ---------- */
+/* "static" is the default value of position: the strip simply sits
+   in the normal page flow and never moves. */
+.centre-note {
+    position: static;
+    margin: 12px 0 4px 0;
+    padding: 10px 14px;
+    border-left: 5px solid #c98a2d;
+    border-radius: 8px;
+    background-color: #fff6dd;
+    color: #5b4a36;
+    font-size: 14px;
+}
+
+/* ---------- position: RELATIVE : status cards ---------- */
+/* The card is the PARENT of the status badge, so the badge stays in
+   the card's top-right corner even when the card changes size. */
+.tank-card {
+    position: relative;
+    overflow: hidden;               /* keeps badge and text inside   */
+    padding-top: 26px;              /* room for the badge above      */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14);
+}
+
+/* ---------- position: ABSOLUTE : status badge on a card ---------- */
+.status-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 3;                     /* badge sits above card text   */
+    padding: 3px 10px;
+    border-radius: 999px;           /* full round "pill"           */
+    background-color: #b03a2e;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Green badge for normal / open states */
+.status-badge.ok {
+    background-color: #1e7e34;
+}
+
+/* Blue badge for states that are in progress */
+.status-badge.info {
+    background-color: #1f6fa8;
+}
+
+/* ---------- width / height : tank fill gauges ---------- */
+/* The bar has a fixed height; the fill inside uses a percentage
+   WIDTH. .gauge-* classes hold those width values. */
+.tank-gauge {
+    height: 20px;                   /* fixed bar height            */
+    margin: 12px 0 4px 0;
+    border: 1px solid #b79a6b;
+    border-radius: 6px;
+    background-color: #f4e9d4;
+    overflow: hidden;               /* keeps the fill inside the bar*/
+}
+
+.tank-fill {
+    height: 100%;
+    background-color: #e8b84b;
+    border-radius: 5px;
+    opacity: 0.85;                  /* slightly translucent fill   */
+}
+
+/* Fill levels used by the tank cards (width: xx%) */
+.gauge-92 { width: 92%; }
+.gauge-74 { width: 74%; }
+.gauge-58 { width: 58%; }
+.gauge-35 { width: 35%; }
+
+/* ---------- overflow : scrollable collection log ---------- */
+/* max-height + overflow: auto gives the table its own scrollbar
+   instead of making the whole page very long. */
+.log-window {
+    max-height: 230px;              /* window height is limited    */
+    overflow: auto;                 /* scrollbar appears here      */
+    margin-top: 14px;
+    padding: 8px 12px;
+    border: 2px solid #ddc9a5;
+    border-radius: 10px;
+    background-color: #fffdf8;
+}
+
+.log-window table {
+    width: 100%;                    /* table fills the window      */
+    border-collapse: collapse;
+}
+
+.log-window th,
+.log-window td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #eadfc8;
+    text-align: left;
+    font-size: 13px;
+}
+
+.log-window thead th {
+    /* Sticky table header INSIDE the scrollable window:
+       the column titles stay visible while the rows scroll. */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #6b4226;
+    color: #ffffff;
+}
+
+/* ---------- position: RELATIVE + ABSOLUTE caption overlay ---------- */
+/* The picture frame is relative, so the caption can be absolutely
+   placed over the bottom of the picture. */
+.photo-frame {
+    position: relative;
+    width: 260px;                   /* fixed width for the picture  */
+    max-width: 100%;
+    height: 220px;                  /* fixed height                 */
+    margin: 16px 0;
+    border: 2px solid #c98a2d;
+    border-radius: 12px;
+    overflow: hidden;               /* clips the image to the frame */
+    background-color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    border: 0;                      /* no gold frame on this image */
+    border-radius: 0;
+    margin: 0;
+}
+
+.photo-caption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 8px 12px;
+    background-color: rgba(75, 46, 14, 0.7);   /* see-through brown  */
+    color: #f5e6c8;
+    font-size: 13px;
+    border-top: 2px solid #e8b84b;
+}
+
+/* ---------- position: FIXED : live milk rate ticker ---------- */
+/* A "fixed" box stays in the same place on the SCREEN when the page
+   is scrolled. z-index keeps it above all page content. */
+.rate-ticker {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 100;                   /* above every other element   */
+    width: 290px;                   /* fixed width of the board     */
+    padding: 12px 16px;
+    border: 3px solid #6b4226;
+    border-radius: 12px;
+    background-color: #fff6dd;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.rate-ticker h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #6b4226;
+}
+
+.rate-ticker p {
+    margin: 2px 0;
+    color: #5b4a36;
+}
+
+/* Extra space at the bottom of THIS page only, so the fixed ticker
+   never hides the footer text. Scoped with a body class so the
+   other pages keep their original look. */
+body.page-centre footer {
+    padding-bottom: 170px;
+}
+
+/* ---------- ASSIGNMENT 5 : MEDIA QUERIES (mobile friendly) ---------- */
+/* TABLET: the picture frame uses the full available width and the
+   badges sit slightly tighter inside the cards. */
+@media (max-width: 900px) {
+    .photo-frame {
+        width: 100%;
+    }
+
+    .tank-card {
+        padding-top: 30px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    /* A tall stacked menu would fill the screen, so on phones the
+       navigation scrolls away normally instead of sticking. */
+    nav {
+        position: static;
+    }
+
+    .status-badge {
+        top: 6px;
+        right: 6px;
+        padding: 3px 8px;
+        font-size: 10px;
+    }
+
+    .tank-card {
+        padding-top: 28px;
+    }
+
+    /* The fixed rate board becomes a full-width bottom strip */
+    .rate-ticker {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;                 /* stretch left-to-right        */
+        border-radius: 14px 14px 0 0;
+        font-size: 13px;
+    }
+
+    .log-window {
+        max-height: 200px;
+    }
+
+    body.page-centre footer {
+        padding-bottom: 150px;
+    }
+}
