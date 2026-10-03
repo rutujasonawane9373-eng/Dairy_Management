@@ -1,10 +1,10 @@
-# Dairy Management System — Viva Notes
+﻿# Dairy Management System â€” Viva Notes
 
 > Study and revision document for the Dairy Management System college project.
 > Everything in this file is taken from the **actual current code** in this repository.
-> File names, line numbers, selectors and class names are real — verify with the file path shown.
+> File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 6** (Phase 5 — JavaScript). Assignment 7 not started.
+> Last updated after **Assignment 6** (Phase 5 â€” JavaScript). Assignment 7 not started.
 
 ---
 
@@ -25,22 +25,22 @@ The project turns that paper process into a set of web screens:
 - a collection-centre working screen with tank status, today's collection log, shift summary
   and a live rate board.
 
-The theme (colours, images, wording) is consistent across all pages — cream/milk background,
+The theme (colours, images, wording) is consistent across all pages â€” cream/milk background,
 butter gold, dark chocolate brown. That is deliberate so the project looks like one application.
 
 ### 1.2 Current technology used
 
 | Layer | Technology | Status |
 |---|---|---|
-| Page structure | HTML5 (semantic tags) | Used — Assignments 1 & 2 |
-| Styling | CSS3 (Flexbox, Grid, Media Queries, positions) | Used — Assignments 3, 4, 5 |
-| Behaviour | JavaScript (events, array functions, DOM) | Used — **Assignment 6** |
+| Page structure | HTML5 (semantic tags) | Used â€” Assignments 1 & 2 |
+| Styling | CSS3 (Flexbox, Grid, Media Queries, positions) | Used â€” Assignments 3, 4, 5 |
+| Behaviour | JavaScript (events, array functions, DOM) | Used â€” **Assignment 6** |
 | Images | Hand-written inline SVG | Used |
-| Server / database | PHP, MySQL, Node.js + Express, React | **Not used yet** — later phases |
+| Server / database | PHP, MySQL, Node.js + Express, React | **Not used yet** â€” later phases |
 
-There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by two pages —
+There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by two pages â€”
 `frontend/pages/dashboard.html` (Assignment 6) and `frontend/pages/farmers.html`
-(Assignment 7). There is **no inline JavaScript** anywhere in the project —
+(Assignment 7). There is **no inline JavaScript** anywhere in the project â€”
 no `onclick="..."` or `onchange="..."` attributes exist in any HTML file, and no
 `<script>` block is written inside a page. All behaviour lives in that one external file.
 
@@ -51,27 +51,27 @@ The pages are opened directly in a browser. There is no build step, no framework
 
 ```
 Dairy_Management/
-├── AGENTS.md                       project rules + phase plan
-├── docs/
-│   ├── assignment-mapping.md       which file proves which assignment
-│   └── viva-notes.md               THIS file
-└── frontend/
-    ├── index.html                  Assignment 2 (semantic HTML) + Assignment 3
-    ├── pages/
-    │   ├── about.html              Assignment 1 (basic HTML) + 3
-    │   ├── dashboard.html          Assignment 4 (Flexbox / Grid / Media Queries)
-    │   │                           + Assignment 6 (loads js/main.js)
-    │   ├── collection-centre.html  Assignment 5 (CSS positions)
-    │   └── farmers.html            Assignment 7 (registration form + validation)
-    │                               + loads js/main.js
-    ├── css/
-    │   └── style.css               Assignments 3, 4, 5, 6 and 7 — the ONLY stylesheet
-    ├── js/
-    │   └── main.js                 Assignments 6 and 7 — the ONLY JavaScript file
-    └── assets/
-        ├── cow.svg
-        ├── farm.svg
-        └── milk-can.svg
+â”œâ”€â”€ AGENTS.md                       project rules + phase plan
+â”œâ”€â”€ docs/
+â”‚   â”œâ”€â”€ assignment-mapping.md       which file proves which assignment
+â”‚   â””â”€â”€ viva-notes.md               THIS file
+â””â”€â”€ frontend/
+    â”œâ”€â”€ index.html                  Assignment 2 (semantic HTML) + Assignment 3
+    â”œâ”€â”€ pages/
+    â”‚   â”œâ”€â”€ about.html              Assignment 1 (basic HTML) + 3
+    â”‚   â”œâ”€â”€ dashboard.html          Assignment 4 (Flexbox / Grid / Media Queries)
+    â”‚   â”‚                           + Assignment 6 (loads js/main.js)
+    â”‚   â”œâ”€â”€ collection-centre.html  Assignment 5 (CSS positions)
+    â”‚   â””â”€â”€ farmers.html            Assignment 7 (registration form + validation)
+    â”‚                               + loads js/main.js
+    â”œâ”€â”€ css/
+    â”‚   â””â”€â”€ style.css               Assignments 3, 4, 5, 6 and 7 â€” the ONLY stylesheet
+    â”œâ”€â”€ js/
+    â”‚   â””â”€â”€ main.js                 Assignments 6 and 7 â€” the ONLY JavaScript file
+    â””â”€â”€ assets/
+        â”œâ”€â”€ cow.svg
+        â”œâ”€â”€ farm.svg
+        â””â”€â”€ milk-can.svg
 ```
 
 Folders that do **not** exist yet and must not be mentioned as if they do:
@@ -98,18 +98,18 @@ The same `../` idea applies to page links and images:
 
 **Navigation between pages** (`<nav>` in each HTML file):
 
-- `index.html` → About, Dashboard, Collection Centre, plus **Farmers** (page exists since
+- `index.html` â†’ About, Dashboard, Collection Centre, plus **Farmers** (page exists since
   Assignment 7) and **Milk Collection** (still a placeholder),
-- `about.html` → Home, About (active), Dashboard, Collection Centre,
-- `dashboard.html` → Home, About, Dashboard (active), Collection Centre, plus Farmers and
+- `about.html` â†’ Home, About (active), Dashboard, Collection Centre,
+- `dashboard.html` â†’ Home, About, Dashboard (active), Collection Centre, plus Farmers and
   Milk Collection,
-- `collection-centre.html` → Home, About, Dashboard, Collection Centre (active),
-- `farmers.html` → Home, About, Dashboard, Collection Centre, **Farmers (active)**, Milk Collection.
+- `collection-centre.html` â†’ Home, About, Dashboard, Collection Centre (active),
+- `farmers.html` â†’ Home, About, Dashboard, Collection Centre, **Farmers (active)**, Milk Collection.
 
 Each page marks its own menu link with `class="active"` so `style.css` line 99
 (`nav a.active`) can highlight it in gold.
 
-**Assets** are only used in two places: the three images on `about.html` (lines 104–106) and
+**Assets** are only used in two places: the three images on `about.html` (lines 104â€“106) and
 the milk can picture inside `.photo-frame` on `collection-centre.html` (line 216).
 
 **JavaScript** is the third kind of connection. `frontend/pages/dashboard.html` and
@@ -121,21 +121,21 @@ the milk can picture inside `.photo-frame` on `collection-centre.html` (line 216
 ```
 
 Both files are inside `frontend/pages/`, so `../js/` goes up to `frontend/` and then into
-`js/`. This is the same `..` rule used by the CSS and image paths — the browser resolves all of
+`js/`. This is the same `..` rule used by the CSS and image paths â€” the browser resolves all of
 them relative to the HTML file's own folder. The other three pages do not load the script at all,
 so they behave exactly as before. Loading the script on a page that lacks some of its elements is
-still safe, because every element it looks for is checked before use — see section A6.6 for the
+still safe, because every element it looks for is checked before use â€” see section A6.6 for the
 Assignment 6 elements and `startFarmerForm()` (section A7.8) for the Assignment 7 form, which
 returns immediately when `#farmer-form` is not on the page.
 
 ---
 
-## 2. Assignment 1 — Basic HTML
+## 2. Assignment 1 â€” Basic HTML
 
-**File: `frontend/pages/about.html`** — this is the file whose header comment (line 4) declares
+**File: `frontend/pages/about.html`** â€” this is the file whose header comment (line 4) declares
 `ASSIGNMENT 1 : Basic HTML demonstration`.
 
-### 2.1 Page skeleton (lines 1, 20–31)
+### 2.1 Page skeleton (lines 1, 20â€“31)
 
 ```html
 <!DOCTYPE html>
@@ -149,13 +149,13 @@ returns immediately when `#farmer-form` is not on the page.
 <body>
 ```
 
-- `<!DOCTYPE html>` (line 1) — tells the browser "use modern HTML5 standards". Without it,
+- `<!DOCTYPE html>` (line 1) â€” tells the browser "use modern HTML5 standards". Without it,
   browsers switch to an old compatibility mode and some CSS behaves differently.
-- `<html lang="en">` — the language of the page. Screen readers use it to choose a voice.
-- `<meta charset="UTF-8">` — character encoding. Must be the first item in `<head>`.
-- `<meta name="viewport" ...>` — makes the CSS pixel width match the real screen, which is
+- `<html lang="en">` â€” the language of the page. Screen readers use it to choose a voice.
+- `<meta charset="UTF-8">` â€” character encoding. Must be the first item in `<head>`.
+- `<meta name="viewport" ...>` â€” makes the CSS pixel width match the real screen, which is
   what allows the media queries in Assignment 4/5 to work on a phone.
-- `<title>` — the text shown on the browser tab. The pattern used on every page is
+- `<title>` â€” the text shown on the browser tab. The pattern used on every page is
   `Page Name | Dairy Management System`.
 
 ### 2.2 Headings (lines 47, 64, 80, 95)
@@ -186,10 +186,10 @@ needed (`header h1` line 43 sets `font-size: 34px`).
 ```
 
 `<p>` is a block element: it starts on a new line and the browser adds space above and below
-it. The source code wraps one sentence across several lines for readability — HTML collapses
+it. The source code wraps one sentence across several lines for readability â€” HTML collapses
 those line breaks into single spaces, so the browser shows one continuous paragraph.
 
-### 2.4 Ordered list — `<ol>` (lines 70–77)
+### 2.4 Ordered list â€” `<ol>` (lines 70â€“77)
 
 ```html
 <ol>
@@ -202,11 +202,11 @@ those line breaks into single spaces, so the browser shows one continuous paragr
 </ol>
 ```
 
-`<ol>` = **ordered list**. The browser draws the numbers `1. 2. 3.` itself — the numbers are
+`<ol>` = **ordered list**. The browser draws the numbers `1. 2. 3.` itself â€” the numbers are
 never typed in the HTML. Use `<ol>` when the **order matters**, which is exactly the case here:
 these are the six steps of the milk collection process.
 
-### 2.5 Unordered list — `<ul>` (lines 86–92)
+### 2.5 Unordered list â€” `<ul>` (lines 86â€“92)
 
 ```html
 <ul>
@@ -219,10 +219,10 @@ these are the six steps of the milk collection process.
 ```
 
 `<ul>` = **unordered list**, drawn with bullets. These five farmer services have no sequence,
-so a bulleted list is the correct choice. **That single difference — order vs no order — is the
+so a bulleted list is the correct choice. **That single difference â€” order vs no order â€” is the
 whole reason `<ol>` and `<ul>` both exist**, and it is the classic viva question.
 
-### 2.6 Images (lines 104–106)
+### 2.6 Images (lines 104â€“106)
 
 ```html
 <img src="../assets/cow.svg" alt="Dairy cow illustration" width="160" height="145"
@@ -235,20 +235,20 @@ Attributes used and why:
 
 | Attribute | Meaning | In my project |
 |---|---|---|
-| `src` | path to the image file | `../assets/cow.svg` — `..` goes up from `pages/` to `frontend/`, then into `assets/` |
+| `src` | path to the image file | `../assets/cow.svg` â€” `..` goes up from `pages/` to `frontend/`, then into `assets/` |
 | `alt` | text shown if the image fails, and read aloud by screen readers | all three images have meaningful text |
 | `width` | display width in pixels | `160` for cow and farm, `130` for the milk can |
 | `height` | display height in pixels | `145`, `145`, `160` |
 | `style` | inline CSS (Assignment 3) | rounded corners + soft shadow on each image |
 
-`<img>` is a **void element** — it has no closing `</img>` tag and cannot hold children.
+`<img>` is a **void element** â€” it has no closing `</img>` tag and cannot hold children.
 
 The images are **SVG** files written by hand (shapes such as `<ellipse>`, `<circle>`, `<path>`,
 `<rect>` inside an `<svg>` tag). SVG stays sharp at any size, which is also why
 `collection-centre.html` can stretch `milk-can.svg` to `width: 100%; height: 100%` inside the
 picture frame without it blurring.
 
-### 2.7 Links (lines 38–41, 116)
+### 2.7 Links (lines 38â€“41, 116)
 
 ```html
 <li><a href="../index.html">Home</a></li>
@@ -266,31 +266,31 @@ picture frame without it blurring.
 | Entity | Shows as | Used in |
 |---|---|---|
 | `&amp;` | & | `index.html:60` ("fat & SNF") |
-| `&copy;` | © | footer of every page |
+| `&copy;` | Â© | footer of every page |
 | `&nbsp;` | space that never breaks | footers, `index.html` collection records, `.centre-note` |
-| `&bull;` | • | `collection-centre.html` tank cards |
-| `&deg;` | ° | `collection-centre.html` ("4°C") |
-| `&rarr;` | → | rate board on `collection-centre.html` |
-| `&#8377;` | ₹ (Rupee) | `dashboard.html:84`, `collection-centre.html:108` |
+| `&bull;` | â€¢ | `collection-centre.html` tank cards |
+| `&deg;` | Â° | `collection-centre.html` ("4Â°C") |
+| `&rarr;` | â†’ | rate board on `collection-centre.html` |
+| `&#8377;` | â‚¹ (Rupee) | `dashboard.html:84`, `collection-centre.html:108` |
 
 ### 2.9 How this page works
 
-Open `frontend/pages/about.html` in Chrome → the browser reads the `<head>` → downloads
-`../css/style.css` → builds the page from the body tags → applies the stylesheet → the page
+Open `frontend/pages/about.html` in Chrome â†’ the browser reads the `<head>` â†’ downloads
+`../css/style.css` â†’ builds the page from the body tags â†’ applies the stylesheet â†’ the page
 appears with the cream background, gold menu bar and white content. The menu works because each
 link is a normal relative path back into the project.
 
 ---
 
-## 3. Assignment 2 — Semantic HTML
+## 3. Assignment 2 â€” Semantic HTML
 
-**File: `frontend/index.html`** — its header comment (line 4) declares
+**File: `frontend/index.html`** â€” its header comment (line 4) declares
 `ASSIGNMENT 2 : Semantic HTML tags demonstration`.
 
 Semantic tags describe the **meaning** of a piece of content, not how it should look. That
 meaning helps screen-reader users, search engines and anyone reading the source.
 
-### 3.1 `<header>` — lines 58–61 (index.html)
+### 3.1 `<header>` â€” lines 58â€“61 (index.html)
 
 ```html
 <header>
@@ -299,13 +299,13 @@ meaning helps screen-reader users, search engines and anyone reading the source.
 </header>
 ```
 
-- **Meaning:** the introductory banner of the page — title and tagline.
+- **Meaning:** the introductory banner of the page â€” title and tagline.
 - **Why:** it becomes the `banner` landmark, so assistive technology can jump past it, and it
   groups the site name with its description.
 - **Where:** `index.html:58`, `dashboard.html:36`, `collection-centre.html:45`.
   **Not on `about.html`.**
 
-### 3.2 `<nav>` — lines 68–77
+### 3.2 `<nav>` â€” lines 68â€“77
 
 ```html
 <nav>
@@ -328,7 +328,7 @@ meaning helps screen-reader users, search engines and anyone reading the source.
 - **Honest note:** `pages/farmers.html` and `pages/milk.html` **do not exist yet**, so those two
   links currently give a "file not found" error. They are placeholders for future phases.
 
-### 3.3 `<main>` — lines 84–190
+### 3.3 `<main>` â€” lines 84â€“190
 
 ```html
 <main>
@@ -344,7 +344,7 @@ meaning helps screen-reader users, search engines and anyone reading the source.
   limit the page width (`max-width: 1100px; margin: 20px auto;`).
 - **Where:** `index.html`, `dashboard.html`, `collection-centre.html`. **Not on `about.html`.**
 
-### 3.4 `<section>` — lines 91, 120, 153
+### 3.4 `<section>` â€” lines 91, 120, 153
 
 Three sections on the home page: the welcome block, "Today's Overview", and
 "Latest Milk Collections".
@@ -353,10 +353,10 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 - **Why:** it breaks a long page into readable chunks instead of one wall of text.
 - **Where:** every page. `collection-centre.html` has four sections: Centre Status, Today's
   Collection Log, Shift Summary, Chilling Unit.
-- **Styled by:** `style.css` lines 112 (`section h2`) and 120 (`section`) — each section becomes
+- **Styled by:** `style.css` lines 112 (`section h2`) and 120 (`section`) â€” each section becomes
   a white rounded card with a soft shadow.
 
-### 3.5 `<article>` — lines 125, 130, 135, 142, 157, 163, 169
+### 3.5 `<article>` â€” lines 125, 130, 135, 142, 157, 163, 169
 
 ```html
 <article>
@@ -366,15 +366,15 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 ```
 
 - **Meaning:** a **self-contained piece of content** that would still make sense if it were
-  quoted or shared on its own. The comment at `index.html` lines 123–124 states the reasoning
+  quoted or shared on its own. The comment at `index.html` lines 123â€“124 states the reasoning
   directly: each stat card is independent, so it is an `<article>`.
-- **Why:** a single farmer's collection record (lines 157–161) is also independent — that is
+- **Why:** a single farmer's collection record (lines 157â€“161) is also independent â€” that is
   the correct use, not a `<section>`.
 - **Where:** stat cards and collection records on `index.html`; the four `.stat-card` articles
   on `dashboard.html`; the four `.tank-card` articles on `collection-centre.html`.
-- **Styled by:** `style.css` line 130 — cream card with a 6px gold `border-left` accent.
+- **Styled by:** `style.css` line 130 â€” cream card with a 6px gold `border-left` accent.
 
-### 3.6 `<aside>` — lines 180–187
+### 3.6 `<aside>` â€” lines 180â€“187
 
 ```html
 <aside>
@@ -387,19 +387,19 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 </aside>
 ```
 
-- **Meaning:** content related to the surroundings but **not** the main focus — notices, tips,
+- **Meaning:** content related to the surroundings but **not** the main focus â€” notices, tips,
   reminders, advertisements.
 - **Why:** it becomes the `complementary` landmark, so it is skipped when reading only the
   main content.
 - **Where:** `index.html:180` (inside the "Latest Milk Collections" section, so it complements
   that section), `dashboard.html:129` and `collection-centre.html:222` (directly inside `<main>`,
   so it complements the whole page). Both placements are valid.
-- **Styled by:** the **internal** `<style>` block inside `index.html` lines 38–49, which gives it
+- **Styled by:** the **internal** `<style>` block inside `index.html` lines 38â€“49, which gives it
   a cream background and a `2px dashed` gold border. **There is no `aside` rule in `style.css`**,
   so the asides on the dashboard and collection-centre pages currently look unstyled. Good
   viva answer if asked about it.
 
-### 3.7 `<footer>` — lines 196–199
+### 3.7 `<footer>` â€” lines 196â€“199
 
 ```html
 <footer>
@@ -408,7 +408,7 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 </footer>
 ```
 
-- **Meaning:** closing information — contact details and copyright.
+- **Meaning:** closing information â€” contact details and copyright.
 - **Why:** the `contentinfo` landmark; contact info belongs at the end, not repeated in the
   middle of the page.
 - **Where:** `index.html`, `dashboard.html`, `collection-centre.html`. **Not on `about.html`.**
@@ -420,7 +420,7 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 | Tag | Example (file:line) | Why it is there |
 |---|---|---|
 | `<span>` | `collection-centre.html:82` `<span class="status-badge">FULL</span>` | An inline container. CSS turns it into a positioned pill badge; text alone cannot be positioned usefully. |
-| `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` | `collection-centre.html:133–165` | Real tabular data — Farmer / Quantity / Fat % / SNF % / Rate / Status. `<thead>` is required for the sticky header row in Assignment 5. |
+| `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` | `collection-centre.html:133â€“165` | Real tabular data â€” Farmer / Quantity / Fat % / SNF % / Rate / Status. `<thead>` is required for the sticky header row in Assignment 5. |
 | `<div>` | `dashboard.html:68` `<div class="stats-grid">` | A plain container used only to give CSS a box to lay out. Used when there is no semantic meaning. |
 | `<code>` | `index.html:105` | Marks `docs/assignment-mapping.md` as code, not ordinary text. |
 | `<meta name="description">` | `index.html:19`, `dashboard.html:26`, `collection-centre.html:33` | Describes the page for search engines. |
@@ -429,15 +429,15 @@ Three sections on the home page: the welcome block, "Today's Overview", and
 
 ---
 
-## 4. Assignment 3 — CSS
+## 4. Assignment 3 â€” CSS
 
 **Only stylesheet: `frontend/css/style.css` (584 lines).** It is divided into labelled blocks:
-base styling (lines 24–199), the Assignment 4 block (201–321) and the Assignment 5 block
-(323–584). The block comments are a ready-made revision index.
+base styling (lines 24â€“199), the Assignment 4 block (201â€“321) and the Assignment 5 block
+(323â€“584). The block comments are a ready-made revision index.
 
 ### 4.1 The three ways CSS is attached (the core of this assignment)
 
-**(a) External CSS — one shared file.**
+**(a) External CSS â€” one shared file.**
 `index.html` line 27 and the other three pages:
 
 ```html
@@ -447,8 +447,8 @@ base styling (lines 24–199), the Assignment 4 block (201–321) and the Assign
 `rel="stylesheet"` means "this linked resource is a stylesheet". Because it is external, editing
 `style.css` restyles **every** page at once with no HTML change.
 
-**(b) Internal CSS — inside one page only.**
-`index.html` lines 36–50:
+**(b) Internal CSS â€” inside one page only.**
+`index.html` lines 36â€“50:
 
 ```html
 <style>
@@ -468,7 +468,7 @@ base styling (lines 24–199), the Assignment 4 block (201–321) and the Assign
 This applies to `index.html` **only**, because it sits in that page's `<head>`. The other pages
 have no internal `<style>` block, which is exactly why their asides look different.
 
-**(c) Inline CSS — on one element only.**
+**(c) Inline CSS â€” on one element only.**
 
 ```html
 <!-- index.html:95 -->
@@ -481,7 +481,7 @@ have no internal `<style>` block, which is exactly why their asides look differe
 <img src="../assets/cow.svg" ... style="border-radius: 12px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);">
 ```
 
-**Priority order (also written in the comment at `style.css` lines 12–15):**
+**Priority order (also written in the comment at `style.css` lines 12â€“15):**
 
 ```
 External  ->  Internal  ->  Inline      (lowest  ->  highest)
@@ -497,12 +497,12 @@ External  ->  Internal  ->  Inline      (lowest  ->  highest)
 | Two classes | `.status-badge.ok` (392), `.status-badge.info` (397) | badge with an extra state class |
 | Class + class | `.stats-grid .stat-card` (228) | a stat card that is inside the grid |
 | Universal | `*` (211) | every element in the project |
-| Two selectors at once | `.log-window th, .log-window td` (444–445) | both header and data cells |
-| By id | **none — no `id` is used anywhere in the project** | — |
+| Two selectors at once | `.log-window th, .log-window td` (444â€“445) | both header and data cells |
+| By id | **none â€” no `id` is used anywhere in the project** | â€” |
 
 ### 4.3 Important rules explained line by line
 
-**`body` (25–31)** — defaults for the whole page:
+**`body` (25â€“31)** â€” defaults for the whole page:
 
 ```css
 body {
@@ -519,7 +519,7 @@ body {
 - Because these are set on `body`, and most properties are inherited by children, every other
   element inherits this font and text colour automatically.
 
-**`header` (35–40)**:
+**`header` (35â€“40)**:
 
 ```css
 header {
@@ -530,14 +530,14 @@ header {
 }
 ```
 
-- `padding: 25px 10px` is shorthand — **space inside** the border. The gold background extends
+- `padding: 25px 10px` is shorthand â€” **space inside** the border. The gold background extends
   into the padding, which is why the text is not glued to the edge.
 - `border-bottom` = width `4px`, style `solid`, colour `#c98a2d`.
 
-**`header h1` (43–47) and `header p` (50–54)** — `margin: 0` removes the browser's default
+**`header h1` (43â€“47) and `header p` (50â€“54)** â€” `margin: 0` removes the browser's default
 heading gap; `font-size: 34px` overrides the default size.
 
-**`main` (105–109)** — the centring trick used on three pages:
+**`main` (105â€“109)** â€” the centring trick used on three pages:
 
 ```css
 main {
@@ -550,7 +550,7 @@ main {
 `auto` on the left and right margins centres a block that has a `max-width`. This is the
 standard way to centre a page column.
 
-**`section` (120–127)** — every section becomes a white card:
+**`section` (120â€“127)** â€” every section becomes a white card:
 
 ```css
 section {
@@ -563,7 +563,7 @@ section {
 }
 ```
 
-**`article` (130–137)** — the inner stat card:
+**`article` (130â€“137)** â€” the inner stat card:
 
 ```css
 article {
@@ -580,7 +580,7 @@ article {
 "gold accent stripe" look is repeated in `.flex-item`, `.tank-card`, `.stats-grid .stat-card`
 and `.centre-note`.
 
-**`.btn` (155–168)** — turns a link into a button:
+**`.btn` (155â€“168)** â€” turns a link into a button:
 
 ```css
 .btn {
@@ -598,7 +598,7 @@ and `.centre-note`.
 behave properly on inline elements. Used on `index.html:111`, `about.html:116` and
 `collection-centre.html:232`.
 
-**Hover effects — three real ones:**
+**Hover effects â€” three real ones:**
 
 ```css
 nav a:hover   { background-color: #e8b84b; color: #4b2e0e; }   /* line 92  */
@@ -609,7 +609,7 @@ a:hover       { color: #6b4226; }                              /* line 175 */
 `:hover` is a **pseudo-class**: it applies only while the mouse pointer is over the element.
 `nav a:hover` gives a gold pill behind the menu link; `.btn:hover` lightens the button.
 
-**`img` (181–186)** — a gold frame on every image:
+**`img` (181â€“186)** â€” a gold frame on every image:
 
 ```css
 img {
@@ -620,12 +620,12 @@ img {
 }
 ```
 
-`.photo-frame img` (478–484) later resets `border: 0; border-radius: 0; margin: 0` so the
+`.photo-frame img` (478â€“484) later resets `border: 0; border-radius: 0; margin: 0` so the
 picture inside the frame has no frame of its own.
 
-**`footer` (189–199)** — dark brown `#4b2e0e` with cream text `#f5e6c8`.
+**`footer` (189â€“199)** â€” dark brown `#4b2e0e` with cream text `#f5e6c8`.
 
-**`* { box-sizing: border-box; }` (211–213)** — by default CSS treats `width` as the **content
+**`* { box-sizing: border-box; }` (211â€“213)** â€” by default CSS treats `width` as the **content
 width only**, so `width: 260px` plus `padding: 20px` becomes a 300px box and grid/flex items
 overflow their space. `border-box` makes `width` include padding and border. This single line
 stops the whole layout from overflowing.
@@ -644,8 +644,8 @@ stops the whole layout from overflowing.
 
 ### 4.5 Typography used
 
-- `font-family: Arial, Helvetica, sans-serif;` — one family for the entire project (`body`).
-- Sizes: `34px` (site title), `42px` → `32px` on mobile (`.stat-number`), `16px` (header tagline,
+- `font-family: Arial, Helvetica, sans-serif;` â€” one family for the entire project (`body`).
+- Sizes: `34px` (site title), `42px` â†’ `32px` on mobile (`.stat-number`), `16px` (header tagline,
   `.rate-ticker h3`), `14px` (`.centre-note`, `.rate-ticker`, `.stat-label` uses `14px`),
   `13px` (`.log-window` cells, `.photo-caption`), `11px` (`.status-badge`).
 - `font-weight: bold` on nav links, `.btn`, `.stat-number`, `.status-badge`.
@@ -654,9 +654,9 @@ stops the whole layout from overflowing.
 
 ---
 
-## 5. Assignment 4 — Responsive Design
+## 5. Assignment 4 â€” Responsive Design
 
-**Demo page: `frontend/pages/dashboard.html`.** All rules live in `style.css` lines 201–321.
+**Demo page: `frontend/pages/dashboard.html`.** All rules live in `style.css` lines 201â€“321.
 The same rules are reused on `collection-centre.html`.
 
 Responsive design means **one HTML page** changes shape to suit the screen. No separate mobile
@@ -665,11 +665,11 @@ page is needed.
 ### 5.1 Flexbox
 
 **Where it is used:**
-1. the navigation menu (`nav ul`, lines 68–80) — on all four pages;
-2. the summary strips (`.flex-row` / `.flex-item`, lines 256–283) — the three shift blocks on
+1. the navigation menu (`nav ul`, lines 68â€“80) â€” on all four pages;
+2. the summary strips (`.flex-row` / `.flex-item`, lines 256â€“283) â€” the three shift blocks on
    the dashboard and on the collection-centre page.
 
-**Code (68–80):**
+**Code (68â€“80):**
 
 ```css
 nav ul {
@@ -685,7 +685,7 @@ nav li {
 }
 ```
 
-HTML it works on (`dashboard.html` lines 44–53):
+HTML it works on (`dashboard.html` lines 44â€“53):
 
 ```html
 <nav>
@@ -702,7 +702,7 @@ HTML it works on (`dashboard.html` lines 44–53):
 item**, so the menu links line up in one horizontal row instead of stacking vertically with
 bullets. `justify-content: center` centres that row on the dark brown bar.
 
-**Code (256–273):**
+**Code (256â€“273):**
 
 ```css
 .flex-row {
@@ -721,7 +721,7 @@ bullets. `justify-content: center` centres that row on the dark brown bar.
 }
 ```
 
-HTML (`dashboard.html` lines 105–125):
+HTML (`dashboard.html` lines 105â€“125):
 
 ```html
 <div class="flex-row">
@@ -736,22 +736,22 @@ HTML (`dashboard.html` lines 105–125):
 ```
 
 **`flex: 1 1 200px`** means:
-- `flex-grow: 1` — every item may grow by the same amount,
-- `flex-shrink: 1` — items may shrink if the row gets tight,
-- `flex-basis: 200px` — each item starts by asking for 200px.
+- `flex-grow: 1` â€” every item may grow by the same amount,
+- `flex-shrink: 1` â€” items may shrink if the row gets tight,
+- `flex-basis: 200px` â€” each item starts by asking for 200px.
 
 Result: the three blocks always end up **equal width with no width set in the HTML**, and all
 the same height, because `align-items` is not declared and therefore defaults to `stretch`.
 
-**Why Flexbox was used here:** the menu and the shift blocks are **one-dimensional** — a single
+**Why Flexbox was used here:** the menu and the shift blocks are **one-dimensional** â€” a single
 row of similar items. That is exactly what Flexbox is for.
 
 ### 5.2 CSS Grid
 
-**Where it is used:** `.stats-grid` — the four stat cards on `dashboard.html` (lines 68–94) and
-the four tank/equipment cards on `collection-centre.html` (lines 79–113).
+**Where it is used:** `.stats-grid` â€” the four stat cards on `dashboard.html` (lines 68â€“94) and
+the four tank/equipment cards on `collection-centre.html` (lines 79â€“113).
 
-**Code (220–236):**
+**Code (220â€“236):**
 
 ```css
 .stats-grid {
@@ -771,7 +771,7 @@ the four tank/equipment cards on `collection-centre.html` (lines 79–113).
 }
 ```
 
-HTML (`dashboard.html` lines 68–94):
+HTML (`dashboard.html` lines 68â€“94):
 
 ```html
 <div class="stats-grid">
@@ -790,7 +790,7 @@ HTML (`dashboard.html` lines 68–94):
 </div>
 ```
 
-Supporting classes (239–251):
+Supporting classes (239â€“251):
 
 ```css
 .stat-number { font-size: 42px; font-weight: bold; color: #6b4226; margin: 6px 0; }
@@ -803,23 +803,23 @@ Supporting classes (239–251):
   the available width; `repeat(4, ...)` is shorthand for `1fr 1fr 1fr 1fr`.
 - `gap: 20px` puts 20px between rows **and** between columns.
 - **Auto-placement:** the browser fills cells left to right, top to bottom automatically. No
-  card is ever positioned by hand — that is why adding a fifth card needs no CSS change.
+  card is ever positioned by hand â€” that is why adding a fifth card needs no CSS change.
 - `.stat-number` (42px bold) makes the big value, `.stat-label` (14px) the small description
   under it.
 
 **Why Grid was used here:** the stat cards form a **two-dimensional** block (rows *and*
 columns), and the number of columns has to change with the screen. That is Grid's strength.
 
-### 5.3 Media queries — all four in the project
+### 5.3 Media queries â€” all four in the project
 
 | # | `style.css` lines | Condition | What it changes |
 |---|---|---|---|
-| 1 | 292–297 | `@media (max-width: 900px)` | `.stats-grid` → `repeat(2, 1fr)` |
-| 2 | 300–321 | `@media (max-width: 600px)` | `.stats-grid` → `1fr`; `.flex-row` → `flex-direction: column`; `nav ul` → `flex-direction: column` + `gap: 6px`; `.stat-number` → `32px` |
-| 3 | 538–546 | `@media (max-width: 900px)` | `.photo-frame` → `width: 100%`; `.tank-card` → `padding-top: 30px` |
-| 4 | 549–583 | `@media (max-width: 600px)` | `nav` → `position: static`; `.status-badge` smaller; `.tank-card` → `padding-top: 28px`; `.rate-ticker` → full-width bottom strip; `.log-window` → `max-height: 200px`; footer → `padding-bottom: 150px` |
+| 1 | 292â€“297 | `@media (max-width: 900px)` | `.stats-grid` â†’ `repeat(2, 1fr)` |
+| 2 | 300â€“321 | `@media (max-width: 600px)` | `.stats-grid` â†’ `1fr`; `.flex-row` â†’ `flex-direction: column`; `nav ul` â†’ `flex-direction: column` + `gap: 6px`; `.stat-number` â†’ `32px` |
+| 3 | 538â€“546 | `@media (max-width: 900px)` | `.photo-frame` â†’ `width: 100%`; `.tank-card` â†’ `padding-top: 30px` |
+| 4 | 549â€“583 | `@media (max-width: 600px)` | `nav` â†’ `position: static`; `.status-badge` smaller; `.tank-card` â†’ `padding-top: 28px`; `.rate-ticker` â†’ full-width bottom strip; `.log-window` â†’ `max-height: 200px`; footer â†’ `padding-bottom: 150px` |
 
-**Code (292–321):**
+**Code (292â€“321):**
 
 ```css
 /* TABLET layout: screen width is 900px or less */
@@ -839,31 +839,31 @@ columns), and the number of columns has to change with the screen. That is Grid'
 ```
 
 **What `max-width` means:** "apply these rules **only if** the screen is *at most* this wide."
-It reacts to the **window size**, not to a device name — so dragging the Chrome window is a
+It reacts to the **window size**, not to a device name â€” so dragging the Chrome window is a
 valid test. These rules come **after** the base rules in the file, so for equal specificity the
 later rule wins.
 
 **How the layout changes on my project (test it by dragging the window):**
 
-1. **Desktop (~1400px)** — no media query applies. `dashboard.html` shows **4 stat cards in one
+1. **Desktop (~1400px)** â€” no media query applies. `dashboard.html` shows **4 stat cards in one
    row**, **3 summary blocks side by side**, and a horizontal menu.
-2. **Tablet (~850px)** — query 1 fires: the stat cards become **2 × 2**. The three flex blocks
+2. **Tablet (~850px)** â€” query 1 fires: the stat cards become **2 Ã— 2**. The three flex blocks
    still fit in a row. On `collection-centre.html` the picture frame grows from a fixed 260px to
    the full available width.
-3. **Mobile (~500px)** — queries 2 and 4 fire: the stat cards become **one per row**, the three
+3. **Mobile (~500px)** â€” queries 2 and 4 fire: the stat cards become **one per row**, the three
    summary blocks stack **vertically**, the menu links stack one per line, the big numbers shrink
    from 42px to 32px, the sticky menu stops sticking, the fixed rate board becomes a full-width
    bottom strip, and the collection log window shrinks from 230px to 200px tall.
 
 ---
 
-## 6. Assignment 5 — CSS Positions
+## 6. Assignment 5 â€” CSS Positions
 
 **Demo page: `frontend/pages/collection-centre.html`.** All rules live in `style.css` lines
-323–584, under the comment header `ASSIGNMENT 5 : CSS POSITIONS AND OTHER CSS PROPERTIES`.
+323â€“584, under the comment header `ASSIGNMENT 5 : CSS POSITIONS AND OTHER CSS PROPERTIES`.
 
 This page is a real working screen (tank status, collection log, shift summary, equipment,
-rate board) — the positioning is used as a user would use it, not as a separate demo box.
+rate board) â€” the positioning is used as a user would use it, not as a separate demo box.
 
 ### 6.1 The five position values used in this project
 
@@ -875,7 +875,7 @@ rate board) — the positioning is used as a user would use it, not as a separat
 | `fixed` | `.rate-ticker` (503) | the "Today's Milk Rate" board |
 | `sticky` | `nav` (345), `.log-window thead th` (455) | the menu on every page, the log's column titles |
 
-### 6.2 `position: static` — `.centre-note` (lines 354–363)
+### 6.2 `position: static` â€” `.centre-note` (lines 354â€“363)
 
 ```css
 .centre-note {
@@ -900,14 +900,14 @@ Used at `collection-centre.html` lines 74, 127 and 177:
 ```
 
 - **What it does:** the strip sits in the normal page flow, exactly where the HTML puts it, and
-  never moves. `static` is the **default value** of `position` — it is written here to
+  never moves. `static` is the **default value** of `position` â€” it is written here to
   demonstrate the concept.
 - **Why:** to show the default and to make the five-position comparison complete.
 - **If I removed `position: static`:** **nothing changes at all.** There is no positioned
   parent, so it is already its own reference. **That is the correct honest answer in the viva.**
 - **Positioned relative to:** nothing. A static element ignores `top`, `right`, `bottom`, `left`.
 
-### 6.3 `position: relative` — `.tank-card` (368–373) and `.photo-frame` (465–476)
+### 6.3 `position: relative` â€” `.tank-card` (368â€“373) and `.photo-frame` (465â€“476)
 
 ```css
 .tank-card {
@@ -935,7 +935,7 @@ Used at `collection-centre.html` lines 74, 127 and 177:
 - **If removed:** the badge would lose its positioned ancestor and jump to the next positioned
   ancestor (ultimately the page), so all four badges would pile up in the top-right of the page
   instead of sitting on their cards.
-- **Positioned relative to:** its normal place in the document flow — `relative` does **not**
+- **Positioned relative to:** its normal place in the document flow â€” `relative` does **not**
   remove the element from the layout.
 
 ```css
@@ -960,11 +960,11 @@ Used at `collection-centre.html` lines 74, 127 and 177:
 </div>
 ```
 
-- A fixed 260 × 220 frame. `max-width: 100%` stops it overflowing a narrow screen.
+- A fixed 260 Ã— 220 frame. `max-width: 100%` stops it overflowing a narrow screen.
 - `overflow: hidden` clips the SVG to the frame so the rounded corners look clean.
 - `position: relative` is what anchors the caption.
 
-### 6.4 `position: absolute` — `.status-badge` (376–389) and `.photo-caption` (486–497)
+### 6.4 `position: absolute` â€” `.status-badge` (376â€“389) and `.photo-caption` (486â€“497)
 
 ```css
 .status-badge {
@@ -1010,14 +1010,14 @@ Used at `collection-centre.html` lines 74, 127 and 177:
 ```
 
 - `left: 0; bottom: 0` puts it at the bottom-left corner of `.photo-frame`; `width: 100%` makes
-  it span the frame's full width — percentages on an absolutely positioned element resolve
+  it span the frame's full width â€” percentages on an absolutely positioned element resolve
   against the containing block, which is the relative parent.
 - `rgba(75, 46, 14, 0.7)` = dark brown at **70 % transparency**, so the picture shows faintly
   through the caption.
 - **If removed:** the caption would no longer overlay the picture; it would sit in the flow
   after the image inside a fixed-height frame and be clipped away by `overflow: hidden`.
 
-### 6.5 `position: fixed` — `.rate-ticker` (502–515)
+### 6.5 `position: fixed` â€” `.rate-ticker` (502â€“515)
 
 ```css
 .rate-ticker {
@@ -1037,7 +1037,7 @@ Used at `collection-centre.html` lines 74, 127 and 177:
 ```
 
 The HTML is placed **after `</footer>`**, as the last child of `<body>`
-(`collection-centre.html` lines 244–249):
+(`collection-centre.html` lines 244â€“249):
 
 ```html
 <div class="rate-ticker">
@@ -1052,7 +1052,7 @@ The HTML is placed **after `</footer>`**, as the last child of `<body>`
   in the bottom-left corner of the *screen* while the long collection log scrolls.
 - **Why:** a rate board that a collection-centre operator must be able to read at all times.
   Losing it while scrolling would lose information.
-- **Positioned relative to:** the **browser window (viewport)** — not any ancestor. No
+- **Positioned relative to:** the **browser window (viewport)** â€” not any ancestor. No
   `position: relative` exists anywhere in its parent chain.
 - **If removed:** the board would scroll away at the bottom of the page like any other block,
   and `left` / `bottom` would be ignored.
@@ -1066,14 +1066,14 @@ body.page-centre footer {
 
 with `<body class="page-centre">` at `collection-centre.html:43`. A fixed box covers whatever is
 underneath it, so this page reserves 170px of empty space below the footer text. **Other pages
-do not have the `page-centre` class, so they are unaffected** — that is exactly why the rule is
+do not have the `page-centre` class, so they are unaffected** â€” that is exactly why the rule is
 scoped to `body.page-centre`.
 
-- **Mobile version (lines 568–575):** `left: 0; right: 0; bottom: 0; width: auto;`
+- **Mobile version (lines 568â€“575):** `left: 0; right: 0; bottom: 0; width: auto;`
   `border-radius: 14px 14px 0 0;` turns the floating card into a full-width bottom strip with
   only the top corners rounded.
 
-### 6.6 `position: sticky` — `nav` (344–349) and `.log-window thead th` (452–460)
+### 6.6 `position: sticky` â€” `nav` (344â€“349) and `.log-window thead th` (452â€“460)
 
 ```css
 nav {
@@ -1088,11 +1088,11 @@ nav {
   above `top: 0` it **sticks** to the top of the screen and the page scrolls underneath it.
   Scroll back up and it returns to its normal place.
 - **Why:** the menu is reachable from anywhere. Because the rule is in the **shared** stylesheet,
-  it applies to `index.html`, `about.html`, `dashboard.html` and `collection-centre.html` — the
+  it applies to `index.html`, `about.html`, `dashboard.html` and `collection-centre.html` â€” the
   comment at line 326 says exactly that ("the sticky navigation which now appears on every page").
 - **If removed:** the dark menu bar would scroll off the top of the long collection-centre page.
 - **`z-index: 50`** keeps it above the cards, gauges and badges while it is stuck.
-- **Phone exception (lines 552–554):** `nav { position: static; }` — on ≤600px the menu becomes
+- **Phone exception (lines 552â€“554):** `nav { position: static; }` â€” on â‰¤600px the menu becomes
   a tall vertical stack (set by the media query at line 312) that would fill half the screen, so
   on phones it scrolls away normally instead of sticking.
 
@@ -1125,12 +1125,12 @@ nav {
   rows scroll past.
 - **Why:** without it you lose track of what a number like `8.5` means halfway down the list.
 - **Positioned relative to:** the nearest **scrolling ancestor**, which is `.log-window`
-  (because of `overflow: auto`) — **not** the page.
+  (because of `overflow: auto`) â€” **not** the page.
 - **Why the `background-color` is compulsory here:** a sticky element must be opaque, otherwise
   the rows would show through the header text.
 - **If removed:** the header row would scroll away with the first few rows.
 
-### 6.7 relative parent → absolute child
+### 6.7 relative parent â†’ absolute child
 
 The single most important relationship in this assignment. There are **two exact chains** in my
 project:
@@ -1151,13 +1151,13 @@ How it works, in four rules:
 1. `position: relative` on the parent makes **that parent** the containing block for every
    absolutely positioned descendant. Remove it and the child jumps to the *next* positioned
    ancestor, or to the page.
-2. The parent **keeps its place in the flow** — `relative` does not remove it from layout. The
+2. The parent **keeps its place in the flow** â€” `relative` does not remove it from layout. The
    absolute child **is** removed from the flow, which is why the badge does not push the card's
    `<h3>` downwards.
 3. The child is measured from the parent's **padding box** (just inside the border). So
    `top: 8px` on `.status-badge` means 8px below the card's inner top edge, and `right: 8px`
    means 8px in from its right edge.
-4. `position: fixed` is the exception — its containing block is always the **viewport**. No
+4. `position: fixed` is the exception â€” its containing block is always the **viewport**. No
    ancestor can change that here, because no `transform` is used anywhere in `style.css` (a
    `transform` on an ancestor *would* capture fixed descendants).
 
@@ -1168,13 +1168,13 @@ heading.
 
 ### 6.8 fixed vs sticky
 
-| Point | `position: sticky` — `nav`, `.log-window thead th` | `position: fixed` — `.rate-ticker` |
+| Point | `position: sticky` â€” `nav`, `.log-window thead th` | `position: fixed` â€” `.rate-ticker` |
 |---|---|---|
 | Measured against | the nearest **scrolling ancestor** (the page, or `.log-window`) | always the **viewport / screen** |
-| Respects the parent box | **Yes** — it cannot leave its parent; it stops sticking at the parent's bottom edge | **No** — it ignores the document flow completely |
-| Removed from the flow? | **No** — it keeps its space, nothing else is affected | **Yes** — it leaves a hole where it was in the HTML |
-| Returns to normal place on scrolling back? | **Yes**, once you scroll above the trigger point | **Never** — pinned for the whole visit |
-| Trigger | `top: 0` — the element must physically reach that offset before it sticks | `left` / `bottom` say where it lives permanently |
+| Respects the parent box | **Yes** â€” it cannot leave its parent; it stops sticking at the parent's bottom edge | **No** â€” it ignores the document flow completely |
+| Removed from the flow? | **No** â€” it keeps its space, nothing else is affected | **Yes** â€” it leaves a hole where it was in the HTML |
+| Returns to normal place on scrolling back? | **Yes**, once you scroll above the trigger point | **Never** â€” pinned for the whole visit |
+| Trigger | `top: 0` â€” the element must physically reach that offset before it sticks | `left` / `bottom` say where it lives permanently |
 | In my project | the menu follows you down the page and stops at the end of the document; the table header follows only the log's own scrollbar | the rate board never moves, even when the footer is at the top of the screen |
 
 **One-sentence exam answer:** *sticky scrolls until it "catches" its `top` offset and then holds,
@@ -1189,9 +1189,9 @@ the document entirely.*
 | Selector | Values (line) | Effect |
 |---|---|---|
 | `nav` | `top: 0` (346) | the sticky trigger |
-| `.status-badge` | `top: 8px; right: 8px` (378–379) | badge in the card's top-right corner |
-| `.photo-caption` | `left: 0; bottom: 0` (488–489) | caption across the frame's bottom |
-| `.rate-ticker` | `left: 20px; bottom: 20px` (504–505) → mobile `left: 0; right: 0; bottom: 0` | screen corner → full-width bottom strip |
+| `.status-badge` | `top: 8px; right: 8px` (378â€“379) | badge in the card's top-right corner |
+| `.photo-caption` | `left: 0; bottom: 0` (488â€“489) | caption across the frame's bottom |
+| `.rate-ticker` | `left: 20px; bottom: 20px` (504â€“505) â†’ mobile `left: 0; right: 0; bottom: 0` | screen corner â†’ full-width bottom strip |
 | `.log-window thead th` | `top: 0` (456) | sticky column titles |
 
 ### 6.10 `z-index`
@@ -1203,12 +1203,12 @@ The project's scale, from `style.css`:
 
 | Value | Element | Line |
 |---|---|---|
-| `2` | `.log-window thead th` — sticky table header | 457 |
-| `3` | `.status-badge` — badge above card text | 380 |
-| `50` | `nav` — sticky menu above everything except the rate board | 347 |
-| `100` | `.rate-ticker` — rate board above every other element | 506 |
+| `2` | `.log-window thead th` â€” sticky table header | 457 |
+| `3` | `.status-badge` â€” badge above card text | 380 |
+| `50` | `nav` â€” sticky menu above everything except the rate board | 347 |
+| `100` | `.rate-ticker` â€” rate board above every other element | 506 |
 
-**Live demonstration:** change `.rate-ticker`'s `z-index` from `100` to `1` and scroll — the
+**Live demonstration:** change `.rate-ticker`'s `z-index` from `100` to `1` and scroll â€” the
 board slides **behind** the sticky menu and behind the cards.
 
 ### 6.11 `overflow`
@@ -1219,18 +1219,18 @@ Three distinct uses in this project:
 |---|---|---|
 | `hidden` | `.tank-card` (370), `.photo-frame` (473), `.rate-ticker` (513) | clips content to the box so nothing spills outside the rounded corners |
 | `auto` | `.log-window` (431) | shows a scrollbar **only when needed**, so a 19-row table does not make the page endless |
-| *(not declared)* | `body` / `html` | deliberately — see the warning below |
+| *(not declared)* | `body` / `html` | deliberately â€” see the warning below |
 
 ```css
 .log-window {
-    max-height: 230px;   /* line 430 — this is what forces the scrollbar */
+    max-height: 230px;   /* line 430 â€” this is what forces the scrollbar */
     overflow: auto;
     ...
 }
 ```
 
 **Important warning to remember:** `overflow: hidden` on `body` or on any ancestor would
-**silently break** `position: sticky` for everything inside it. This project avoids that — that
+**silently break** `position: sticky` for everything inside it. This project avoids that â€” that
 is why the sticky menu works.
 
 ### 6.12 `opacity`
@@ -1255,26 +1255,26 @@ affects **only that one colour**.
 ### 6.13 `width` and `height`
 
 ```css
-.tank-gauge { height: 20px; }              /* 404 — a fixed 20px tall bar */
-.tank-fill  { height: 100%; }              /* 413 — fills the bar vertically */
+.tank-gauge { height: 20px; }              /* 404 â€” a fixed 20px tall bar */
+.tank-fill  { height: 100%; }              /* 413 â€” fills the bar vertically */
 
 .gauge-92 { width: 92%; }                  /* 421 */
 .gauge-74 { width: 74%; }                  /* 422 */
 .gauge-58 { width: 58%; }                  /* 423 */
 .gauge-35 { width: 35%; }                  /* 424 */
 
-.photo-frame { width: 260px; max-width: 100%; height: 220px; }   /* 466–469 */
+.photo-frame { width: 260px; max-width: 100%; height: 220px; }   /* 466â€“469 */
 .rate-ticker { width: 290px; }             /* 507  -> mobile: width: auto */
 .log-window  { max-height: 230px; }        /* 430  -> mobile: 200px */
 ```
 
 - The `.gauge-*` classes are the cleverest idea in this assignment: **the fill level is data
   written as a width percentage in a class name.** No JavaScript is involved.
-- `max-width: 100%` on `.photo-frame` lets a fixed width shrink when the screen is narrow —
+- `max-width: 100%` on `.photo-frame` lets a fixed width shrink when the screen is narrow â€”
   this is the manual version of what media queries do automatically.
 - On mobile `.rate-ticker` gets `left: 0; right: 0; width: auto`, so the two offsets stretch it
   full width.
-- Remember `* { box-sizing: border-box; }` (line 211) — all these widths **include** padding and
+- Remember `* { box-sizing: border-box; }` (line 211) â€” all these widths **include** padding and
   border, which is what stops the grid and flex items from overflowing.
 
 ### 6.14 `margin` vs `padding`
@@ -1295,7 +1295,7 @@ section       { padding: 20px 25px; margin-bottom: 20px; }    /* only bottom mar
 
 ### 6.15 `border`
 
-Shorthand order is **width → style → colour**.
+Shorthand order is **width â†’ style â†’ colour**.
 
 | Example (line) | Meaning |
 |---|---|
@@ -1316,7 +1316,7 @@ Shorthand order is **width → style → colour**.
 | `6px` | `nav a` (88), `.tank-fill` (416) | small soft corners |
 | `12px` | `.photo-frame` (472), `.rate-ticker` (510) | noticeably rounded |
 | `999px` | `.status-badge` (382) | a full **pill** |
-| `14px 14px 0 0` | mobile `.rate-ticker` (573) | 4-value shorthand — per-corner: top-left, top-right, bottom-right, bottom-left |
+| `14px 14px 0 0` | mobile `.rate-ticker` (573) | 4-value shorthand â€” per-corner: top-left, top-right, bottom-right, bottom-left |
 
 ### 6.17 `box-shadow`
 
@@ -1328,7 +1328,7 @@ Format: `offset-x offset-y blur-radius colour`.
 | `0 3px 8px rgba(0,0,0,0.14)` (372) | tank cards stand off the page |
 | `0 2px 6px rgba(0,0,0,0.25)` (348) | the sticky menu appears to float above the content |
 | `3px 3px 10px rgba(0,0,0,0.18)` (475) | the picture frame |
-| `0 8px 20px rgba(0,0,0,0.3)` (512) | the strongest shadow — makes the rate board look closest to the viewer |
+| `0 8px 20px rgba(0,0,0,0.3)` (512) | the strongest shadow â€” makes the rate board look closest to the viewer |
 | `2px 2px 8px rgba(0,0,0,0.2)` (`about.html` 104) | inline shadow on each About image |
 
 `0 0` x/y offsets give a shadow straight behind the box (used as a glow); positive values push
@@ -1341,11 +1341,11 @@ it down and to the right, which matches the light direction of the cream page.
 Traced using `frontend/pages/collection-centre.html`, because it is the page that uses all five
 positions at once.
 
-**Step 1 — You open the file in Chrome.**
+**Step 1 â€” You open the file in Chrome.**
 The path becomes a `file:///C:/.../pages/collection-centre.html` URL. Nothing is running on a
 server; the browser reads files straight from the disk.
 
-**Step 2 — Chrome parses `<head>` top to bottom (lines 30–39).**
+**Step 2 â€” Chrome parses `<head>` top to bottom (lines 30â€“39).**
 - Line 31 `<meta charset="UTF-8">` fixes the character encoding.
 - Line 32 `<meta name="viewport" ...>` makes the CSS width equal the real screen width. Without
   it, a phone would pretend to be 980px wide and **none** of the media queries would ever fire.
@@ -1353,71 +1353,71 @@ server; the browser reads files straight from the disk.
   downloads the CSS *before* painting anything, because it needs every style before it can lay
   the page out. If the file were missing the page would still show, just unstyled.
 
-**Step 3 — Chrome builds the DOM tree (the page's skeleton).**
-`body.page-centre` → `header` → `nav > ul > li > a` → `main` → four `section`s (each holding
-`.centre-note`, `.stats-grid`, `.log-window > table`, `.flex-row` or `.photo-frame`) → `aside`
-→ `.rate-ticker` → `footer`. At this point the elements **exist but have no size, colour or
+**Step 3 â€” Chrome builds the DOM tree (the page's skeleton).**
+`body.page-centre` â†’ `header` â†’ `nav > ul > li > a` â†’ `main` â†’ four `section`s (each holding
+`.centre-note`, `.stats-grid`, `.log-window > table`, `.flex-row` or `.photo-frame`) â†’ `aside`
+â†’ `.rate-ticker` â†’ `footer`. At this point the elements **exist but have no size, colour or
 position**.
 
-**Step 4 — The cascade decides which CSS wins for each element.**
+**Step 4 â€” The cascade decides which CSS wins for each element.**
 - Most elements match one or two rules with no conflict.
 - `<span class="status-badge ok">` (line 90) matches **both** `.status-badge` and
   `.status-badge.ok`. `.status-badge.ok` has two class selectors, so it wins for
-  `background-color` → the badge is **green**, not red.
+  `background-color` â†’ the badge is **green**, not red.
 - `<article style="background-color:#fde8d7; border: 2px solid #d98c5f;">` on `index.html:142`
-  — the inline style beats the stylesheet, so that one card is highlighted.
+  â€” the inline style beats the stylesheet, so that one card is highlighted.
 - `nav` is matched by three rules (59, 68/83, 344). They set different properties, so all three
   survive.
 
-**Step 5 — Flexbox and Grid lay out the boxes.**
-- `.stats-grid` (line 79) → `display: grid` + `repeat(4, 1fr)` → the width is measured, split
+**Step 5 â€” Flexbox and Grid lay out the boxes.**
+- `.stats-grid` (line 79) â†’ `display: grid` + `repeat(4, 1fr)` â†’ the width is measured, split
   into four equal columns minus the 20px gaps, and each `<article>` is auto-placed into the next
   cell.
-- `.flex-row` (line 182) → `display: flex` → the three `.flex-item`s each ask for
+- `.flex-row` (line 182) â†’ `display: flex` â†’ the three `.flex-item`s each ask for
   `flex: 1 1 200px`, free space is shared equally, so all three end up the same width; the
   default `align-items: stretch` makes them the same height.
-- `nav ul` → `display: flex; justify-content: center` → the four links sit in one centred row.
+- `nav ul` â†’ `display: flex; justify-content: center` â†’ the four links sit in one centred row.
 
-**Step 6 — Positioning is applied.**
+**Step 6 â€” Positioning is applied.**
 - `.tank-card` (relative) becomes the anchor; each `.status-badge` (absolute,
   `top: 8px; right: 8px`) is placed against its own card and lifted out of the flow, so the
   `<h3>` is **not** pushed down.
 - `.photo-frame` (relative) anchors `.photo-caption` (absolute, `left: 0; bottom: 0;
   width: 100%`); `overflow: hidden` clips the milk-can SVG to the rounded frame.
-- `.log-window` gets `max-height: 230px; overflow: auto` → because the table is taller, a
+- `.log-window` gets `max-height: 230px; overflow: auto` â†’ because the table is taller, a
   **scrollbar appears inside that box**; its `thead th` cells are `sticky; top: 0` and stick to
   **that** scrollbar, not to the page.
-- `nav` is `sticky; top: 0` → it will catch at the top of the viewport when you scroll past it.
-- `.rate-ticker` is `fixed; left: 20px; bottom: 20px; z-index: 100` → it is already in the
+- `nav` is `sticky; top: 0` â†’ it will catch at the top of the viewport when you scroll past it.
+- `.rate-ticker` is `fixed; left: 20px; bottom: 20px; z-index: 100` â†’ it is already in the
   bottom-left corner of the screen before you scroll a single pixel.
 - `body.page-centre footer { padding-bottom: 170px; }` reserves empty space so the fixed board
   never hides the footer text.
 
-**Step 7 — Media queries are checked last.**
+**Step 7 â€” Media queries are checked last.**
 Chrome compares the window width to each `@media` condition. At 1366px nothing fires (desktop).
-At 850px: `.stats-grid` → 2 columns and `.photo-frame` → full width. At 500px: grid → 1 column,
-`.flex-row` and the menu stack vertically, `nav` → `position: static`, `.rate-ticker` → full-width
-bottom strip, `.log-window` → 200px, footer padding → 150px. Everything changes **instantly,
+At 850px: `.stats-grid` â†’ 2 columns and `.photo-frame` â†’ full width. At 500px: grid â†’ 1 column,
+`.flex-row` and the menu stack vertically, `nav` â†’ `position: static`, `.rate-ticker` â†’ full-width
+bottom strip, `.log-window` â†’ 200px, footer padding â†’ 150px. Everything changes **instantly,
 with no page reload**.
 
-**Step 8 — Paint order.**
-`z-index` decides who covers whom: `.log-window thead th` (2) → `.status-badge` (3) → sticky
-`nav` (50) → `.rate-ticker` (100).
+**Step 8 â€” Paint order.**
+`z-index` decides who covers whom: `.log-window thead th` (2) â†’ `.status-badge` (3) â†’ sticky
+`nav` (50) â†’ `.rate-ticker` (100).
 
 **The result:** a styled, responsive working screen built entirely from HTML + CSS, with **zero
-JavaScript** — which is exactly the point of Assignments 1 to 5.
+JavaScript** â€” which is exactly the point of Assignments 1 to 5.
 
 ---
 
-# Assignment 6 — JavaScript Events and Array Functions
+# Assignment 6 â€” JavaScript Events and Array Functions
 
 **Files involved:** `frontend/js/main.js` (all the code) and
 `frontend/pages/dashboard.html` (the interface it drives). A small new block of CSS at the end
 of `frontend/css/style.css` styles the new controls.
 
-**Nothing in Assignments 1–5 was changed.** `style.css` gained 94 lines and no existing line was
+**Nothing in Assignments 1â€“5 was changed.** `style.css` gained 94 lines and no existing line was
 touched. In `dashboard.html` the only changes to existing markup are two added attributes
-(`id="shift-summary"` and `data-shift` on the shift blocks) and an updated comment — no text,
+(`id="shift-summary"` and `data-shift` on the shift blocks) and an updated comment â€” no text,
 no class and no structure was removed, so the Flexbox / Grid / Media Query demonstration on that
 page works exactly as before.
 
@@ -1442,7 +1442,7 @@ page works exactly as before.
 </body>
 ```
 
-### Why exactly here — the viva answer
+### Why exactly here â€” the viva answer
 
 Three reasons, all worth saying:
 
@@ -1455,7 +1455,7 @@ Three reasons, all worth saying:
    `document.getElementById()` can find them on the first try. A `<script>` in the `<head>`
    would run *before* the body existed, and every lookup would return `null`.
 3. **Using a `src` attribute keeps it external.** All the JavaScript is in `main.js`, so the page
-   contains no JavaScript at all — the same separation the project already uses for CSS
+   contains no JavaScript at all â€” the same separation the project already uses for CSS
    (`<link rel="stylesheet">` in `<head>` instead of styles in the page).
 
 `DOMContentLoaded` (line 416) is used as a second safety net:
@@ -1470,7 +1470,7 @@ reliable moment to start looking for elements.
 ### There is no inline JavaScript
 
 Check it yourself: search the project for `onclick=`, `onchange=`, `oninput=`, `onmouseover=`
-or `javascript:` — there are **no matches** in any HTML file. No `onclick="refreshRegister()"`
+or `javascript:` â€” there are **no matches** in any HTML file. No `onclick="refreshRegister()"`
 attribute exists anywhere. Every event is connected inside `main.js` with
 `addEventListener()`.
 
@@ -1479,7 +1479,7 @@ attribute exists anywhere. Every event is connected inside `main.js` with
 ## A6.2 Where the interface lives
 
 The section is called **"Today's Collection Register"** in `dashboard.html`. It is the normal
-working list of the shift, not a JavaScript demo box. In the HTML it is deliberately **empty** —
+working list of the shift, not a JavaScript demo box. In the HTML it is deliberately **empty** â€”
 only the controls and the table frame exist:
 
 ```html
@@ -1521,10 +1521,10 @@ only the controls and the table frame exist:
 
 Two smart reuses of existing CSS:
 
-- The register table sits inside **`.log-window`** — the Assignment 5 class. So it already has
+- The register table sits inside **`.log-window`** â€” the Assignment 5 class. So it already has
   the rounded border, its **own scrollbar** (`max-height: 230px; overflow: auto`) and the
   **sticky header row**, with **no new CSS at all**.
-- The totals blocks are `.flex-item` inside `.flex-row` — the Assignment 4 classes. So they
+- The totals blocks are `.flex-item` inside `.flex-row` â€” the Assignment 4 classes. So they
   automatically reflow on smaller screens.
 
 The three shift blocks above the register carry a `data-shift` attribute:
@@ -1542,9 +1542,9 @@ friendly wording in the heading, which is the normal way to do it.
 
 ---
 
-## A6.3 The data — the array that everything works on
+## A6.3 The data â€” the array that everything works on
 
-`main.js` lines 52–63. Eight collection records, each an object with six properties:
+`main.js` lines 52â€“63. Eight collection records, each an object with six properties:
 
 ```javascript
 const collections = [
@@ -1561,9 +1561,9 @@ const collections = [
 
 The farmer names are the same people who appear in the collection-centre log, so the project
 reads as one application. In a later phase this array will be replaced by data coming from the
-database — the events and the array functions will not change.
+database â€” the events and the array functions will not change.
 
-Two variables remember what the user is currently looking at (lines 65–66):
+Two variables remember what the user is currently looking at (lines 65â€“66):
 
 ```javascript
 let currentRecords = collections;   /* the records now on screen  */
@@ -1574,7 +1574,7 @@ let currentShift = "All";           /* the clicked shift filter   */
 
 ## A6.4 The events used, and what each one does
 
-All the event connections live inside `startApp()` (lines 289–414), so they are set up in one
+All the event connections live inside `startApp()` (lines 289â€“414), so they are set up in one
 readable place.
 
 | # | Event | Line | HTML element that triggers it | What it does |
@@ -1591,7 +1591,7 @@ readable place.
 
 ### Code for the four most important ones
 
-**`change` — the filter dropdown** (lines 293–297):
+**`change` â€” the filter dropdown** (lines 293â€“297):
 
 ```javascript
     const filterSelect = document.getElementById("collection-filter");
@@ -1601,11 +1601,11 @@ readable place.
     }
 ```
 
-Note that the listener is the function name `refreshRegister` **without brackets** — that passes
+Note that the listener is the function name `refreshRegister` **without brackets** â€” that passes
 the function itself. Writing `refreshRegister()` would run it immediately instead of waiting
 for the event.
 
-**`input` — the farmer search box** (lines 302–317):
+**`input` â€” the farmer search box** (lines 302â€“317):
 
 ```javascript
     const searchBox = document.getElementById("farmer-search");
@@ -1626,10 +1626,10 @@ for the event.
 ```
 
 `input` fires on every keystroke, which is why the search feels immediate. (`change` would only
-fire when focus leaves the box.) This is **not** form validation — nothing is rejected, the box
+fire when focus leaves the box.) This is **not** form validation â€” nothing is rejected, the box
 simply searches.
 
-**`mouseover` + `mouseout` + `click` on the stat cards** (lines 332–376):
+**`mouseover` + `mouseout` + `click` on the stat cards** (lines 332â€“376):
 
 ```javascript
     const statCards = document.querySelectorAll(".stats-grid .stat-card");
@@ -1671,7 +1671,7 @@ simply searches.
     }
 ```
 
-**`click` on a row, added from inside `forEach()`** (lines 117–125):
+**`click` on a row, added from inside `forEach()`** (lines 117â€“125):
 
 ```javascript
         const row = document.createElement("tr");
@@ -1686,7 +1686,7 @@ simply searches.
 
 The listener is attached **as each row is created**, so every row gets its own handler with its
 own `record` value attached (this is called a *closure*). Because `forEach()` redraws all the
-rows every time the filter changes, the new rows get fresh listeners too — nothing is lost.
+rows every time the filter changes, the new rows get fresh listeners too â€” nothing is lost.
 
 ---
 
@@ -1700,7 +1700,7 @@ Each function has exactly one job. This is the table to revise from.
 | `map()` | `paymentAmounts()` | 139 | builds a new array of payment amounts: `record.liters * record.rate` | a **new** array of 8 numbers |
 | `filter()` | `recordsAtLeast()` | 130 | keeps only records with `liters >= minimumLitres` | a **new** array |
 | `filter()` | inside `refreshRegister()` | 270 | keeps only records whose `shift` equals the clicked shift | a **new** array |
-| `filter()` | inside `showTotals()` | 220 | counts the low-fat cans — fat below 3.5%, which are paid at the lower 40 Rs rate | a **new** array |
+| `filter()` | inside `showTotals()` | 220 | counts the low-fat cans â€” fat below 3.5%, which are paid at the lower 40 Rs rate | a **new** array |
 | `find()` | `findFarmer()` | 147 | returns the **first** record whose farmer name contains the typed text | one record, or `undefined` |
 | `reduce()` | `totalLitres()` | 162 | adds up all the litres, starting the total at `0` | one number |
 | `reduce()` | `totalAmount()` | 170 | adds up the array of amounts that `map()` created | one number |
@@ -1708,7 +1708,7 @@ Each function has exactly one job. This is the table to revise from.
 
 ### The code
 
-**`forEach()` — draw the rows (lines 100–128):**
+**`forEach()` â€” draw the rows (lines 100â€“128):**
 
 ```javascript
 function showRecords(recordList) {
@@ -1739,10 +1739,10 @@ function showRecords(recordList) {
 }
 ```
 
-`forEach()` visits every item but **returns nothing**. It is used here for its side effect —
+`forEach()` visits every item but **returns nothing**. It is used here for its side effect â€”
 creating a row in the page.
 
-**`map()` — build the amounts array (lines 139–143):**
+**`map()` â€” build the amounts array (lines 139â€“143):**
 
 ```javascript
 function paymentAmounts(recordList) {
@@ -1756,7 +1756,7 @@ function paymentAmounts(recordList) {
 original `collections` array is not changed. For the eight records this produces
 `[814, 480, 1012.5, 630, 380, 880, 752.5, 1080]`.
 
-**`filter()` — keep what we want (lines 130–134):**
+**`filter()` â€” keep what we want (lines 130â€“134):**
 
 ```javascript
 function recordsAtLeast(minimumLitres) {
@@ -1770,7 +1770,7 @@ function recordsAtLeast(minimumLitres) {
 Choosing "15 litres and above" gives 6 records totalling 117.5 L; "20 litres and above" gives
 3 records. `filter()` never changes the original array.
 
-**`find()` — look up one farmer (lines 147–158):**
+**`find()` â€” look up one farmer (lines 147â€“158):**
 
 ```javascript
 function findFarmer(nameTyped) {
@@ -1789,11 +1789,11 @@ function findFarmer(nameTyped) {
 - `.trim()` removes accidental spaces, `.toLowerCase()` makes the search case-insensitive.
 - `indexOf(...) !== -1` means "the text was found somewhere inside the name", so typing
   `"nitin"` matches `"Nitin Dhage"`.
-- `find()` **stops at the first match** and returns that single object — not an array.
+- `find()` **stops at the first match** and returns that single object â€” not an array.
 - If nobody matches, `find()` returns `undefined`, which is why the code checks
   `if (record) { ... } else { ... }`.
 
-**`reduce()` — three different sums (lines 162–191):**
+**`reduce()` â€” three different sums (lines 162â€“191):**
 
 ```javascript
 function totalLitres(recordList) {
@@ -1822,12 +1822,12 @@ function averageFat(recordList) {
 ```
 
 `reduce()` carries **one running value** through the array. The `0` at the end is the **initial
-value** of that running total — without it the first addition would start from `undefined` and
+value** of that running total â€” without it the first addition would start from `undefined` and
 the result would be `NaN`. The empty-array check in `averageFat()` stops a division by zero.
 
 ### `map()` and `reduce()` working together
 
-This is the classic pair, and it is used in `showTotals()` (lines 213–214):
+This is the classic pair, and it is used in `showTotals()` (lines 213â€“214):
 
 ```javascript
     const money = totalAmount(paymentAmounts(recordList));     /* map + reduce */
@@ -1841,8 +1841,8 @@ do it in one `reduce()`, but splitting the two steps keeps each function doing o
 | Block | How it is calculated | Value |
 |---|---|---|
 | Litres in this view | `reduce()` over `liters` | 139.0 L |
-| Payment in this view | `map()` then `reduce()` | ₹ 6029.00 |
-| Average fat | `reduce()` ÷ `length` | 4.42% |
+| Payment in this view | `map()` then `reduce()` | â‚¹ 6029.00 |
+| Average fat | `reduce()` Ã· `length` | 4.42% |
 | Low-fat cans | `filter()` length | 0 cans (all records are 3.8% or above) |
 
 The values change as soon as the filter or the shift changes, because
@@ -1850,7 +1850,7 @@ The values change as soon as the filter or the shift changes, because
 
 ---
 
-## A6.6 Error safety — how the code avoids errors
+## A6.6 Error safety â€” how the code avoids errors
 
 **1. Every element is checked before it is used.** The pattern is used consistently:
 
@@ -1901,17 +1901,17 @@ dividing by zero, and `findFarmer()` returns `undefined` for an empty box.
 
 ## A6.7 JavaScript concepts used in `main.js`
 
-1. `const` and `let` — `collections` never changes so it is `const`; `currentShift` and
+1. `const` and `let` â€” `collections` never changes so it is `const`; `currentShift` and
    `currentRecords` change, so they are `let`.
-2. **Objects** — each record is `{ farmer: ..., liters: ..., shift: ... }`.
+2. **Objects** â€” each record is `{ farmer: ..., liters: ..., shift: ... }`.
 3. **Arrays of objects** and dot access such as `record.liters`.
 4. **Array functions**: `forEach()`, `map()`, `filter()`, `find()`, `reduce()`.
-5. **Non-mutating array functions** — `map()`, `filter()`, `find()` and `reduce()` all return
+5. **Non-mutating array functions** â€” `map()`, `filter()`, `find()` and `reduce()` all return
    something new; the original array is never changed.
 6. The `reduce()` **accumulator** and its **initial value**.
-7. **Functions** — `function name() { }`, functions that `return` a value, and functions used
+7. **Functions** â€” `function name() { }`, functions that `return` a value, and functions used
    as event handlers.
-8. **Arrow-free callbacks** — plain `function (record) { }` is used inside the array functions.
+8. **Arrow-free callbacks** â€” plain `function (record) { }` is used inside the array functions.
 9. `document.getElementById()` and `document.querySelectorAll()`.
 10. **DOM manipulation**: `document.createElement()`, `innerHTML`, `textContent`,
     `appendChild()`, `classList.add()` / `remove()` / `contains()`.
@@ -1921,11 +1921,11 @@ dividing by zero, and `findFarmer()` returns `undefined` for an empty box.
 13. **String methods**: `trim()`, `toLowerCase()`, `indexOf()`, and joining with `+`.
 14. **Number methods**: `toFixed(2)` and `toFixed(1)`; `Number()` to convert a string.
 15. `new Date().toLocaleTimeString()` for the recalculation time.
-16. **Closures** — each row's click handler remembers its own `record`.
+16. **Closures** â€” each row's click handler remembers its own `record`.
 
 ---
 
-## A6.8 Viva questions and answers — Assignment 6
+## A6.8 Viva questions and answers â€” Assignment 6
 
 **1. How is the JavaScript file connected to the HTML page?**
 `dashboard.html` has `<script src="../js/main.js"></script>` as the last line before `</body>`.
@@ -1959,7 +1959,7 @@ low-fat cans; `find()` to look up one farmer from the search box; `reduce()` to 
 litres, the money and the fat values.
 
 **7. What is the difference between `map()` and `filter()`?**
-`map()` returns a **new array of the same length** with each value changed — here each record
+`map()` returns a **new array of the same length** with each value changed â€” here each record
 becomes its payment amount. `filter()` returns a **new array that may be shorter or empty**,
 containing only the records that pass the test. Neither one changes the original array.
 
@@ -2006,12 +2006,12 @@ exact value used in the records in the HTML, separate from the wording shown to 
 
 **16. How do you make the totals update when the filter changes?**
 Every event finishes by calling `refreshRegister()`. That one function re-reads the controls,
-applies the filters, redraws the rows, redraws the totals and rewrites the status message — so
+applies the filters, redraws the rows, redraws the totals and rewrites the status message â€” so
 the list, the totals and the message can never disagree with each other.
 
 **17. Has any form validation been written yet?**
 Not on this page. Assignment 6 only filters and looks up records. Form validation arrives with
-Assignment 7 on `frontend/pages/farmers.html` — see the "Assignment 7" section of these notes.
+Assignment 7 on `frontend/pages/farmers.html` â€” see the "Assignment 7" section of these notes.
 
 ---
 
@@ -2019,16 +2019,16 @@ Assignment 7 on `frontend/pages/farmers.html` — see the "Assignment 7" section
 
 Added at the very end of `frontend/css/style.css`, in a clearly marked
 `ASSIGNMENT 6 : STYLES FOR THE JAVASCRIPT PARTS` block. **94 lines were added and no existing
-rule was modified**, so Assignments 1–5 look identical.
+rule was modified**, so Assignments 1â€“5 look identical.
 
 | Selector | Line | Purpose |
 |---|---|---|
-| `.register-tools` | 616 | the toolbar row — `display: flex; flex-wrap: wrap; align-items: center; gap: 10px`, dashed gold border |
+| `.register-tools` | 616 | the toolbar row â€” `display: flex; flex-wrap: wrap; align-items: center; gap: 10px`, dashed gold border |
 | `.register-tools label` | 630 | bold brown labels |
 | `.register-tools select`, `.register-tools input` | 635 | padded, rounded white controls |
 | `.register-tools select:focus`, `.register-tools input:focus` | 643 | a visible gold outline for keyboard users |
 | `.register-tools button` | 649 | `border: 0; cursor: pointer` so the `<button>` matches the `.btn` links from Assignment 3 |
-| `.register-status` | 657 | the status strip — same look as `.centre-note` from Assignment 5 |
+| `.register-status` | 657 | the status strip â€” same look as `.centre-note` from Assignment 5 |
 | `.total-value` | 669 | the big 26px value in each totals block |
 | `.stats-grid .stat-card.selected`, `.flex-item.selected`, `.log-window tbody tr.selected` | 679 | the highlight `main.js` switches on; descendant selectors keep the specificity correct |
 | `.log-window tbody tr` | 686 | `cursor: pointer` so rows show they are clickable |
@@ -2040,10 +2040,10 @@ the specificity mistake described in section 11.1.
 
 ---
 
-# Assignment 7 — JavaScript Frontend Functionality and Form Validation
+# Assignment 7 â€” JavaScript Frontend Functionality and Form Validation
 
 **Files:** `frontend/pages/farmers.html` (the form), `frontend/js/main.js` section 6 (all the
-logic), `frontend/css/style.css` — the `ASSIGNMENT 7` block at the end (the styling).
+logic), `frontend/css/style.css` â€” the `ASSIGNMENT 7` block at the end (the styling).
 
 Nothing else in the project was changed or removed, and there is still only **one** JavaScript
 file, `frontend/js/main.js`. It is now loaded by two pages: `dashboard.html` (Assignment 6) and
@@ -2072,7 +2072,7 @@ closed. That is stated on the page itself, in the aside at the bottom.
 |---|---|---|---|---|
 | Farmer Name | `farmer-name` | `farmerName` | `text` | `required minlength="3" maxlength="40" pattern="[A-Za-z][A-Za-z .'-]{2,}" autocomplete="name"` |
 | Mobile Number | `farmer-mobile` | `mobile` | `tel` | `required maxlength="10" pattern="[6-9][0-9]{9}" inputmode="numeric" autocomplete="tel"` |
-| Email | `farmer-email` | `email` | `email` | `maxlength="60" autocomplete="email"` — **not** `required` |
+| Email | `farmer-email` | `email` | `email` | `maxlength="60" autocomplete="email"` â€” **not** `required` |
 | Village / Address | `farmer-village` | `village` | `text` | `required minlength="3" maxlength="60"` |
 | Average Milk per Day (L) | `milk-quantity` | `milkQuantity` | `number` | `required min="0.5" max="100" step="0.5"` |
 | Fat Percentage | `fat-percentage` | `fatPercentage` | `number` | `required min="3" max="8" step="0.1"` |
@@ -2085,9 +2085,9 @@ closed. That is stated on the page itself, in the aside at the bottom.
 - Under every input there is an **empty** `<p class="error-message" id="...-error">`. JavaScript
   writes the message into it, so the message is always next to the field it belongs to.
 
-`min="3" max="8"` on fat and `min="0.5" max="100"` on litres are not arbitrary — they are the
-limits printed on the rate board of `collection-centre.html` (fat below 3.5% is paid ₹40 instead
-of ₹42).
+`min="3" max="8"` on fat and `min="0.5" max="100"` on litres are not arbitrary â€” they are the
+limits printed on the rate board of `collection-centre.html` (fat below 3.5% is paid â‚¹40 instead
+of â‚¹42).
 
 ## A7.3 Why the form has `novalidate`
 
@@ -2195,7 +2195,7 @@ input.addEventListener("input", function () {
 
 `blur` always checks, so a message appears as soon as the farmer moves on. `input` fires on every
 keystroke, so checking on every keystroke would shout at the user while they are still typing
-"Ramesh…". Therefore `input` only re-checks when the box is **already** in the error state — then
+"Rameshâ€¦". Therefore `input` only re-checks when the box is **already** in the error state â€” then
 the red message disappears the moment the value becomes acceptable.
 
 ### The `reset` event
@@ -2203,13 +2203,13 @@ the red message disappears the moment the value becomes acceptable.
 `reset` fires both when the **Clear Form** button is pressed and when JavaScript calls
 `form.reset()` after a successful registration. The handler calls `clearAllFieldErrors()`, which
 removes the `.field-error` class, the `aria-invalid` attribute and the message text of all six
-fields. That is why the success message is written *after* `form.reset()` in the submit handler —
+fields. That is why the success message is written *after* `form.reset()` in the submit handler â€”
 otherwise the reset handler would run last and the farmer would never see it.
 
 ## A7.7 The validation functions (logic only)
 
 Each function takes **one value** and returns **a message**: `""` means acceptable, any text means
-rejected. None of them touches the page — that is what makes them readable, reusable and easy to
+rejected. None of them touches the page â€” that is what makes them readable, reusable and easy to
 test.
 
 ```javascript
@@ -2240,18 +2240,18 @@ The complete rule table:
 
 | Field | Conditions checked, in order | Messages |
 |---|---|---|
-| Farmer Name | empty → shorter than 3 → wrong characters | "Please enter the farmer name." / "Farmer name must be at least 3 characters long." / "Farmer name can contain letters, spaces, . ' and - only." |
-| Mobile | empty → not digits → not 10 digits → wrong first digit | "Please enter the mobile number." / "…digits only." / "…exactly 10 digits." / "…start with 6, 7, 8 or 9." |
-| Email | empty → wrong shape | *(nothing when empty)* / "Enter a valid email address, for example name@example.com." |
-| Village | empty → shorter than 3 | "Please enter the village or address." / "…at least 3 characters long." |
-| Milk Quantity | empty → not a number → 0 or less → above 100 | "Please enter the milk quantity in litres." / "Milk quantity must be a number." / "…greater than 0 litres." / "…cannot be more than 100 litres a day." |
-| Fat % | empty → not a number → below 3 → above 8 | "Please enter the fat percentage." / "Fat percentage must be a number." / "Fat percentage cannot be below 3%." / "Fat percentage cannot be above 8%." |
+| Farmer Name | empty â†’ shorter than 3 â†’ wrong characters | "Please enter the farmer name." / "Farmer name must be at least 3 characters long." / "Farmer name can contain letters, spaces, . ' and - only." |
+| Mobile | empty â†’ not digits â†’ not 10 digits â†’ wrong first digit | "Please enter the mobile number." / "â€¦digits only." / "â€¦exactly 10 digits." / "â€¦start with 6, 7, 8 or 9." |
+| Email | empty â†’ wrong shape | *(nothing when empty)* / "Enter a valid email address, for example name@example.com." |
+| Village | empty â†’ shorter than 3 | "Please enter the village or address." / "â€¦at least 3 characters long." |
+| Milk Quantity | empty â†’ not a number â†’ 0 or less â†’ above 100 | "Please enter the milk quantity in litres." / "Milk quantity must be a number." / "â€¦greater than 0 litres." / "â€¦cannot be more than 100 litres a day." |
+| Fat % | empty â†’ not a number â†’ below 3 â†’ above 8 | "Please enter the fat percentage." / "Fat percentage must be a number." / "Fat percentage cannot be below 3%." / "Fat percentage cannot be above 8%." |
 
 Two more rules used after validation passes:
 
-- `rateForFat(fat)` — returns `42` for fat 3.5% and above, `40` below it. It is the same rate
+- `rateForFat(fat)` â€” returns `42` for fat 3.5% and above, `40` below it. It is the same rate
   board that is printed on the fixed `.rate-ticker` of `collection-centre.html`.
-- `readFormValues()` — builds one object from the six boxes. **That object is the row that
+- `readFormValues()` â€” builds one object from the six boxes. **That object is the row that
   Assignment 13 will store in MySQL.**
 
 ## A7.8 The interface functions (page only)
@@ -2283,7 +2283,7 @@ shows the result on the page.
 |---|---|
 | `showFieldError(rule, message)` | adds the class `field-error` to the input, sets `aria-invalid="true"`, writes the message with `textContent` |
 | `clearFieldError(rule)` | removes the class, the attribute and the message |
-| `clearAllFieldErrors()` | runs the above for all six rules — used by `reset` |
+| `clearAllFieldErrors()` | runs the above for all six rules â€” used by `reset` |
 | `checkWholeForm()` | `forEach()` over the rules; returns **how many** fields failed |
 | `focusFirstError()` | `for` loop over the rules; `focus()` on the first box that still has the error class |
 | `setFormStatus(message, isSuccess)` | writes the single message box and adds the class `ok` or `error` |
@@ -2301,16 +2301,16 @@ For the values *Ramesh Patil / 9876543210 / ramesh@example.com / Wadgaon / 18.5 
 1. `checkWholeForm()` returns `0`, so nothing is refused.
 2. `readFormValues()` builds
    `{ name: "Ramesh Patil", mobile: "9876543210", email: "ramesh@example.com", village: "Wadgaon", quantity: 18.5, fat: 4.6, rate: 42, amount: 777 }`
-   (18.5 × 42 = 777 — the rate comes from `rateForFat(4.6)`).
+   (18.5 Ã— 42 = 777 â€” the rate comes from `rateForFat(4.6)`).
 3. `push()` adds it to `registeredFarmers`, and the table gets one row.
 4. `form.reset()` empties the six boxes and clears the error styling.
 5. The message box turns **green** and reads:
-   *"Registration successful. Ramesh Patil of Wadgaon - 18.5 litres at 4.6% fat = ₹ 777.00 at 42 Rs
+   *"Registration successful. Ramesh Patil of Wadgaon - 18.5 litres at 4.6% fat = â‚¹ 777.00 at 42 Rs
    per litre. Mobile 9876543210. Email ramesh@example.com."*
 6. The count line reads *"1 farmer registered in this session - 18.5 litres a day between them."*
 
 Register a second farmer and the count line becomes *"2 farmers registered in this session - 37.0
-litres a day between them."* — that number is `reduce()` over the array.
+litres a day between them."* â€” that number is `reduce()` over the array.
 
 ## A7.10 How HTML5 and JavaScript work together here
 
@@ -2327,32 +2327,32 @@ mistakes and controls the success path.
 ## A7.11 New CSS added for Assignment 7
 
 Appended at the very end of `frontend/css/style.css` in an `ASSIGNMENT 7` block. No rule above it
-was changed, so Assignments 1–6 look identical.
+was changed, so Assignments 1â€“6 look identical.
 
 | Selector | Purpose |
 |---|---|
 | `.farmer-form` | space above the form |
-| `.form-grid` | `display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 22px` — two columns on a desktop, one column under 600px (the same Grid idea as `.stats-grid` in Assignment 4) |
+| `.form-grid` | `display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 22px` â€” two columns on a desktop, one column under 600px (the same Grid idea as `.stats-grid` in Assignment 4) |
 | `.form-row label` | bold brown label on its own line |
 | `.form-row input` | full-width padded box with a gold `outline` on `:focus` |
 | `.field-hint` | small grey explanation under a field |
-| `input.field-error` | **error state** — `border: 2px solid #b03a2e` on a pale red background |
+| `input.field-error` | **error state** â€” `border: 2px solid #b03a2e` on a pale red background |
 | `.error-message` | the red message under the field, with `min-height` so the rows stay aligned |
 | `.required-mark` | the red `*` beside a compulsory label |
-| `.form-message.ok` | **success state** — green left border and background on the message box |
-| `.form-message.error` | **failure state** — red left border and background on the same box |
+| `.form-message.ok` | **success state** â€” green left border and background on the message box |
+| `.form-message.error` | **failure state** â€” red left border and background on the same box |
 | `.form-buttons`, `.btn-light` | the two buttons; `.btn-light` is the lighter "Clear Form" button |
 | `@media (max-width: 600px)` | `.form-grid` becomes one column and the buttons go full width |
 
 The success and failure states of the message box reuse `.register-status` from Assignment 6 and
-only add the two colours — the project keeps one visual language.
+only add the two colours â€” the project keeps one visual language.
 
-## A7.12 Viva questions and answers — Assignment 7
+## A7.12 Viva questions and answers â€” Assignment 7
 
 **1. Why did you make a new `farmers.html` page instead of putting the form on the dashboard?**
 The menu of `index.html` and `dashboard.html` already had a "Farmers" link pointing to
 `pages/farmers.html`, which was a placeholder that gave a file-not-found error. Farmer
-registration is a real screen of the society, so it belongs on its own page — and now the link
+registration is a real screen of the society, so it belongs on its own page â€” and now the link
 works instead of being broken.
 
 **2. Why is there no `action` attribute on the form?**
@@ -2373,8 +2373,8 @@ describe the field and give the mobile keypad, they just no longer block the sub
 
 **5. What is the difference between `required` in HTML and your own JavaScript check?**
 `required` only answers "is it empty?" and shows the browser's own message. JavaScript checks the
-full rule — a 10-digit number starting with 6-9, a number between 3 and 8, letters only in the
-name — and writes the message in the project's own words, in the right place, and counts how many
+full rule â€” a 10-digit number starting with 6-9, a number between 3 and 8, letters only in the
+name â€” and writes the message in the project's own words, in the right place, and counts how many
 fields are wrong.
 
 **6. Why is the email field not `required`?**
@@ -2388,7 +2388,7 @@ function, so `checkField()` never has to guess: it reads that rule's input and w
 rule's message box.
 
 **8. Why is the validation logic separated from the interface code?**
-The check functions only receive a value and return a message — they know nothing about the page.
+The check functions only receive a value and return a message â€” they know nothing about the page.
 The interface functions only display what the checks decided. Because of that split, a rule can be
 read, changed or reused on its own, and the same logic could later be reused by PHP without
 touching the interface.
@@ -2399,19 +2399,19 @@ awkwardly, and it does not point at the box that is wrong. Writing the message i
 the field keeps the farmer looking at the form, and the red border shows which box to fix.
 
 **10. What is `Number()` and `isNaN()` used for?**
-`Number("18.5")` gives `18.5`, but `Number("abc")` gives `NaN` — "Not a Number". So
+`Number("18.5")` gives `18.5`, but `Number("abc")` gives `NaN` â€” "Not a Number". So
 `if (isNaN(litres))` is how the code detects that a box does not hold a number, even though the
 input is `type="number"`.
 
 **11. Why does the `input` event not check the field on every keystroke?**
 It would be noisy: after typing "R" the message "at least 3 characters" would appear while the
 farmer is still typing "Ramesh". So `input` re-checks only when the box is already showing an
-error — then the message vanishes the moment the value becomes correct. `blur` always checks.
+error â€” then the message vanishes the moment the value becomes correct. `blur` always checks.
 
 **12. What does the `reset` event do, and why is it needed when `form.reset()` is also called?**
 `form.reset()` **fires** the reset event, so one handler covers both the "Clear Form" button and
 the emptying of the form after a successful registration. That is also why the success message is
-written **after** `form.reset()` in the submit handler — otherwise the reset handler would run last
+written **after** `form.reset()` in the submit handler â€” otherwise the reset handler would run last
 and overwrite the green message.
 
 **13. How do you know how many fields are wrong?**
@@ -2430,7 +2430,7 @@ boxes for the next farmer.
 
 **16. Where is the data stored after a successful registration?**
 In the `registeredFarmers` array inside `main.js`. It is a plain JavaScript array, so it is lost
-when the page is closed — there is no database yet. The `readFormValues()` object has exactly the
+when the page is closed â€” there is no database yet. The `readFormValues()` object has exactly the
 shape of the row that Assignment 13 will insert into MySQL.
 
 **17. Does adding this form break the Assignment 6 dashboard?**
@@ -2453,13 +2453,13 @@ announce the error. It is set with `setAttribute()` when a field is refused and 
 `removeAttribute()` when it becomes correct.
 
 **19. What is the difference between `textContent` and `innerHTML` here?**
-`textContent` writes plain text — whatever the farmer typed stays text. `innerHTML` would parse
+`textContent` writes plain text â€” whatever the farmer typed stays text. `innerHTML` would parse
 the string as HTML, so typed text containing tags could become part of the page. Messages and
 table cells in this project use `textContent` or built HTML from data that was validated first.
 
 **20. Why is the rate decided by `rateForFat()` instead of asking the farmer?**
-Because the rate is the society's rule, not the farmer's choice — it is printed on the rate board
-of the collection centre page (₹42 for fat 3.5% and above, ₹40 below). Repeating it in JavaScript
+Because the rate is the society's rule, not the farmer's choice â€” it is printed on the rate board
+of the collection centre page (â‚¹42 for fat 3.5% and above, â‚¹40 below). Repeating it in JavaScript
 shows the payment the farmer will actually receive, and the same function will be used when the
 payment is really calculated in a later phase.
 
@@ -2470,30 +2470,30 @@ payment is really calculated in a later phase.
 Understand these before the viva; each one is used in the actual code.
 
 **HTML**
-1. `<!DOCTYPE html>`, `<html lang>`, `<head>`, `<body>` — the page skeleton.
-2. `<meta charset>` and `<meta name="viewport">` — encoding and mobile behaviour.
-3. `<h1>`–`<h3>` heading hierarchy and why only one `<h1>`.
+1. `<!DOCTYPE html>`, `<html lang>`, `<head>`, `<body>` â€” the page skeleton.
+2. `<meta charset>` and `<meta name="viewport">` â€” encoding and mobile behaviour.
+3. `<h1>`â€“`<h3>` heading hierarchy and why only one `<h1>`.
 4. `<p>` block paragraphs; source line breaks collapse into spaces.
-5. `<ol>` vs `<ul>` and `<li>` — the single most-asked basic HTML question.
+5. `<ol>` vs `<ul>` and `<li>` â€” the single most-asked basic HTML question.
 6. `<a href>` links, relative paths, `../` meaning "go up one folder".
 7. `<img>` void element and its attributes `src`, `alt`, `width`, `height`.
 8. HTML entities: `&amp;`, `&copy;`, `&nbsp;`, `&bull;`, `&deg;`, `&rarr;`, `&#8377;`.
 9. Semantic tags: `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`.
-10. `<table>` with `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` — and why only real tabular data
+10. `<table>` with `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>` â€” and why only real tabular data
     should use a table.
 11. Void vs container elements; `<span>` vs `<div>`.
 12. Comments in HTML (`<!-- ... -->`) and how this project documents each assignment.
 
 **CSS**
 13. The three ways to attach CSS: external `<link>`, internal `<style>`, inline `style=""`.
-14. Priority: external → internal → inline.
+14. Priority: external â†’ internal â†’ inline.
 15. Selectors: element, descendant, class, class+class, universal, multiple selectors.
-16. `.class` vs `#id` — and that this project uses **no ids at all**.
-17. Specificity — class beats element, two classes beat one class (see the `.tank-card` note in
+16. `.class` vs `#id` â€” and that this project uses **no ids at all**.
+17. Specificity â€” class beats element, two classes beat one class (see the `.tank-card` note in
     section 11).
-18. Inheritance — why `body` font and colour reach every element.
-19. The box model: content → padding → border → margin; `box-sizing: border-box`.
-20. Shorthand properties: `margin`/`padding` (1–4 values), `border`, `border-radius`,
+18. Inheritance â€” why `body` font and colour reach every element.
+19. The box model: content â†’ padding â†’ border â†’ margin; `box-sizing: border-box`.
+20. Shorthand properties: `margin`/`padding` (1â€“4 values), `border`, `border-radius`,
     `background`.
 21. Colour formats: hex (`#fdf6ec`) and `rgba()` with alpha transparency.
 22. Typography: `font-family` fallback stacks, `font-size`, `font-weight`, `text-align`,
@@ -2505,27 +2505,27 @@ Understand these before the viva; each one is used in the actual code.
 27. `opacity` vs `rgba()` transparency.
 
 **Layout (Assignment 4)**
-28. `display: flex` — container and items.
+28. `display: flex` â€” container and items.
 29. `justify-content` (main axis) vs `align-items` (cross axis); `align-items` defaults to
     `stretch`.
 30. `flex-wrap: wrap`.
-31. `flex: 1 1 200px` — grow, shrink, basis.
+31. `flex: 1 1 200px` â€” grow, shrink, basis.
 32. `gap` instead of manual child margins.
 33. `display: grid`, `grid-template-columns`, `repeat()`, `1fr`, auto-placement.
-34. Grid vs Flexbox — two-dimensional vs one-dimensional.
-35. `@media (max-width: ...)` — what "at most this wide" means.
-36. Desktop → tablet → mobile column counts (4 → 2 → 1).
+34. Grid vs Flexbox â€” two-dimensional vs one-dimensional.
+35. `@media (max-width: ...)` â€” what "at most this wide" means.
+36. Desktop â†’ tablet â†’ mobile column counts (4 â†’ 2 â†’ 1).
 37. Overriding: media queries come last so they win.
 
 **Positioning (Assignment 5)**
-38. `static` — the default; ignores offsets.
-39. `relative` — stays in flow, anchors absolute children.
-40. `absolute` — out of flow, measured from the nearest positioned ancestor.
-41. `fixed` — out of flow, measured from the viewport.
-42. `sticky` — in flow until `top` is reached, then held inside its parent.
+38. `static` â€” the default; ignores offsets.
+39. `relative` â€” stays in flow, anchors absolute children.
+40. `absolute` â€” out of flow, measured from the nearest positioned ancestor.
+41. `fixed` â€” out of flow, measured from the viewport.
+42. `sticky` â€” in flow until `top` is reached, then held inside its parent.
 43. `top` / `right` / `bottom` / `left`.
 44. `z-index` and stacking order.
-45. **relative parent → absolute child** (section 6.7).
+45. **relative parent â†’ absolute child** (section 6.7).
 46. **fixed vs sticky** (section 6.8).
 47. Percentage widths on an absolute child resolve against the positioned parent.
 48. A sticky element must have an opaque background.
@@ -2535,13 +2535,13 @@ Understand these before the viva; each one is used in the actual code.
 50. An external `<script src="...">` file, and why the tag goes at the end of `<body>`.
 51. `document.getElementById()` returning `null`, and why every element must be checked.
 52. `addEventListener()` and the click / mouseover / mouseout / input / change events.
-53. `forEach()`, `map()`, `filter()`, `find()`, `reduce()` — and what each one returns.
+53. `forEach()`, `map()`, `filter()`, `find()`, `reduce()` â€” and what each one returns.
 54. The `reduce()` accumulator and its initial value; why the `, 0` is needed.
 55. `map()` + `reduce()` together to turn records into a total.
 56. `textContent` vs `innerHTML` when inserting text safely.
 57. `classList.add()` / `remove()` / `contains()` to switch styling from JavaScript.
 58. `data-*` attributes, and why `data-shift` holds the machine value.
-59. Closures — a row's click handler remembering its own record.
+59. Closures â€” a row's click handler remembering its own record.
 60. `DOMContentLoaded` as the safest moment to start.
 
 ---
@@ -2553,7 +2553,7 @@ All answers below are based on code that actually exists in this project.
 ### 9.1 HTML (Assignment 1 and 2)
 
 **1. What is the difference between `<ol>` and `<ul>`?**
-`<ol>` is ordered — the browser numbers the items (1, 2, 3). `<ul>` is unordered — the browser
+`<ol>` is ordered â€” the browser numbers the items (1, 2, 3). `<ul>` is unordered â€” the browser
 shows bullets. I used `<ol>` for the six steps of milk collection on `about.html` because the
 order matters, and `<ul>` for the farmer services and the notice board because those items have
 no sequence. Both use `<li>`.
@@ -2590,13 +2590,13 @@ links to other pages, so they are `<a>` tags styled to look like buttons with th
 **8. What are `<thead>`, `<tbody>`, `<th>` and `<td>` for?**
 They structure a data table. `<thead>` holds the header row, `<tbody>` holds the data rows,
 `<th>` is a header cell and `<td>` is a data cell. I use them for the collection log on
-`collection-centre.html` because that data really is tabular — farmer, quantity, fat %, SNF %,
+`collection-centre.html` because that data really is tabular â€” farmer, quantity, fat %, SNF %,
 rate and status.
 
 **9. What are HTML entities and which ones did I use?**
 They are special characters that cannot be typed directly or that need a code instead. I used
-`&amp;` for &, `&copy;` for ©, `&nbsp;` for a non-breaking space, `&bull;` for •, `&deg;` for °,
-`&rarr;` for →, and `&#8377;` for the Rupee symbol ₹.
+`&amp;` for &, `&copy;` for Â©, `&nbsp;` for a non-breaking space, `&bull;` for â€¢, `&deg;` for Â°,
+`&rarr;` for â†’, and `&#8377;` for the Rupee symbol â‚¹.
 
 **10. Why is `<!DOCTYPE html>` the first line?**
 It tells the browser to render the page in modern standards mode instead of an old
@@ -2604,16 +2604,16 @@ compatibility mode. In quirks mode some CSS behaves differently, so it is always
 
 **11. Why is `<header>` used instead of a plain `<div>`?**
 Because `<header>` tells the browser and assistive technology that this is the page's
-introductory banner — it becomes the `banner` landmark. `<div>` says nothing about meaning.
+introductory banner â€” it becomes the `banner` landmark. `<div>` says nothing about meaning.
 
 **12. When do you use `<article>` instead of `<section>`?**
-`<article>` is for content that is **independent and self-contained** — it would still make
+`<article>` is for content that is **independent and self-contained** â€” it would still make
 sense if quoted on its own. On `index.html` each farmer's collection record is an `<article>`,
 because that record stands alone. `<section>` groups related content under one heading.
 
 **13. How do you know which page you are on?**
-Each page puts `class="active"` on its own menu link — `about.html` line 39,
-`dashboard.html` line 48, `collection-centre.html` line 58 — and `style.css` line 99
+Each page puts `class="active"` on its own menu link â€” `about.html` line 39,
+`dashboard.html` line 48, `collection-centre.html` line 58 â€” and `style.css` line 99
 (`nav a.active`) highlights it in gold.
 
 ### 9.2 Semantic HTML (Assignment 2)
@@ -2627,7 +2627,7 @@ information like contact and copyright.
 **15. Where is the `<aside>` in my project and why is it there?**
 Three places: the Notice Board on `index.html` line 180, an explanation of the tools used on
 `dashboard.html` line 129, and Centre Instructions on `collection-centre.html` line 222. It is
-complementary information — not the main content — so `<aside>` is correct.
+complementary information â€” not the main content â€” so `<aside>` is correct.
 
 **16. Why does my about page have no `<header>`, `<main>` or `<footer>`?**
 `about.html` is the Assignment 1 basic-HTML demonstration, kept deliberately plain so the basic
@@ -2638,8 +2638,8 @@ structure.
 
 **17. What are the three ways of adding CSS, and which one wins?**
 External (`<link rel="stylesheet">` to `style.css`), internal (a `<style>` block in the page's
-`<head>`), and inline (`style="..."` on a tag). Priority is external → internal → inline, so
-inline wins. My `index.html` uses all three: `style.css` is external, lines 36–50 are internal,
+`<head>`), and inline (`style="..."` on a tag). Priority is external â†’ internal â†’ inline, so
+inline wins. My `index.html` uses all three: `style.css` is external, lines 36â€“50 are internal,
 and lines 95 and 142 are inline.
 
 **18. What does `* { box-sizing: border-box; }` do and why is it needed?**
@@ -2658,7 +2658,7 @@ Give it a `max-width` and `margin-left`/`margin-right` of `auto`. My `main` rule
 
 **21. What does `border: 2px dashed #d9a441` mean?**
 Border width `2px`, border style `dashed`, border colour `#d9a441`. It is the aside rule in the
-internal `<style>` of `index.html` — the only dashed border in the project.
+internal `<style>` of `index.html` â€” the only dashed border in the project.
 
 **22. What does `border-radius: 999px` create?**
 A fully rounded shape. On `.status-badge`, which is small, it produces a "pill" shape.
@@ -2678,7 +2678,7 @@ elements. `inline-block` lets the link have padding while still sitting in the l
 
 **26. What is the difference between a class and an id?**
 A class can be used on any number of elements; an id must be unique on the page and has higher
-priority. My project uses only classes — `.btn`, `.active`, `.stats-grid`, `.status-badge` — and
+priority. My project uses only classes â€” `.btn`, `.active`, `.stats-grid`, `.status-badge` â€” and
 no ids at all, because I need the same styling on many elements.
 
 **27. How does CSS get from `style.css` to a `<div>` in the HTML?**
@@ -2690,7 +2690,7 @@ Through the class name. The HTML says `<div class="stats-grid">` and the CSS say
 Specificity decides which rule wins when two rules target the same property. More classes beat
 fewer classes. In `collection-centre.html` a `.tank-card` card has both `stat-card` and
 `tank-card` classes. `.stats-grid .stat-card { padding: 18px; }` has two class selectors, so it
-beats `.tank-card { padding-top: 26px; }` which has only one — so the card's top padding stays
+beats `.tank-card { padding-top: 26px; }` which has only one â€” so the card's top padding stays
 18px and the badge overlaps the heading slightly. I know about this and will fix it.
 
 ### 9.4 Flexbox (Assignment 4)
@@ -2706,7 +2706,7 @@ dashboard and collection-centre pages.
 
 **31. What does `justify-content: center` do, and which axis does it work on?**
 It centres the items along the **main axis**. In my nav the main axis is horizontal because I did
-not set `flex-direction`, so it defaults to `row` — the menu is centred on the brown bar.
+not set `flex-direction`, so it defaults to `row` â€” the menu is centred on the brown bar.
 
 **32. What does `flex: 1 1 200px` mean?**
 `flex-grow: 1`, `flex-shrink: 1`, `flex-basis: 200px`. Each block asks for 200px, then all three
@@ -2733,7 +2733,7 @@ Four equal columns. `1fr` is one fraction of the available width, and `repeat(4,
 shorthand for `1fr 1fr 1fr 1fr`.
 
 **37. Where is the grid used?**
-In `.stats-grid` — the four stat cards on `dashboard.html` (Total Farmers, Today's Milk
+In `.stats-grid` â€” the four stat cards on `dashboard.html` (Total Farmers, Today's Milk
 Collection, Pending Payments, Average Fat) and the four tank/equipment cards on
 `collection-centre.html`.
 
@@ -2742,10 +2742,10 @@ It puts 20px of space between the rows **and** between the columns.
 
 **39. Do I have to position each card in the grid?**
 No. Grid **auto-placement** fills cells left to right and top to bottom automatically. I never
-write coordinates for a card — adding a fifth card would need no CSS change.
+write coordinates for a card â€” adding a fifth card would need no CSS change.
 
 **40. When would you use Grid instead of Flexbox?**
-Grid is two-dimensional — it controls rows and columns at once — so I use it for the stat card
+Grid is two-dimensional â€” it controls rows and columns at once â€” so I use it for the stat card
 area where the number of columns must change with the screen. Flexbox is one-dimensional, so I
 use it for the menu and the shift blocks, which are just a single row of similar items.
 
@@ -2781,9 +2781,9 @@ widths such as 1400px, 800px and 400px.
 ### 9.7 CSS Positioning (Assignment 5)
 
 **47. Name the five `position` values and give one example of each from my project.**
-`static` — `.centre-note`, the shift information strips. `relative` — `.tank-card` and
-`.photo-frame`. `absolute` — `.status-badge` and `.photo-caption`. `fixed` — `.rate-ticker`,
-the milk rate board. `sticky` — `nav` and the collection log's `thead th`.
+`static` â€” `.centre-note`, the shift information strips. `relative` â€” `.tank-card` and
+`.photo-frame`. `absolute` â€” `.status-badge` and `.photo-caption`. `fixed` â€” `.rate-ticker`,
+the milk rate board. `sticky` â€” `nav` and the collection log's `thead th`.
 
 **48. What is the default value of `position` and what does it do?**
 `static` is the default. A static element sits in the normal page flow where the HTML puts it and
@@ -2833,7 +2833,7 @@ left: 20px; bottom: 20px }`, changed to `left: 0; right: 0; bottom: 0` on mobile
 `.log-window thead th { top: 0 }` for the sticky column titles.
 
 **57. What is `z-index` and what values do you use?**
-It is the stacking order — a higher number paints on top, and it only works on positioned
+It is the stacking order â€” a higher number paints on top, and it only works on positioned
 elements. My values are: `2` for the sticky table header, `3` for the status badge, `50` for the
 sticky nav, and `100` for the fixed rate board.
 
@@ -2863,8 +2863,8 @@ makes only that background colour transparent.
 
 **63. How are the tank levels shown without JavaScript?**
 By width percentage classes. `.tank-gauge` is a 20px tall bar and `.tank-fill` fills it, and the
-level comes from a class — `.gauge-92` is `width: 92%`, `.gauge-74` is 74%, `.gauge-58` is 58%
-and `.gauge-35` is 35%` (lines 421–424).
+level comes from a class â€” `.gauge-92` is `width: 92%`, `.gauge-74` is 74%, `.gauge-58` is 58%
+and `.gauge-35` is 35%` (lines 421â€“424).
 
 **64. Why is the sticky table header's `background-color` compulsory?**
 Because a sticky element stays on screen while the content scrolls underneath it. If the
@@ -2878,7 +2878,7 @@ because a sticky element cannot stick inside a box that does not scroll. I have 
 
 **66. Why does a percentage width on `.photo-caption` work?**
 `width: 100%` on an absolutely positioned element resolves against its **containing block**,
-which is the nearest positioned ancestor — `.photo-frame`. So the caption spans the frame's
+which is the nearest positioned ancestor â€” `.photo-frame`. So the caption spans the frame's
 padding box, not the page.
 
 ---
@@ -2890,25 +2890,25 @@ you have seen the effect.
 
 | # | File | Selector / line | Change | Expected result |
 |---|---|---|---|---|
-| 1 | `frontend/css/style.css` | line 28 — `body { background-color: #fdf6ec; }` | change to `#eaf7ff` | The cream theme becomes pale blue on **all four pages** at once — proves one external stylesheet styles the whole project. |
-| 2 | `frontend/css/style.css` | line 36 — `header { background-color: #e8b84b; }` | change to `#2f8f4e` | The gold title bar becomes green on every page that has a `<header>`. |
-| 3 | `frontend/css/style.css` | line 222 — `.stats-grid { grid-template-columns: repeat(4, 1fr); }` | change to `repeat(3, 1fr)` | Desktop shows 3 cards in the first row and the 4th card wraps below. Notice `collection-centre.html` changes too, because it reuses `.stats-grid`. |
-| 4 | `frontend/css/style.css` | line 292 — `@media (max-width: 900px)` | change `900px` to `1100px` | The 2-column tablet layout now appears **earlier**. Resize slowly and watch the exact width where the cards re-arrange. |
-| 5 | `frontend/css/style.css` | line 71 — `nav ul { justify-content: center; }` | change to `flex-start` | The menu slides to the left edge of the brown bar. Then try `space-between` — the links spread out to fill the full width. |
-| 6 | `frontend/css/style.css` | lines 345–346 — `nav { position: sticky; top: 0; }` | change `top: 0` to `top: 100px` | The menu parks 100px down and you can see page content scrolling in the gap above it — proves `top` is the trigger offset, not a distance it moves. |
-| 7 | `frontend/css/style.css` | lines 378–379 — `.status-badge { top: 8px; right: 8px; }` | change to `top: 50px; right: 20px` | Badges move down and inward on all four tank cards. Then try `bottom: 8px; left: 8px` — they move to the bottom-left corner. |
-| 8 | `frontend/css/style.css` | line 506 — `.rate-ticker { z-index: 100; }` | change to `z-index: 1` | Scroll the page: the rate board slides **behind** the sticky menu and behind the cards. The clearest `z-index` demonstration in the project. |
-| 9 | `frontend/css/style.css` | lines 504–505 — `.rate-ticker { left: 20px; bottom: 20px; }` | change to `right: 20px; bottom: 20px` | The board jumps from the bottom-left to the bottom-right of the screen — shows that a fixed element is measured from the screen, not from the page flow. |
-| 10 | `frontend/css/style.css` | line 424 — `.gauge-35 { width: 35%; }` | change to `width: 80%;` | On `collection-centre.html` the Payment Counter tank bar fills to 80% while its text still reads ₹ 52,400 — the class **is** the data. |
-| 11 | `frontend/css/style.css` | line 355 — `.centre-note { position: static; }` | delete the line | **Nothing changes.** This proves `static` is the default and that static elements ignore offsets. Good viva evidence. |
-| 12 | `frontend/css/style.css` | line 369 — `.tank-card { position: relative; }` | delete the line | All four status badges fly to the top-right corner of the page, away from their cards — proves the relative-parent / absolute-child relationship. Put it back afterwards. |
-| 13 | `frontend/css/style.css` | line 345 — `nav { position: sticky; }` | delete the line | The menu bar scrolls off the top of `collection-centre.html` and can no longer be reached while scrolling. |
-| 14 | `frontend/css/style.css` | line 239 — `.stat-number { font-size: 42px; }` | change to `font-size: 24px` | The big numbers on `dashboard.html` and `collection-centre.html` shrink on desktop; the media query still forces 32px below 600px, showing which rule wins. |
-| 15 | `frontend/index.html` | line 44 — `border: 2px dashed #d9a441;` (inside the internal `<style>`) | change to `border: 2px solid #d9a441;` | The Notice Board loses its dashed edge **on the home page only** — demonstrates the difference between internal CSS and external CSS. |
-| 16 | `frontend/css/style.css` | line 314 — inside `@media (max-width: 600px)`, `nav ul { gap: 6px; }` | change to `gap: 20px` | The stacked mobile menu becomes more spread out. Shows how a media query can change a value without touching the desktop rule. |
+| 1 | `frontend/css/style.css` | line 28 â€” `body { background-color: #fdf6ec; }` | change to `#eaf7ff` | The cream theme becomes pale blue on **all four pages** at once â€” proves one external stylesheet styles the whole project. |
+| 2 | `frontend/css/style.css` | line 36 â€” `header { background-color: #e8b84b; }` | change to `#2f8f4e` | The gold title bar becomes green on every page that has a `<header>`. |
+| 3 | `frontend/css/style.css` | line 222 â€” `.stats-grid { grid-template-columns: repeat(4, 1fr); }` | change to `repeat(3, 1fr)` | Desktop shows 3 cards in the first row and the 4th card wraps below. Notice `collection-centre.html` changes too, because it reuses `.stats-grid`. |
+| 4 | `frontend/css/style.css` | line 292 â€” `@media (max-width: 900px)` | change `900px` to `1100px` | The 2-column tablet layout now appears **earlier**. Resize slowly and watch the exact width where the cards re-arrange. |
+| 5 | `frontend/css/style.css` | line 71 â€” `nav ul { justify-content: center; }` | change to `flex-start` | The menu slides to the left edge of the brown bar. Then try `space-between` â€” the links spread out to fill the full width. |
+| 6 | `frontend/css/style.css` | lines 345â€“346 â€” `nav { position: sticky; top: 0; }` | change `top: 0` to `top: 100px` | The menu parks 100px down and you can see page content scrolling in the gap above it â€” proves `top` is the trigger offset, not a distance it moves. |
+| 7 | `frontend/css/style.css` | lines 378â€“379 â€” `.status-badge { top: 8px; right: 8px; }` | change to `top: 50px; right: 20px` | Badges move down and inward on all four tank cards. Then try `bottom: 8px; left: 8px` â€” they move to the bottom-left corner. |
+| 8 | `frontend/css/style.css` | line 506 â€” `.rate-ticker { z-index: 100; }` | change to `z-index: 1` | Scroll the page: the rate board slides **behind** the sticky menu and behind the cards. The clearest `z-index` demonstration in the project. |
+| 9 | `frontend/css/style.css` | lines 504â€“505 â€” `.rate-ticker { left: 20px; bottom: 20px; }` | change to `right: 20px; bottom: 20px` | The board jumps from the bottom-left to the bottom-right of the screen â€” shows that a fixed element is measured from the screen, not from the page flow. |
+| 10 | `frontend/css/style.css` | line 424 â€” `.gauge-35 { width: 35%; }` | change to `width: 80%;` | On `collection-centre.html` the Payment Counter tank bar fills to 80% while its text still reads â‚¹ 52,400 â€” the class **is** the data. |
+| 11 | `frontend/css/style.css` | line 355 â€” `.centre-note { position: static; }` | delete the line | **Nothing changes.** This proves `static` is the default and that static elements ignore offsets. Good viva evidence. |
+| 12 | `frontend/css/style.css` | line 369 â€” `.tank-card { position: relative; }` | delete the line | All four status badges fly to the top-right corner of the page, away from their cards â€” proves the relative-parent / absolute-child relationship. Put it back afterwards. |
+| 13 | `frontend/css/style.css` | line 345 â€” `nav { position: sticky; }` | delete the line | The menu bar scrolls off the top of `collection-centre.html` and can no longer be reached while scrolling. |
+| 14 | `frontend/css/style.css` | line 239 â€” `.stat-number { font-size: 42px; }` | change to `font-size: 24px` | The big numbers on `dashboard.html` and `collection-centre.html` shrink on desktop; the media query still forces 32px below 600px, showing which rule wins. |
+| 15 | `frontend/index.html` | line 44 â€” `border: 2px dashed #d9a441;` (inside the internal `<style>`) | change to `border: 2px solid #d9a441;` | The Notice Board loses its dashed edge **on the home page only** â€” demonstrates the difference between internal CSS and external CSS. |
+| 16 | `frontend/css/style.css` | line 314 â€” inside `@media (max-width: 600px)`, `nav ul { gap: 6px; }` | change to `gap: 20px` | The stacked mobile menu becomes more spread out. Shows how a media query can change a value without touching the desktop rule. |
 
 Bonus checks (read-only, no changes): open the same page at 1400px, 800px and 400px and note
-every layout change; then use Chrome DevTools → Computed to confirm the specificity of
+every layout change; then use Chrome DevTools â†’ Computed to confirm the specificity of
 `.stats-grid .stat-card` versus `.tank-card`.
 
 ### JavaScript experiments (Assignment 6)
@@ -2918,14 +2918,14 @@ change afterwards.
 
 | # | File | Selector / line | Change | Expected result |
 |---|---|---|---|---|
-| 17 | `frontend/js/main.js` | the `collections` array | set one `litres` value to `0` | The total litres, the total payment and the average all drop instantly — proves `reduce()` is recalculating, not showing a hard-coded number. |
-| 18 | `frontend/js/main.js` | the `collections` array | change one `fat` value to `3.1` | The Low Fat Cans counter goes from 0 to 1 and that card turns into the highlighted red state — proves the `reduce()` condition is working. |
+| 17 | `frontend/js/main.js` | the `collections` array | set one `litres` value to `0` | The total litres, the total payment and the average all drop instantly â€” proves `reduce()` is recalculating, not showing a hard-coded number. |
+| 18 | `frontend/js/main.js` | the `collections` array | change one `fat` value to `3.1` | The Low Fat Cans counter goes from 0 to 1 and that card turns into the highlighted red state â€” proves the `reduce()` condition is working. |
 | 19 | `frontend/js/main.js` | `#collection-filter` handler | change the `value >= 15` to `value >= 20` | The 15+ filter now behaves like the 20+ filter and shows only 3 rows. |
-| 20 | `frontend/js/main.js` | `applyFilters()` | comment out the `shift` check | Morning-only filtering stops working, so a Morning block shows Evening rows too — proves both conditions are combined with `&&`. |
-| 21 | `frontend/js/main.js` | `selectRow()` | remove the `mouseover` listener block | Rows no longer highlight on hover — proves which listener causes that behaviour. |
-| 22 | `frontend/js/main.js` | the `<script>` line position in `dashboard.html` | move the `<script>` tag into `<head>` | The status line shows "Loading…" and never updates — proves why the script belongs at the end of `<body>`. |
-| 23 | `frontend/pages/dashboard.html` | `#farmer-search` input | type `an` | Only the rows containing "an" in the farmer name stay — proves `includes()` is doing a case-sensitive substring match. |
-| 24 | `frontend/js/main.js` | `showRecords()` | change `textContent` to `innerHTML` for the status | Still works here, but it is the unsafe version — good contrast for a viva answer about injection. |
+| 20 | `frontend/js/main.js` | `applyFilters()` | comment out the `shift` check | Morning-only filtering stops working, so a Morning block shows Evening rows too â€” proves both conditions are combined with `&&`. |
+| 21 | `frontend/js/main.js` | `selectRow()` | remove the `mouseover` listener block | Rows no longer highlight on hover â€” proves which listener causes that behaviour. |
+| 22 | `frontend/js/main.js` | the `<script>` line position in `dashboard.html` | move the `<script>` tag into `<head>` | The status line shows "Loadingâ€¦" and never updates â€” proves why the script belongs at the end of `<body>`. |
+| 23 | `frontend/pages/dashboard.html` | `#farmer-search` input | type `an` | Only the rows containing "an" in the farmer name stay â€” proves `includes()` is doing a case-sensitive substring match. |
+| 24 | `frontend/js/main.js` | `showRecords()` | change `textContent` to `innerHTML` for the status | Still works here, but it is the unsafe version â€” good contrast for a viva answer about injection. |
 
 ### Form experiments (Assignment 7)
 
@@ -2934,15 +2934,15 @@ change afterwards.
 
 | # | File | What to change | Expected result |
 |---|---|---|---|
-| 25 | `frontend/pages/farmers.html` | delete `novalidate` from the `<form>` | The browser takes over: submitting an empty form shows the browser's own bubble and **none** of our red messages under the fields appear — the clearest proof of why `novalidate` is needed. |
-| 26 | `frontend/js/main.js` | in `validateFatPercentage()`, change `fat > 8` to `fat > 10` | A fat of 9 is now accepted and the table shows it — proves which condition produced the message. |
-| 27 | `frontend/js/main.js` | in `validateMobile()`, delete the `/^[6-9]/` check | "5123456789" is accepted — proves the first-digit rule is a separate condition, not part of the digit check. |
-| 28 | `frontend/js/main.js` | in `validateEmail()`, remove the `if (email === "")` return | Leaving the email blank now shows an error — shows how the optional rule is written. |
-| 29 | `frontend/js/main.js` | comment out `event.preventDefault();` | The page reloads on submit and the green message is lost — proves exactly what `preventDefault()` stops. |
-| 30 | `frontend/js/main.js` | in the `input` handler, delete `isShowingError` from the condition | Typing shows the error on the very first keystroke ("at least 3 characters" while typing "Ramesh") — shows why the check is limited. |
-| 31 | `frontend/js/main.js` | in `rateForFat()`, change `3.5` to `4.5` | A 4.6% fat farmer is now paid 40 Rs instead of 42 Rs — the rate board rule is the only place the rate lives. |
-| 32 | `frontend/css/style.css` | `.form-grid { grid-template-columns: repeat(2, 1fr); }` → `repeat(3, 1fr)` | Three columns on a desktop screen — the form is an ordinary CSS Grid, the same property as `.stats-grid`. |
-| 33 | `frontend/css/style.css` | delete the `input.field-error` rule | The messages still appear under the fields, but the boxes are no longer red — separates the error message from the error state. |
+| 25 | `frontend/pages/farmers.html` | delete `novalidate` from the `<form>` | The browser takes over: submitting an empty form shows the browser's own bubble and **none** of our red messages under the fields appear â€” the clearest proof of why `novalidate` is needed. |
+| 26 | `frontend/js/main.js` | in `validateFatPercentage()`, change `fat > 8` to `fat > 10` | A fat of 9 is now accepted and the table shows it â€” proves which condition produced the message. |
+| 27 | `frontend/js/main.js` | in `validateMobile()`, delete the `/^[6-9]/` check | "5123456789" is accepted â€” proves the first-digit rule is a separate condition, not part of the digit check. |
+| 28 | `frontend/js/main.js` | in `validateEmail()`, remove the `if (email === "")` return | Leaving the email blank now shows an error â€” shows how the optional rule is written. |
+| 29 | `frontend/js/main.js` | comment out `event.preventDefault();` | The page reloads on submit and the green message is lost â€” proves exactly what `preventDefault()` stops. |
+| 30 | `frontend/js/main.js` | in the `input` handler, delete `isShowingError` from the condition | Typing shows the error on the very first keystroke ("at least 3 characters" while typing "Ramesh") â€” shows why the check is limited. |
+| 31 | `frontend/js/main.js` | in `rateForFat()`, change `3.5` to `4.5` | A 4.6% fat farmer is now paid 40 Rs instead of 42 Rs â€” the rate board rule is the only place the rate lives. |
+| 32 | `frontend/css/style.css` | `.form-grid { grid-template-columns: repeat(2, 1fr); }` â†’ `repeat(3, 1fr)` | Three columns on a desktop screen â€” the form is an ordinary CSS Grid, the same property as `.stats-grid`. |
+| 33 | `frontend/css/style.css` | delete the `input.field-error` rule | The messages still appear under the fields, but the boxes are no longer red â€” separates the error message from the error state. |
 
 ---
 
@@ -2950,28 +2950,28 @@ change afterwards.
 
 | Assignment | Status | Where it is implemented |
 |---|---|---|
-| Assignment 1 — Basic HTML (headings, paragraphs, ordered/unordered lists, images) | **Completed** | `frontend/pages/about.html` — `h1` line 47, `h2` lines 64/80/95, `p` lines 50/57/66/82/109, `<ol>` lines 70–77, `<ul>` lines 86–92, `<img>` lines 104–106 |
-| Assignment 2 — Semantic HTML | **Completed** | `frontend/index.html` — `header` 58, `nav` 68, `main` 84, `section` 91/120/153, `article` 125–169, `aside` 180, `footer` 196 |
-| Assignment 3 — CSS (external, internal, inline) | **Completed** | External: `frontend/css/style.css` (584 lines). Internal: `index.html` lines 36–50. Inline: `index.html` lines 95 and 142, `about.html` lines 104–106 |
-| Assignment 4 — Responsive design (Flexbox, Grid, Media Queries) | **Completed** | Flexbox: `style.css` lines 68–80 and 256–283. Grid: lines 220–236. Media queries: lines 292–297, 300–321, 538–546, 549–583. Demo page: `frontend/pages/dashboard.html` |
-| Assignment 5 — CSS positions and other properties | **Completed** | `frontend/pages/collection-centre.html` with `style.css` lines 323–584 — static 355, relative 369 & 466, absolute 377 & 487, fixed 503, sticky 345 & 455, plus z-index, top/right/bottom/left, width, height, margin, padding, border, border-radius, box-shadow, overflow, opacity |
-| Assignment 6 — JavaScript events and array functions | **Completed** | `frontend/js/main.js` — `collections` array (8 records), `DOMContentLoaded` start, events: `change` / `input` / `click` / `mouseover` / `mouseout`, functions: `forEach()` / `map()` / `filter()` / `find()` / `reduce()`. UI in `frontend/pages/dashboard.html`; styles appended to `frontend/css/style.css` |
-| Assignment 7 — JavaScript frontend functionality and form validation | **Completed** | `frontend/pages/farmers.html` — the Farmer Registration form (6 fields, `novalidate`, HTML5 attributes) + the "Farmers Registered in This Session" table. Logic in `frontend/js/main.js` section 6 — `formRules` list, checks `validateFarmerName()` / `validateMobile()` / `validateEmail()` / `validateVillage()` / `validateMilkQuantity()` / `validateFatPercentage()` / `rateForFat()`, interface `checkField()` / `checkWholeForm()` / `showFieldError()` / `clearFieldError()` / `clearAllFieldErrors()` / `focusFirstError()` / `setFormStatus()` / `readFormValues()` / `registerFarmer()` / `renderRegisteredFarmers()` / `successText()` / `startFarmerForm()`, events `submit` / `blur` / `input` / `reset`, `preventDefault()`. Styles appended to `frontend/css/style.css` |
+| Assignment 1 â€” Basic HTML (headings, paragraphs, ordered/unordered lists, images) | **Completed** | `frontend/pages/about.html` â€” `h1` line 47, `h2` lines 64/80/95, `p` lines 50/57/66/82/109, `<ol>` lines 70â€“77, `<ul>` lines 86â€“92, `<img>` lines 104â€“106 |
+| Assignment 2 â€” Semantic HTML | **Completed** | `frontend/index.html` â€” `header` 58, `nav` 68, `main` 84, `section` 91/120/153, `article` 125â€“169, `aside` 180, `footer` 196 |
+| Assignment 3 â€” CSS (external, internal, inline) | **Completed** | External: `frontend/css/style.css` (584 lines). Internal: `index.html` lines 36â€“50. Inline: `index.html` lines 95 and 142, `about.html` lines 104â€“106 |
+| Assignment 4 â€” Responsive design (Flexbox, Grid, Media Queries) | **Completed** | Flexbox: `style.css` lines 68â€“80 and 256â€“283. Grid: lines 220â€“236. Media queries: lines 292â€“297, 300â€“321, 538â€“546, 549â€“583. Demo page: `frontend/pages/dashboard.html` |
+| Assignment 5 â€” CSS positions and other properties | **Completed** | `frontend/pages/collection-centre.html` with `style.css` lines 323â€“584 â€” static 355, relative 369 & 466, absolute 377 & 487, fixed 503, sticky 345 & 455, plus z-index, top/right/bottom/left, width, height, margin, padding, border, border-radius, box-shadow, overflow, opacity |
+| Assignment 6 â€” JavaScript events and array functions | **Completed** | `frontend/js/main.js` â€” `collections` array (8 records), `DOMContentLoaded` start, events: `change` / `input` / `click` / `mouseover` / `mouseout`, functions: `forEach()` / `map()` / `filter()` / `find()` / `reduce()`. UI in `frontend/pages/dashboard.html`; styles appended to `frontend/css/style.css` |
+| Assignment 7 â€” JavaScript frontend functionality and form validation | **Completed** | `frontend/pages/farmers.html` â€” the Farmer Registration form (6 fields, `novalidate`, HTML5 attributes) + the "Farmers Registered in This Session" table. Logic in `frontend/js/main.js` section 6 â€” `formRules` list, checks `validateFarmerName()` / `validateMobile()` / `validateEmail()` / `validateVillage()` / `validateMilkQuantity()` / `validateFatPercentage()` / `rateForFat()`, interface `checkField()` / `checkWholeForm()` / `showFieldError()` / `clearFieldError()` / `clearAllFieldErrors()` / `focusFirstError()` / `setFormStatus()` / `readFormValues()` / `registerFarmer()` / `renderRegisteredFarmers()` / `successText()` / `startFarmerForm()`, events `submit` / `blur` / `input` / `reset`, `preventDefault()`. Styles appended to `frontend/css/style.css` |
 
-### 11.1 Known issues and gaps in Assignments 1–5
+### 11.1 Known issues and gaps in Assignments 1â€“5
 
 These are real, verified from the code. Being able to name them is a strength in a viva, not a
 weakness.
 
-1. **Specificity bug — `.tank-card`'s `padding-top` has no effect.**
+1. **Specificity bug â€” `.tank-card`'s `padding-top` has no effect.**
    `style.css` line 234 has `.stats-grid .stat-card { padding: 18px; }` with **two** class
    selectors (specificity 0,2,0). Lines 371, 544 and 564 set `padding-top` on `.tank-card` with
    **one** class selector (0,1,0). The shorthand wins, so the top padding stays 18px at every
    screen size. **Visible effect:** the `.status-badge` (top 8px, about 19px tall) overlaps the
    `<h3>` heading of each tank card. A fix would be a more specific selector such as
    `.stats-grid .tank-card { padding-top: 26px; }`.
-2. **One link still points to a page that does not exist.** `index.html` lines 74–75 and
-   `dashboard.html` lines 50–51 link to `pages/farmers.html` and `pages/milk.html`.
+2. **One link still points to a page that does not exist.** `index.html` lines 74â€“75 and
+   `dashboard.html` lines 50â€“51 link to `pages/farmers.html` and `pages/milk.html`.
    `pages/farmers.html` now exists (Assignment 7), so only `pages/milk.html` is still a
    placeholder for a future phase. `about.html` and `collection-centre.html` do not show the
    Farmers or Milk Collection links at all, so their menus are still shorter than the ones on
@@ -2980,26 +2980,26 @@ weakness.
    menu items; `about.html` and `collection-centre.html` show four. Also `index.html` does not
    put `class="active"` on its own Home link, so no menu item is highlighted on the home page.
 4. **`<aside>` is styled on only one page.** The aside rules live in the internal `<style>` of
-   `index.html` (lines 38–49). There is no `aside` rule in `style.css`, so the asides on
+   `index.html` (lines 38â€“49). There is no `aside` rule in `style.css`, so the asides on
    `dashboard.html` line 129 and `collection-centre.html` line 222 render unstyled.
 5. **`about.html` comments do not match its code.** Line 79 says "h3 is a sub-section heading"
-   but line 80 is `<h2>`, and line 7 claims the page shows h1, h2 and h3 — there is no `<h3>` on
+   but line 80 is `<h2>`, and line 7 claims the page shows h1, h2 and h3 â€” there is no `<h3>` on
    the page.
-6. **`AGENTS.md` is out of date.** Its "Current state (Phase 2)" block (lines 19–29) says
+6. **`AGENTS.md` is out of date.** Its "Current state (Phase 2)" block (lines 19â€“29) says
    `css/` is empty and lists only two pages, and line 49 calls `dashboard.html` a placeholder.
    Reality: five pages and a stylesheet of more than 800 lines. `docs/assignment-mapping.md` is
-   the accurate document. To be updated when convenient — not required for correctness of the
+   the accurate document. To be updated when convenient â€” not required for correctness of the
    project.
-7. **A comment in `style.css` is inaccurate.** Lines 330–331 list `.rate-ticker` under
+7. **A comment in `style.css` is inaccurate.** Lines 330â€“331 list `.rate-ticker` under
    `position: relative`, but `.rate-ticker` is `position: fixed` (line 503) and its children are
-   static — they are not placed against it.
+   static â€” they are not placed against it.
 8. **`style.css` is getting large.** It holds four assignments in one file with five separate
    media-query blocks, and `nav` is styled in both the Assignment 3 section (line 59) and the
    Assignment 5 section (line 344). Everything works, but splitting it into `base.css`,
    `responsive.css`, `positions.css` and `forms.css` would be cleaner.
 9. **Minor:** `about.html` line 39 and `collection-centre.html` line 58 use redundant
    self-referencing paths (`../pages/about.html` instead of `about.html`). `about.html` shows the
-   200×180 SVGs at 160×145, a slight squash. `.btn` and `nav a` have no `transition`, so hover
+   200Ã—180 SVGs at 160Ã—145, a slight squash. `.btn` and `nav a` have no `transition`, so hover
    changes are instant.
 10. **Not a bug, but know the answer:** `position: static` on `.centre-note` is a deliberate no-op.
     Deleting it changes nothing, and that is the correct answer if you are asked.
@@ -3015,10 +3015,10 @@ weakness.
   checked for `null` before use, so if the same file is later added to another page that lacks some
   of the Assignment 6 elements, the page still loads without errors.
 - Assignment 6 only **added** behaviour and UI to `dashboard.html`, plus new rules at the end of
-  `style.css`. No Assignment 1–5 markup, class name, or existing rule was removed or changed, so
+  `style.css`. No Assignment 1â€“5 markup, class name, or existing rule was removed or changed, so
   the layout of all four pages is exactly as before.
 - The known specificity bug in item 1 above was deliberately **not** fixed here, because that
-  would change the existing Assignment 3–5 layout. New Assignment 6 rules avoid repeating the
+  would change the existing Assignment 3â€“5 layout. New Assignment 6 rules avoid repeating the
   mistake by using selectors like `.stats-grid .stat-card.selected` instead of a bare
   `.stat-card.selected`.
 
@@ -3028,15 +3028,15 @@ weakness.
   `pages/farmers.html` link that the menu of `index.html` and `dashboard.html` already had as a
   placeholder, and it is a screen the society really needs (registering a milk producer).
 - Assignment 7 **added** `main.js` section 6 and one call (`startFarmerForm()`) at the end of
-  `startApp()`. Nothing in the Assignment 6 code above it was edited, and the Assignment 1–5
-  markup and CSS rules were not touched either — the new CSS is appended in its own block at the
+  `startApp()`. Nothing in the Assignment 6 code above it was edited, and the Assignment 1â€“5
+  markup and CSS rules were not touched either â€” the new CSS is appended in its own block at the
   end of `style.css`.
 - `startFarmerForm()` returns immediately when `#farmer-form` is missing, so `dashboard.html`,
   `index.html`, `about.html` and `collection-centre.html` are unaffected and stay error-free.
 - There is still **no** backend: no `action` attribute, no PHP, no MySQL, no `fetch()`, no JSON
   file, no Node/Express. A registered farmer only lives in the `registeredFarmers` array until the
   page is closed, and the aside on the page says so.
-- Assignments 8–16 are untouched: there is no `react-app/`, `php/`, `node-backend/` or
+- Assignments 8â€“16 are untouched: there is no `react-app/`, `php/`, `node-backend/` or
   `database/` folder in the project.
 
 ---
@@ -3044,4 +3044,62 @@ weakness.
 *Document created after Assignment 5, then updated after Assignment 6 (JavaScript events and array
 functions) and after Assignment 7 (JavaScript frontend functionality and form validation). Every
 code sample above was copied from the real files in this project.
+
+
+# Assignment 8 — React Components and JSX
+
+## A8.1 ReactJS in this project
+- ReactJS is a JavaScript library for building UIs with reusable components.
+- Used to demonstrate component-based UI, JSX and functional components.
+- Project location: react-app/ (Vite + React).
+
+## A8.2 Project structure (actual)
+```text
+react-app/
+├── index.html
+├── package.json
+├── vite.config.js
+├── public/
+└── src/
+    ├── App.jsx      // Root component
+    ├── App.css      // Styles
+    ├── main.jsx     // Entry point
+    ├── index.css    // Global styles
+    └── assets/
+```
+
+## A8.3 JSX
+- JSX = JavaScript XML.
+- Examples: expressions {siteTitle}, {totalFarmers}, {currentYear}; className used.
+
+## A8.4 Functional components created
+| Component | Purpose | File |
+|---|---|---|
+| Header | Site title/tagline | App.jsx |
+| Dashboard | Overview cards | App.jsx |
+| FarmerCard | Farmer details | App.jsx |
+| MilkCollectionCard | Collection details | App.jsx |
+| Footer | Contact/copyright | App.jsx |
+| App | Root component | App.jsx |
+
+## A8.5 How App connects components
+App renders Header, main (Dashboard + section with FarmerCard/MilkCollectionCard), Footer.
+
+## A8.6 How JSX is rendered
+src/main.jsx uses createRoot(document.getElementById('root')).render(<App />); index.html has <div id='root'></div>.
+
+## A8.7 How to run the React application
+cd react-app && npm run dev. Build: npm run build. Preview: npm run preview.
+
+## A8.8 Testing performed
+- Starts and renders correctly; all components render; no console errors.
+- Existing frontend/ (Assignments 1–7) remains untouched.
+- Assignment 9 features (useState/useEffect/props/events) NOT implemented.
+
+## A8.9 Files created/modified
+- Created: react-app/ (entire Vite React project).
+- Modified: docs/assignment-mapping.md, docs/viva-notes.md.
+
+
 Update this file after every future assignment.*
+

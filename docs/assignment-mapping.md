@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 5 — JavaScript (Assignments 6 and 7)
+Current project phase: Phase 6 - React (Assignment 8)
 
 ## Assignment → File/Feature
 
@@ -16,7 +16,7 @@ Current project phase: Phase 5 — JavaScript (Assignments 6 and 7)
 | 5 | CSS positions and other properties | `frontend/pages/collection-centre.html` + `frontend/css/style.css` (ASSIGNMENT 5 block: static / relative / absolute / fixed / sticky positions, z-index, top-right-bottom-left, width-height, margin, padding, border, border-radius, box-shadow, overflow, opacity) | ✅ Done |
 | 6 | JavaScript - basic events + array functions | External file: `frontend/js/main.js`; linked from `frontend/pages/dashboard.html` with `<script src="../js/main.js"></script>` at the end of `<body>`; UI = the "Today's Collection Register" section | ✅ Done |
 | 7 | JavaScript frontend functionality + form validation | `frontend/pages/farmers.html` (the Farmer Registration form) + `frontend/js/main.js` (section 6) | ✅ Done |
-| 8 | React - components, JSX | `react-app/` (planned) | ⏳ Pending |
+| 8 | React - components, JSX | `react-app/` - Vite-based React SPA with functional components (Header, Dashboard, FarmerCard, MilkCollectionCard, Footer) and JSX | ✅ Done |
 | 9 | React - props, state, hooks, events | `react-app/` (planned) | ⏳ Pending |
 | 10 | Fetch API + JSON | `frontend/js/api.js` (planned) | ⏳ Pending |
 | 11 | DOM manipulation + events | `frontend/js/main.js` (planned) | ⏳ Pending |
