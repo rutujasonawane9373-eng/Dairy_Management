@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 8 - DOM Manipulation and Event Handling (Assignment 11)
+Current project phase: Phase 9 - PHP + MySQL Database Connectivity and CRUD (Assignment 13)
 
 ## Assignment → File/Feature
 
@@ -20,13 +20,13 @@ Current project phase: Phase 8 - DOM Manipulation and Event Handling (Assignment
 | 9 | React - props, state, hooks, events | `react-app/src/App.jsx` - 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), `onClick` / `onChange` event handlers, conditional rendering for the badges, details block and "no farmer found" message | ✅ Done |
 | 10 | Fetch API + JSON | `react-app/src/ApiFarmerList.jsx` - `useEffect()` + `fetch()` + `response.json()` + `useState()`, records from `https://jsonplaceholder.typicode.com/users` drawn with `map()` and `key={farmer.id}`, loading message, error message + Retry. Rendered by `react-app/src/App.jsx:575` | ✅ Done |
 | 11 | DOM manipulation + event handling | `frontend/pages/collection-centre.html` (the "Add a Collection Entry" form + the tools and summary of "Today's Collection Log") + `frontend/js/main.js` section 7 | ✅ Done |
-| 12 | PHP - forms, validation, strings, sessions | `php/auth/` (planned) | ⏳ Pending |
-| 13 | PHP + MySQL - CRUD | `php/farmer/` (planned) | ⏳ Pending |
+| 12 | PHP - forms, validation, strings, sessions | `php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php` + `php/includes/{header,footer,functions}.php` | ✅ Done |
+| 13 | PHP + MySQL - CRUD | `php/db-crud/` (db-config, db-connect, db-farmers, db-validate, db-helpers, db-header, db-footer) + `php/db-crud/{index,farmer-create,farmer-list,farmer-edit,farmer-delete}.php` + `database/schema.sql` | ✅ Done |
 | 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (planned) | ⏳ Pending |
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 8 — Assignments 1-11)
+## Project structure (as of Phase 9 — Assignments 1-13)
 
 ```
 Dairy_Management/
@@ -40,7 +40,7 @@ Dairy_Management/
 │   │   │                         (loads js/main.js)
 │   │   └── farmers.html         Assignment 7 (farmer registration form)
 │   ├── css/
-│   │   └── style.css            Assignments 3, 4, 5, 6, 7 and 11
+│   │   └── style.css            Assignments 3, 4, 5, 6, 7, 11, 12 and 13
 │   ├── js/
 │   │   └── main.js              Assignment 6 + Assignment 7 + Assignment 11
 │   └── assets/
@@ -55,16 +55,149 @@ Dairy_Management/
 │       ├── App.jsx            Assignment 8 + Assignment 9 (+ renders Assignment 10)
 │       ├── App.css            styles of the React page, incl. the Assignment 10 block
 │       └── ApiFarmerList.jsx  Assignment 10 (fetch + JSON)
-├── docs/
-│   ├── assignment-mapping.md
-│   └── viva-notes.md
-└── php/, node-backend/, database/ are not created yet (Assignments 12-15)
+├── php/
+│   ├── index.php              Assignment 12 (PHP home)
+│   ├── register.php           Assignment 12 (form + $_POST + validation)
+│   ├── profile.php            Assignment 12 (reads $_SESSION)
+│   ├── logout.php             Assignment 12 (session_destroy)
+│   ├── includes/              Assignment 12 shared files
+│   │   ├── header.php
+│   │   ├── footer.php
+│   │   └── functions.php
+│   └── db-crud/               Assignment 13 (PHP + MySQL CRUD)
+│       ├── db-config.php      host, user, password, database, port, charset
+│       ├── db-connect.php     dbConnect() - the MySQLi connection + error page
+│       ├── db-farmers.php     the four CRUD operations, all prepared statements
+│       ├── db-validate.php    five server-side validation rules
+│       ├── db-helpers.php     safeText(), flash messages, the rate board
+│       ├── db-header.php      shared <head>, <header>, <nav>, database strip
+│       ├── db-footer.php      shared </main>, <footer>
+│       ├── index.php          connection check + map of the four operations
+│       ├── farmer-create.php  CREATE -> INSERT
+│       ├── farmer-list.php    READ   -> SELECT (+ search)
+│       ├── farmer-edit.php    UPDATE -> SELECT one, then UPDATE
+│       └── farmer-delete.php  DELETE -> two-step confirmation, then DELETE
+├── database/
+│   └── schema.sql             Assignment 13: CREATE DATABASE + CREATE TABLE
+│                             + 6 sample farmers
+└── docs/
+    ├── assignment-mapping.md
+    └── viva-notes.md
 ```
+
+`node-backend/` is not created yet (Assignments 14 and 15).
 
 There is still **one** JavaScript file for the whole `frontend/` part - `frontend/js/main.js` -
 and it is now loaded by **three** pages: `dashboard.html` (Assignment 6), `farmers.html`
 (Assignment 7) and `collection-centre.html` (Assignment 11). Every part of the script returns
 at once when the elements it needs are not on the page, so one file can serve all three.
+
+The five Assignment 13 pages load **no JavaScript at all**; their tables are drawn by
+`foreach` loops in PHP.
+
+## Assignment 13 detail — PHP + MySQL Database Connectivity and CRUD
+
+Folder: `php/db-crud/`, plus `database/schema.sql`. Assignment 13 was built **alongside**
+Assignment 12 rather than inside it, so `php/includes/` and the four Assignment 12 pages were
+not modified in any way.
+
+### How to run it
+
+```
+cd C:\...\Dairy_Management
+C:\xampp\php\php.exe -S localhost:8000
+```
+
+then open `http://localhost:8000/php/db-crud/`. The server must be started from the **project
+root**, because the pages link up two levels to `frontend/css/style.css`.
+
+The database must be created once with `database/schema.sql`, and the root password written
+into `DB_PASS` in `php/db-crud/db-config.php`.
+
+### 1. Database connection — `php/db-crud/db-connect.php`
+
+| Part | Code | Purpose |
+|---|---|---|
+| Settings | `db-config.php` | `DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`, `DB_PORT`, `DB_CHARSET`, `FARMERS_TABLE` — the only file that holds the password |
+| Open it | `$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);` | the whole of "database connectivity" in one line |
+| Character set | `$connection->set_charset(DB_CHARSET);` | must be `utf8mb4` on both sides, or Indian names are stored as `????` |
+| Error handling | `try / catch (mysqli_sql_exception $problem)` | PHP 8.1+ throws instead of only setting `connect_error` |
+| Error page | `dbShowError()` | prints a styled page with the real reason, then `exit` |
+| Close it | `dbDisconnect()` | ends the call politely |
+
+### 2. The table — `database/schema.sql`
+
+Database `dairy_management`, one table `farmers`:
+
+| Column | Type | Why |
+|---|---|---|
+| `id` | `INT AUTO_INCREMENT PRIMARY KEY` | MySQL numbers the farmers and never repeats a number |
+| `name` | `VARCHAR(60) NOT NULL` | a name is text, never a number |
+| `phone` | `VARCHAR(15) NOT NULL UNIQUE` | text, so a leading zero survives; `UNIQUE` stops a double registration |
+| `village` | `VARCHAR(60) NOT NULL` | the address |
+| `milk_quantity` | `DECIMAL(6,2) NOT NULL` | exact decimal, unlike `FLOAT` |
+| `fat_percentage` | `DECIMAL(3,1) NOT NULL` | 3% to 8% |
+| `created_at` | `TIMESTAMP DEFAULT CURRENT_TIMESTAMP` | written by MySQL, so the `INSERT` never sends a date |
+
+Plus `UNIQUE KEY uq_farmers_phone (phone)` and two `CHECK` constraints for milk and fat.
+6 sample farmers are inserted by the same file.
+
+### 3. The four CRUD operations — `php/db-crud/db-farmers.php`
+
+| CRUD | SQL | Function | Page | Type letters |
+|---|---|---|---|---|
+| Create | `INSERT` | `dbInsertFarmer()` | `farmer-create.php` | `sssdd` |
+| Read | `SELECT` | `dbSelectFarmers()` | `farmer-list.php` | `sss` |
+| Read one | `SELECT ... WHERE id = ?` | `dbSelectFarmerById()` | `farmer-edit.php`, `farmer-delete.php` | `i` |
+| Update | `UPDATE` | `dbUpdateFarmer()` | `farmer-edit.php` | `sssddi` |
+| Delete | `DELETE` | `dbDeleteFarmer()` | `farmer-delete.php` | `i` |
+
+`dbFarmerSummary()` adds the four summary cards with `COUNT()`, `SUM()` and `AVG()`. It uses
+`query()` on purpose — its SQL has no `?` and no typed text, so there is nothing to protect.
+
+### 4. Prepared statements — the same three steps in all five functions
+
+```php
+$statement = $connection->prepare($sql);          // 1. SQL once, with ? marks
+$statement->bind_param('sssdd', ...);             // 2. the types, then the values
+$statement->execute();                            // 3. run it
+```
+
+Type letters: `s` string, `i` integer, `d` double. They must appear in the **same order** as
+the `?` marks. `bind_param()` sends the values **separately** from the SQL text, so no typed
+value can ever become part of a command — that is SQL injection being prevented.
+
+### 5. Validation and error handling
+
+| Concern | Where | How |
+|---|---|---|
+| Five field rules | `db-validate.php` | `checkName()`, `checkPhone()`, `checkVillage()`, `checkMilkQuantity()`, `checkFatPercentage()`, run by `runFarmerValidation()` |
+| Validation before any SQL | `farmer-create.php`, `farmer-edit.php` | `count($errors) === 0` gates the write, so a wrong value never reaches MySQL |
+| Duplicate phone | `dbInsertFarmer()`, `dbUpdateFarmer()` | MySQL error **1062** is turned into a sentence instead of a stack trace |
+| Connection lost / no database | `db-connect.php` | `dbShowError()` writes a readable page listing the four things to check |
+| Missing id, deleted row, 0 changed rows | the CRUD functions | `affected_rows` is checked and reported honestly |
+| Delete safety | `farmer-delete.php` | two-step confirmation; the farmer's name must be typed correctly (`strcasecmp()`) |
+| SQL not prepared, no user input | `dbFarmerSummary()` | `query()` used deliberately, with the reason written in a comment |
+| Printing a value | `db-helpers.php` | `safeText()` = `htmlspecialchars()`, so a stored value can never become HTML |
+
+### 6. The two different kinds of danger — the point to make first in the viva
+
+| Danger | What it does | Stopped by |
+|---|---|---|
+| **SQL injection** | typed text becomes part of the SQL command | prepared statements (`db-farmers.php`) |
+| **XSS** | typed text becomes HTML code on the page | `htmlspecialchars()` via `safeText()` (`db-helpers.php`) |
+
+A complete project needs both. Assignment 13 demonstrates both.
+
+### 7. New CSS
+
+`frontend/css/style.css` ends with an `ASSIGNMENT 13` block (~225 lines): `.db-code`,
+`.db-value`, `.db-message` (+ `.db-ok` / `.db-error`), `.db-error-box`, `.db-danger-box`,
+`.db-search-form`, `.db-search-row`, `.db-action-link` (+ `.db-action-delete`), `.btn-danger`,
+`.db-confirm-row` and a `max-width: 600px` rule. Every page-level rule is scoped to
+`body.page-db`, which only the five A13 pages carry. **No rule above that block was changed**,
+so Assignments 1-12 look exactly the same. The file was only appended to — `git diff` shows
+insertions plus the old "no newline at end of file" marker.
 
 ## Assignment 11 detail - DOM manipulation and event handling
 
@@ -333,12 +466,16 @@ changed.
 No Axios, no PHP, no MySQL, no Node.js/Express, no local JSON file — only the browser's built-in
 `fetch()` against the public API above.
 
-## Assignments 12–16 — not implemented yet
+## Assignments 14–16 — not implemented yet
 
-- **Assignment 12 (PHP)** onwards have not been started. There is no `php/`, `node-backend/`
-  or `database/` folder in the project, no SQL anywhere and no server.
-- The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
-  `collection-centre.html` are still checked and stored **only in the browser**: neither form
-  has an `action` attribute and there is no PHP page behind it.
+- **Assignment 14 (Node.js + Express)** and **Assignment 15 (REST API)** have not been started.
+  There is no `node-backend/` folder in the project, no `package.json` outside `react-app/`,
+  and no API of any kind.
+- **Assignment 16 (complete integration)** cannot begin until 14 and 15 exist.
+- The Assignment 13 CRUD screens read and write the `dairy_management.farmers` table through
+  PHP + MySQLi. The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
+  `collection-centre.html` are still checked and stored **only in the browser** — neither has
+  an `action` attribute pointing at `php/db-crud/`, so joining those two screens to the database
+  is part of the final integration work.
 - `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the
-  React app is a separate Vite project that does not load it.
+  React app is a separate Vite project that does not load it, and no PHP page loads it either.

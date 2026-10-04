@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 11** (Phase 8 - DOM Manipulation and Event Handling, inside the `frontend/` pages). Assignments 12-16 are not built yet.
+> Last updated after **Assignment 13** (Phase 9 - PHP + MySQL Database Connectivity and CRUD, inside `php/db-crud/` and `database/schema.sql`). Assignment 12 (PHP) is also built, in `php/`. Assignments 14-16 are not built yet.
 
 ---
 
@@ -37,7 +37,9 @@ butter gold, dark chocolate brown. That is deliberate so the project looks like 
 | Behaviour | JavaScript (events, array functions, DOM) | Used â€” **Assignment 6** |
 | Images | Hand-written inline SVG | Used |
 | App framework | React (Vite) | **Used** â€” Assignments 8, 9 and 10 in `react-app/` |
-| Server / database | PHP, MySQL, Node.js + Express | **Not used yet** â€” later phases |
+| Server language | PHP 8 | **Used** — Assignment 12 in `php/`, Assignment 13 in `php/db-crud/` |
+| Database | MySQL 8 + MySQLi | **Used** — Assignment 13: database `dairy_management`, table `farmers` |
+| REST API server | Node.js + Express | **Not used yet** â€” later phases |
 
 There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by three pages â€”
 `frontend/pages/dashboard.html` (Assignment 6), `frontend/pages/farmers.html` (Assignment 7)
@@ -77,7 +79,8 @@ Dairy_Management/
 ```
 
 Folders that do **not** exist yet and must not be mentioned as if they do (note: `react-app/` DOES exist â€” Assignments 8, 9 and 10):
-`react-app/`, `php/`, `node-backend/`, `database/`.
+Only `node-backend/` is still missing (Assignments 14 and 15). `react-app/`, `php/` and
+`database/` all exist now — see section A13.13 for the verified tree.
 
 ### 1.4 How the frontend files are connected
 
@@ -3511,3 +3514,776 @@ section 7 simply stops at once on a page that has no collection log.
 8. **Remove Selected Row**, then **Remove Added Rows** - rows disappear; the 19 rows written
    in the HTML file are never removed by the second button.
 9. **Reset Log View** - everything is shown again with no marks.
+
+# Assignment 13 - PHP + MySQL Database Connectivity and CRUD
+
+Everything in this section is taken from the code that is actually in the repository.
+File names and function names are real.
+
+---
+
+## A13.1 Which files prove this assignment
+
+```
+database/schema.sql               the SQL that creates the database and the table
+php/db-crud/db-config.php         host, user, password, database, port, charset, table name
+php/db-crud/db-connect.php        dbConnect() - the MySQLi connection + the error page
+php/db-crud/db-farmers.php        THE FOUR CRUD OPERATIONS, all prepared statements
+php/db-crud/db-validate.php       five server-side validation rules
+php/db-crud/db-helpers.php        safeText(), one-time messages, the rate board
+php/db-crud/db-header.php         shared <head>, <header>, <nav>, database strip
+php/db-crud/db-footer.php         shared </main> and <footer>
+php/db-crud/index.php             connection check + the map of the four operations
+php/db-crud/farmer-create.php     CREATE  -> INSERT
+php/db-crud/farmer-list.php       READ    -> SELECT (with a search box)
+php/db-crud/farmer-edit.php       UPDATE  -> SELECT one row, then UPDATE
+php/db-crud/farmer-delete.php     DELETE  -> two-step confirmation, then DELETE
+```
+
+**Assignment 12 was not touched.** `php/index.php`, `php/register.php`, `php/profile.php`,
+`php/logout.php` and `php/includes/` are unchanged; Assignment 13 lives in its own
+`php/db-crud/` folder with its own header and footer, for exactly that reason.
+
+**How to run it** — start the server from the **project root**, not from inside
+`php/db-crud/`, because the pages link up two levels to `frontend/css/style.css`:
+
+```
+cd C:\...\Dairy_Management
+C:\xampp\php\php.exe -S localhost:8000
+```
+
+Then open `http://localhost:8000/php/db-crud/`.
+
+**A `.php` file must always be opened through a server.** Double-clicking it in Windows
+shows the source code, because PHP is a language the *server* has to run.
+
+---
+
+## A13.2 Database connection
+
+### The one line that opens the connection
+
+`php/db-crud/db-connect.php`, inside `dbConnect()`:
+
+```php
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+```
+
+`mysqli` = **MySQL System Improvement**. The five arguments, in order, are
+**host, user, password, database, port**. None of them is typed literally — all five come
+from `db-config.php`, so the password is written in exactly one place:
+
+| Constant | Meaning | Value used |
+|---|---|---|
+| `DB_HOST` | where the MySQL server is | `127.0.0.1` |
+| `DB_USER` | which MySQL account PHP logs in as | `root` |
+| `DB_PASS` | that account's password | *your own password* |
+| `DB_NAME` | which database to open | `dairy_management` |
+| `DB_PORT` | which port to knock on | `3306` |
+
+`localhost` and `127.0.0.1` both mean "this same computer". Use `localhost` when the
+MySQL server is on a different machine.
+
+### Character set — the line that must not be forgotten
+
+```php
+$connection->set_charset(DB_CHARSET);      // DB_CHARSET is 'utf8mb4'
+```
+
+It tells the server "everything I send you is utf8mb4". `utf8mb4` can store every character
+of every language, so a village name written in Devanagari is saved and read back
+correctly. **It is the single most common cause of `????` instead of letters in a PHP
+project.** The rule to remember: the column's charset, the table's charset and
+`set_charset()` must all agree.
+
+### Error handling on the connection
+
+```php
+try {
+    $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+    $connection->set_charset(DB_CHARSET);
+    return $connection;
+} catch (mysqli_sql_exception $problem) {
+    dbShowError('Cannot connect to the database', $problem->getMessage(), '...');
+}
+```
+
+**Why `try / catch` and not the `if ($connection->connect_error)` seen in older books?**
+Since **PHP 8.1** the mysqli extension reports problems by *throwing an exception* instead of
+only setting an error flag. Old tutorials still work if `mysqli_report(MYSQLI_REPORT_OFF);`
+is called first. `try / catch` needs no such switch, which is why this project uses it.
+`php -v` on this machine reports PHP 8.2.12.
+
+`dbShowError()` prints a complete, styled page naming the real reason
+(`$problem->getMessage()`), listing the four things to check, and then calls `exit`. It is
+deliberately self-contained — it must be able to work even when the rest of the project
+cannot be loaded.
+
+### Closing the connection
+
+`dbDisconnect($connection)` calls `$connection->close()`. PHP would do it by itself at the
+end of the request, but writing it down is good practice and looks professional in a viva.
+
+---
+
+## A13.3 The table
+
+`database/schema.sql` creates one database and one table. Run it once:
+
+```
+mysql -u root -p < database\schema.sql
+```
+
+or import the file through phpMyAdmin's **Import** tab. It is safe to run more than once.
+
+### The seven columns
+
+```sql
+CREATE TABLE farmers (
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    name           VARCHAR(60)  NOT NULL,
+    phone          VARCHAR(15)  NOT NULL,
+    village        VARCHAR(60)  NOT NULL,
+    milk_quantity  DECIMAL(6,2) NOT NULL,
+    fat_percentage DECIMAL(3,1) NOT NULL,
+    created_at     TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE KEY uq_farmers_phone (phone),
+
+    CONSTRAINT chk_farmers_milk CHECK (milk_quantity > 0 AND milk_quantity <= 100),
+    CONSTRAINT chk_farmers_fat  CHECK (fat_percentage >= 3 AND fat_percentage <= 8)
+) ENGINE = InnoDB;
+```
+
+| Column | Why this type, and not another |
+|---|---|
+| `id INT AUTO_INCREMENT PRIMARY KEY` | **MySQL** numbers the farmers (1, 2, 3...) and never repeats a number, even after a row is deleted. `PRIMARY KEY` = unique + never empty + indexed, so a lookup by id uses the index and is instant. |
+| `name VARCHAR(60) NOT NULL` | A name is **text, never a number**. `VARCHAR(n)` holds up to *n* characters. `NOT NULL` forbids an empty value. |
+| `phone VARCHAR(15) NOT NULL UNIQUE` | Kept as **text on purpose**. If it were `INT`, the leading zero of `0987654321` would disappear, `+91` could not be stored, and a 10-digit number would sit uncomfortably near the 32-bit integer range. `UNIQUE` makes a double registration impossible. |
+| `village VARCHAR(60) NOT NULL` | The address. |
+| `milk_quantity DECIMAL(6,2) NOT NULL` | **Exact** decimal — up to 9999.99, so `18.50` is stored and read back as exactly 18.50. `FLOAT`/`DOUBLE` are binary and would give answers like 18.49999999, which is why they are never used for money or measurements. |
+| `fat_percentage DECIMAL(3,1) NOT NULL` | `3,1` = up to 3 digits with 1 after the point, i.e. 3% to 9.9%. The society pays between 3% and 8%. |
+| `created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP` | **MySQL fills it in**, so the `INSERT` never has to send a date and the visitor cannot lie about it. |
+
+### The three extra safety rules
+
+| Rule | Meaning |
+|---|---|
+| `UNIQUE KEY uq_farmers_phone (phone)` | The same mobile number cannot appear twice. MySQL raises **error 1062, "Duplicate entry"**, which the project turns into a sentence. |
+| `CHECK (milk_quantity > 0 AND milk_quantity <= 100)` | The real range of litres. `CHECK` constraints are enforced by MySQL 8.0.16 and later. |
+| `CHECK (fat_percentage >= 3 AND fat_percentage <= 8)` | The real range of fat. |
+| `ENGINE = InnoDB` | The default, and the one that supports foreign keys, transactions and `CHECK`. |
+
+The file also adds `COMMENT '...'` to each column, which is stored with the column and shown
+by `DESCRIBE farmers;` in phpMyAdmin.
+
+**Layering, and this is worth a mark:** PHP validation is the *friendly* first gate — it
+paints a red box next to a field. The `CHECK` and `UNIQUE` rules are the *hard* guarantee —
+they hold even if some other program inserts a row with raw SQL.
+
+### Two commands to remember for the viva
+
+```sql
+DESCRIBE farmers;              -- the columns and their types
+SHOW CREATE TABLE farmers;     -- the whole CREATE TABLE statement, with the rules
+```
+
+`SHOW TABLES;` must print exactly one line, `farmers`.
+
+---
+
+## A13.4 CRUD - the four operations
+
+All five SQL statements live in **one** file, `php/db-crud/db-farmers.php`. No page writes
+SQL itself; the pages only read a form and call a function. That separation is the reason
+the whole assignment is easy to show.
+
+| CRUD | SQL | Function | Called by | `bind_param` types |
+|---|---|---|---|---|
+| **Create** | `INSERT` | `dbInsertFarmer()` | `farmer-create.php` | `sssdd` |
+| **Read** | `SELECT` | `dbSelectFarmers()` | `farmer-list.php` | `sss` |
+| **Read one** | `SELECT ... WHERE id = ?` | `dbSelectFarmerById()` | `farmer-edit.php`, `farmer-delete.php` | `i` |
+| **Update** | `UPDATE` | `dbUpdateFarmer()` | `farmer-edit.php` | `sssddi` |
+| **Delete** | `DELETE` | `dbDeleteFarmer()` | `farmer-delete.php` | `i` |
+
+Plus `dbFarmerSummary()`, which produces the four summary cards with `COUNT()`, `SUM()` and
+`AVG()`.
+
+### The exact statements
+
+**Create** — `dbInsertFarmer()`
+
+```php
+$sql = "INSERT INTO " . FARMERS_TABLE . "
+            (name, phone, village, milk_quantity, fat_percentage)
+        VALUES (?, ?, ?, ?, ?)";
+```
+
+`created_at` is **not** in the list, because the column fills itself in. The five `name`
+attributes of the form match the five column names exactly — that is deliberate, and it is
+why the statement reads like the form.
+
+**Read** — `dbSelectFarmers()`
+
+```php
+$sql = "SELECT id, name, phone, village, milk_quantity, fat_percentage, created_at
+        FROM " . FARMERS_TABLE;
+if ($searchText !== '') {
+    $sql .= " WHERE name LIKE ? OR village LIKE ? OR phone LIKE ?";
+}
+$sql .= " ORDER BY id DESC";
+```
+
+One prepared statement serves both cases. With a search there are three `?` and the type list
+is `sss`; without one, the same statement is used with nothing bound at all. `%` is SQL's own
+wildcard — `LIKE '%ram%'` finds `Ramesh` anywhere inside the text — and because it belongs to
+the *search* and not to the SQL syntax, it is bound as a value.
+
+**Update** — `dbUpdateFarmer()`
+
+```php
+$sql = "UPDATE " . FARMERS_TABLE . "
+        SET name = ?, phone = ?, village = ?,
+            milk_quantity = ?, fat_percentage = ?
+        WHERE id = ?";
+```
+
+Six `?` and the type list `sssddi`. The `id` comes from a **hidden field**:
+
+```html
+<input type="hidden" id="edit-id" name="id" value="4">
+```
+
+`type="hidden"` is invisible to the farmer but travels with the form like any other box.
+Without it PHP would not know *which* row to change, and the `UPDATE` would have no
+`WHERE` clause — it would rewrite the whole table.
+
+**Delete** — `dbDeleteFarmer()`
+
+```php
+$sql = "DELETE FROM " . FARMERS_TABLE . " WHERE id = ?";
+```
+
+### Reading the result back
+
+```php
+$statement->execute();
+$result = $statement->get_result();
+while ($row = $result->fetch_assoc()) {
+    $farmers[] = $row;
+}
+```
+
+- `get_result()` hands back the whole result set. It needs the **mysqlnd** driver, which is
+  compiled into PHP by default (`php -m` will list it).
+- `fetch_assoc()` returns the next row as an array of `column => value` pairs, and returns
+  `NULL` when there are no rows left — so a `while` loop is the natural way to walk the set.
+- MySQLi returns numbers as **strings** (`"18.50"`), which is why the pages cast them with
+  `(float)` before using `number_format()` or the rate board.
+
+### Two MySQL numbers the project actually uses
+
+| Property | Used for | Where |
+|---|---|---|
+| `$connection->insert_id` | the new row's `AUTO_INCREMENT` number, straight after an `INSERT` | `dbInsertFarmer()` |
+| `$statement->affected_rows` | how many rows really changed | the `UPDATE` and the `DELETE` |
+
+**A trap worth knowing:** `affected_rows` returns **0** when the new values are *identical*
+to the old ones. That is **not an error**, so `dbUpdateFarmer()` answers "nothing was
+changed" instead of pretending it worked. For a `DELETE`, 0 means there was no such row,
+which *is* worth reporting — a row deleted from another tab a second ago.
+
+### What is deliberately NOT stored
+
+The farmer list shows **Rate** and **Amount** columns, but the table has no such columns.
+They are worked out by `rateForFat()` and `dailyAmount()` in `db-helpers.php`, using the same
+rate board as Assignments 6, 7, 11 and 12 (fat ≥ 3.5% → Rs 42/litre, below → Rs 40/litre).
+
+The reasoning is the exam answer: **a value that can always be calculated should not be
+stored twice**, because two copies can disagree.
+
+---
+
+## A13.5 Prepared statements - the heart of the assignment
+
+### The wrong way (used nowhere in this project)
+
+```php
+$sql = "INSERT INTO farmers (name) VALUES ('" . $name . "')";
+$connection->query($sql);
+```
+
+The typed value is *glued into the SQL text*. If a farmer types
+`'); DROP TABLE farmers; --`, that text stops being data and becomes part of the command.
+MySQL then runs two statements: insert the row, and drop the table. This is **SQL
+injection**.
+
+### The right way (used in all five functions)
+
+```php
+$sql = "INSERT INTO farmers (name, phone, village, milk_quantity, fat_percentage)
+        VALUES (?, ?, ?, ?, ?)";
+
+$statement = $connection->prepare($sql);                 // 1. SQL once, with ? marks
+$statement->bind_param('sssdd', $name, $phone, $village, $milk, $fat);   // 2. types + values
+$statement->execute();                                   // 3. run it
+$statement->close();
+```
+
+### What "prepared" actually means
+
+1. **`prepare($sql)`** sends the SQL to the database with `?` marks instead of values, and
+   the server *parses and plans* it right away.
+2. **`bind_param('sssdd', ...)`** says what **type** each `?` is, and then attaches the
+   values. They travel in a **separate channel** from the SQL text.
+3. **`execute()`** runs it.
+
+Because the two never mix, no typed text can ever become a command. The values also arrive
+as **data types** (string / integer / double) rather than as text, which is both safer and
+faster — this is exactly the "prepared execution" advantage that repeated execution of the
+same statement is meant to exploit.
+
+### The type letters
+
+| Letter | Type | Used for |
+|---|---|---|
+| `s` | string | `name`, `phone`, `village`, the search text |
+| `i` | integer | `id` |
+| `d` | double | `milk_quantity`, `fat_percentage` |
+
+**The letters must appear in the same order as the `?` marks.** This is the single most
+common mistake in an exam, and this project uses three different lists on purpose:
+`sssdd` (insert), `sssddi` (update), `i` (delete/read one).
+
+### The one honest exception
+
+`dbFarmerSummary()` uses `$connection->query()`, not a prepared statement:
+
+```php
+$sql = "SELECT COUNT(*) AS farmer_count, SUM(milk_quantity) AS total_milk,
+               AVG(fat_percentage) AS average_fat
+        FROM " . FARMERS_TABLE;
+```
+
+A prepared statement exists to protect text that came from a **user**. This SQL has no `?`
+and no typed text inside it — it is a fixed sentence. Using `prepare()` here would be
+copy-paste habit, not safety. The four operations that *do* take user input all use prepared
+statements. **That is the rule: "always prepare" is wrong, "always prepare user input" is
+right.**
+
+---
+
+## A13.6 Validation
+
+`php/db-crud/db-validate.php`. One function per field, and each returns `''` for accepted or
+a sentence for rejected. It never touches the database and never prints anything, which
+makes each rule testable on its own.
+
+| Function | Rule |
+|---|---|
+| `checkName()` | not empty; 3-60 characters; only letters, spaces, dot, apostrophe, hyphen |
+| `checkPhone()` | not empty; spaces/dashes removed first; exactly 10 digits starting 6-9 |
+| `checkVillage()` | not empty; 3-60 characters |
+| `checkMilkQuantity()` | `is_numeric()`; 0.5 to 100 litres |
+| `checkFatPercentage()` | `is_numeric()`; 3 to 8 |
+| `runFarmerValidation()` | runs all five, returns **only** the failures |
+| `buildFarmerValues()` | `trim()`s and casts the two numbers to `float` |
+
+Three details worth being able to explain:
+
+- **`is_numeric()`, not a bare `(float)`.** `(float) "abc"` quietly becomes `0`, so the
+  value would be rejected for the *wrong reason* ("below 0.5") and the farmer would never
+  learn that `abc` is not a number at all.
+- **`preg_match('/^[6-9][0-9]{9}$/', $phone)`** — `[6-9]` is the first digit, `[0-9]{9}` is
+  nine more digits, `^` anchors the start and `$` anchors the end, so the whole string must
+  match.
+- **`str_replace([' ', '-', '+'], '', $phone)`** — `str_replace()` given an *array* replaces
+  every listed character in one call, so `98765 43210` is stored as `9876543210`.
+
+**Why validate on the server when the HTML already has `required` and `pattern`?**
+Because an HTML rule is only a suggestion to the browser. Anybody can turn JavaScript off,
+type `farmer-create.php` into the address bar and send a form without ever opening ours, or
+run a script that posts directly. The browser check is for the farmer's convenience; **PHP
+decides.**
+
+**Validation runs before any SQL.** On `farmer-create.php` the write is inside
+`if (count($errors) === 0)`, so a wrong value never reaches MySQL. That ordering is the
+whole point of a validation layer.
+
+---
+
+## A13.7 Error handling - all seven kinds
+
+| What can go wrong | Where it is handled | What the visitor sees |
+|---|---|---|
+| MySQL not running / wrong password / unknown database | `dbConnect()` → `catch` → `dbShowError()` | A styled page naming the real MySQL message and listing the four things to check |
+| A value is rejected by a rule | `runFarmerValidation()` | A red box beside each bad field, plus a list of every rejection with the reason |
+| The same phone number twice | MySQL error **1062**, caught in `dbInsertFarmer()` / `dbUpdateFarmer()` | "This mobile number is already registered. Please check the number and try again." |
+| No id in the address bar, or an id that no longer exists | `dbSelectFarmerById()` returns `null`; the page says so and offers a link | "No farmer was found with number 9." |
+| `UPDATE` where nothing actually differs | `affected_rows === 0` | "Nothing was changed, because the farmer already had exactly these values." |
+| `DELETE` of a row that is already gone | `affected_rows === 0` | "No farmer was found with number 9, so nothing was deleted." |
+| The search matches nothing | `count($farmers) === 0` | "No farmer matches "…". Show all farmers instead." |
+
+**Turning an error number into a sentence** is what separates a usable application from a
+screen full of SQL. `1062` means "duplicate unique key", and the visitor only needs
+"this number is already registered".
+
+**`dbShowError()` also calls `http_response_code(500)`**, which sets the HTTP status to
+*Internal Server Error*. It prints nothing visible, but a correct status line is part of
+correct error handling.
+
+---
+
+## A13.8 The Post / Redirect / Get pattern
+
+Used by all three write pages. It is the answer to "what happens if the user presses F5?".
+
+```
+farmer-create.php   the POST arrives, the INSERT runs
+        |
+        |  dbFlashSet('ok', '...');        <- park the message in the session
+        |  header('Location: farmer-list.php');
+        |  exit;
+        v
+farmer-list.php     a GET only - safe to refresh any number of times
+```
+
+- **`header()`** writes a line into the HTTP response *instead of* printing text, and the
+  browser then asks for the other page.
+- **`exit;`** stops the script. Without it PHP would carry on printing the form below, and
+  the browser would report *"headers already sent"* — and pressing F5 would insert the same
+  farmer a second time.
+- **`dbFlashSet()` / `dbFlashTake()`** park the success sentence in `$_SESSION` for the
+  length of one redirect, because a redirect throws away everything printed so far.
+  `dbFlashTake()` also **deletes** the message in the same call, which is why it appears
+  exactly once and does not come back on F5.
+
+Assignment 12 introduced `session_start()` and the flash idea; Assignment 13 reuses both
+rather than inventing a second mechanism.
+
+---
+
+## A13.9 Why the delete takes two steps
+
+`farmer-delete.php?id=4` first **reads** the row with a prepared `SELECT` and shows exactly
+what is about to be lost, including the daily milk value. The record is removed only after
+the farmer's name has been typed correctly into the confirmation box:
+
+```php
+$typedConfirmation = postField('confirm_name');
+
+if ($typedConfirmation === '') {
+    // "Nothing was deleted, because the confirmation box was empty."
+} elseif (strcasecmp($typedConfirmation, $deletedName) !== 0) {
+    // "Nothing was deleted, because the typed name does not match ..."
+} else {
+    $result = dbDeleteFarmer($connection, $farmerId);   // the only DELETE in the project
+}
+```
+
+`strcasecmp()` compares two strings ignoring capital letters and returns **0** when they are
+the same, so `ramesh patil` is accepted for `Ramesh Patil`. The whole name must be typed,
+so a single letter does not pass.
+
+The "Keep the farmer" button is a plain **link**, not a submit button, so the only element
+on the page that can reach the database is the red one.
+
+The row is re-read on the second step as well, so a farmer deleted from another browser tab
+in the meantime is reported honestly instead of being reported as a success.
+
+**Said honestly, this is not real security:** it is a speed bump for a human. A real form
+would also check a login and compare a random CSRF token from the session. The page says so
+in its own `<aside>`, which is a good answer if it is questioned.
+
+---
+
+## A13.10 SQL injection vs XSS - the two dangers, and the two answers
+
+This is the single most valuable thing to say in this viva, because the two are constantly
+confused.
+
+| | SQL injection | XSS (Cross-Site Scripting) |
+|---|---|---|
+| What goes wrong | Typed text becomes part of the **SQL command** | Typed or stored text becomes **HTML code** in the page |
+| Example | a farmer types `'); DROP TABLE farmers; --` | a farmer stores the name `<script>alert(1)</script>` |
+| Where it would run | in the database | in someone's browser |
+| The answer | **prepared statements** | **`htmlspecialchars()`** |
+| Used in this project | `db-farmers.php`, all five functions | `db-helpers.php` → `safeText()`, on every value printed |
+
+```php
+function safeText(string $text): string
+{
+    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+}
+```
+
+`htmlspecialchars()` turns `< > & " '` into HTML entities, so the browser shows the
+characters instead of treating them as markup. `ENT_QUOTES` means "also escape the quote
+marks", which closes the attribute-breaking variant. Every value that came out of `$_POST`,
+`$_GET` or the database is printed through `safeText()` — including the values **read back
+from MySQL**, because a row can be inserted by any other program.
+
+Assignment 12 already introduced `safeText()` for the same reason. **A complete project
+needs both defences.**
+
+---
+
+## A13.11 The five pages, one purpose each
+
+| Page | What it does | Which SQL runs |
+|---|---|---|
+| `index.php` | Opens the connection and reports `SELECT VERSION()`, `USER()`, `DATABASE()`; shows the column table, the summary cards and the map of the four operations | none of the four CRUD statements |
+| `farmer-create.php` | Five-field form → validate → insert → redirect | `INSERT` |
+| `farmer-list.php` | Search box + the whole table, drawn by a `foreach` loop; summary cards | `SELECT` (and `COUNT`/`SUM`/`AVG`) |
+| `farmer-edit.php` | Loads one row into the boxes, validates, updates. Two statements, because reading the current values is itself a database operation | `SELECT ... WHERE id = ?` then `UPDATE` |
+| `farmer-delete.php` | Shows the row, asks for the name, deletes | `SELECT ... WHERE id = ?` then `DELETE` |
+
+**None of them loads JavaScript.** The tables are drawn by PHP `foreach` loops and the
+search box is a plain `<form method="get">`. `get_result()` → `fetch_assoc()` → `foreach`
+is the whole rendering pipeline.
+
+---
+
+## A13.12 The new CSS
+
+`frontend/css/style.css` ends with an `ASSIGNMENT 13` block of about 225 lines:
+`.db-code`, `.db-value`, `.db-message` (+ `.db-ok` / `.db-error`), `.db-error-box`,
+`.db-danger-box`, `.db-search-form`, `.db-search-row`, `.db-action-link` (+
+`.db-action-delete`), `.btn-danger`, `.db-confirm-row`, plus a `max-width: 600px` rule.
+
+Every page-level rule is written as `body.page-db .something`, and only the five A13 pages
+carry `class="page-db"` on their `<body>`. **The file was only appended to** — `git diff`
+shows insertions plus the old "no newline at end of file" marker, so Assignments 1-12 look
+exactly the same. This is the same pattern the `ASSIGNMENT 11` and `ASSIGNMENT 12` blocks
+already used.
+
+Most boxes reuse classes that already existed: `.centre-note`, `.log-window`, `.farmer-form`,
+`.form-grid`, `.form-row`, `.field-hint`, `.error-message`, `.form-buttons`, `.btn`,
+`.btn-light`, `.flex-row`, `.flex-item`, `.profile-list`, `.required-mark`.
+
+---
+
+## A13.13 Files created / modified for Assignment 13
+
+**Created (13):**
+
+- `database/schema.sql`
+- `php/db-crud/db-config.php`
+- `php/db-crud/db-connect.php`
+- `php/db-crud/db-farmers.php`
+- `php/db-crud/db-validate.php`
+- `php/db-crud/db-helpers.php`
+- `php/db-crud/db-header.php`
+- `php/db-crud/db-footer.php`
+- `php/db-crud/index.php`
+- `php/db-crud/farmer-create.php`
+- `php/db-crud/farmer-list.php`
+- `php/db-crud/farmer-edit.php`
+- `php/db-crud/farmer-delete.php`
+
+**Modified (3):**
+
+- `frontend/css/style.css` — appended the `ASSIGNMENT 13` block only
+- `docs/assignment-mapping.md` — A12 and A13 marked Done, A14-A16 Pending, plus this
+  assignment's detail section and the corrected project tree
+- `docs/viva-notes.md` — this section, plus the "last updated" line, the technology table
+  and the "folders that do not exist" note
+
+**Deliberately NOT touched:** `frontend/index.html`, the other four HTML pages,
+`frontend/js/main.js`, the first three SVG assets, everything in `react-app/`, and every
+Assignment 12 file (`php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php`,
+`php/includes/`).
+
+---
+
+## A13.14 Viva questions and answers - Assignment 13
+
+**Q1. What is a database?**
+A organised collection of related data that is stored permanently, so it survives the
+computer being switched off — unlike a PHP session, which is a temporary file on the server.
+In this project it is `dairy_management`, created by `database/schema.sql`.
+
+**Q2. What is MySQL / a DBMS?**
+MySQL is **DBMS** software (Database Management System). It stores the data, answers SQL
+questions about it, and protects it — uniqueness, ranges, permissions.
+
+**Q3. What is SQL?**
+**Structured Query Language** — the language used to ask a DBMS for data. Four commands are
+used here: `CREATE`, `SELECT`, `INSERT`, `UPDATE`, `DELETE`. It is *declarative*: you say
+**what** you want, and the DBMS decides **how** to get it.
+
+**Q4. What is the difference between MySQLi and PDO?**
+Both are PHP's ways to reach MySQL.
+- **MySQLi** — *i* = "improved". MySQL-specific, marginally faster with the classic
+  `prepare()` / `bind_param()` / `execute()` steps.
+- **PDO** — *PHP Data Objects*. Database-agnostic, so the same code can be pointed at MySQL,
+  PostgreSQL or SQLite by changing one connection string, and its
+  `$statement->execute([...])` style is shorter.
+
+This project chose **MySQLi** because the three steps are the ones printed in most textbooks
+and are easiest to show one by one.
+
+**Q5. Show me how the database is connected.**
+`new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT)` inside `dbConnect()`, followed by
+`set_charset('utf8mb4')`. The five values come from `db-config.php`, and a `try / catch`
+prints a readable error page if the connection fails.
+
+**Q6. What is a prepared statement, and why is it used?**
+A statement whose SQL is sent to the database **once with `?` marks instead of values**, and
+whose values are attached separately by `bind_param()` and sent in a **different channel**.
+No typed text can therefore become part of the SQL command, which removes **SQL injection**.
+The values also travel with a data type, which is safer and faster.
+
+**Q7. Why is the old way dangerous? Show the difference.**
+
+```php
+// DANGEROUS - the value becomes part of the command
+$connection->query("INSERT INTO farmers (name) VALUES ('" . $name . "')");
+
+// SAFE - the value is data, never a command
+$statement = $connection->prepare("INSERT INTO farmers (name) VALUES (?)");
+$statement->bind_param('s', $name);
+$statement->execute();
+```
+
+With `'); DROP TABLE farmers; --` the first version deletes the table; the second inserts a
+row whose name is that text.
+
+**Q8. What do `s`, `i` and `d` mean in `bind_param`?**
+`s` = string, `i` = integer, `d` = double. They must appear **in the same order as the `?`
+marks** — `'sssdd'` for the insert, `'sssddi'` for the update, `'i'` for the delete. Saying
+this correctly is worth a mark on its own.
+
+**Q9. What is a primary key? Why `AUTO_INCREMENT`?**
+A **primary key** is the column that identifies a row: unique, never empty, and indexed, so
+lookups by it are fast. `AUTO_INCREMENT` makes MySQL number the rows itself (1, 2, 3...) and
+never reuse a number, even after a row is deleted — so a deleted farmer's number can never
+later belong to somebody else.
+
+**Q10. Why is `phone` a `VARCHAR` and not a number?**
+A phone number is an **identifier, not a quantity** — you never do arithmetic on it. If it
+were `INT`, a leading zero would be lost (`0987654321` → `987654321`), `+91` could not be
+stored, and zeros in the middle would be awkward. `VARCHAR` keeps every character exactly
+as typed. The same rule applies to a student **roll number** and a **postal PIN**.
+
+**Q11. What are the `DECIMAL(6,2)` numbers?**
+`6` = up to 6 digits in total, `2` = up to 2 of them after the point, so 9999.99.
+`DECIMAL` is stored **exactly**, unlike `FLOAT`, which is binary and would return
+18.49999999. Money and measurements must use `DECIMAL`.
+
+**Q12. What does `NOT NULL`, `UNIQUE` and `CHECK` do?**
+- `NOT NULL` — the column can never be left empty.
+- `UNIQUE` — no two rows may share the value (used on `phone`; MySQL raises error **1062**).
+- `CHECK (condition)` — the value must satisfy the condition (used for the milk and fat
+  ranges). Enforced by MySQL 8.0.16 and later.
+
+**Q13. What is the difference between SQL injection and XSS?**
+Injection = typed text becomes part of the **SQL command**; stopped by **prepared
+statements**. XSS = text becomes **HTML code** in someone's browser; stopped by
+**`htmlspecialchars()`**. This project uses both: `safeText()` in `db-helpers.php` on every
+printed value, prepared statements in `db-farmers.php`.
+
+**Q14. What does CRUD stand for, and where is each letter?**
+**Create, Read, Update, Delete.**
+- Create → `dbInsertFarmer()` / `INSERT` → `farmer-create.php`
+- Read → `dbSelectFarmers()`, `dbSelectFarmerById()` / `SELECT` → `farmer-list.php`,
+  `farmer-edit.php`, `farmer-delete.php`
+- Update → `dbUpdateFarmer()` / `UPDATE` → `farmer-edit.php`
+- Delete → `dbDeleteFarmer()` / `DELETE` → `farmer-delete.php`
+
+All five statements are in **one** file, `php/db-crud/db-farmers.php`.
+
+**Q15. Why does the edit form carry a hidden `id` field?**
+The `UPDATE` needs `WHERE id = ?`. The id must travel **with the form**, so it comes from
+`<input type="hidden" name="id" value="4">`, which is invisible to the farmer but posted like
+any other field. It is still bound as an integer (`'i'`), never pasted into the SQL. Without
+it, the statement would have no `WHERE` clause and would rewrite the entire table.
+
+**Q16. Why redirect after a successful insert instead of printing "done"?**
+It is the **Post / Redirect / Get** pattern. If the page stayed on itself, pressing F5 would
+resend the POST and save the same farmer a second time. Redirecting to a page that only
+reads with `GET` makes the refresh harmless. The success sentence is carried across in the
+session (`dbFlashSet()` / `dbFlashTake()`) because a redirect throws away printed output.
+
+**Q17. What is `$connection->insert_id`?**
+The `AUTO_INCREMENT` value MySQL gave to the row just inserted — the fastest way to learn the
+id of a new row without another `SELECT`.
+
+**Q18. What is `affected_rows`, and what does 0 mean?**
+How many rows an `UPDATE` or `DELETE` really changed.
+- On an `UPDATE`, **0 means the values were identical**, which is **not an error** — the page
+  says "nothing was changed".
+- On a `DELETE`, **0 means there was no such row** — worth reporting, because the row may
+  have been removed from another tab already.
+
+**Q19. Why does one page use `query()` instead of a prepared statement?**
+A prepared statement protects text that came from a **user**. `dbFarmerSummary()`'s SQL has
+no `?` and no typed text, so there is nothing to protect and `prepare()` would be habit, not
+safety. **The rule is "always prepare user input", not "always prepare".** The four
+operations that do take user input all use prepared statements.
+
+**Q20. How do you know the CRUD really reads and writes MySQL?**
+1. Stop the MySQL service and refresh — the rows are replaced by a written error, so they
+   cannot have come from the HTML file (which contains no farmer at all).
+2. Open the table in phpMyAdmin while the page is open — the same rows appear.
+3. Run `SELECT * FROM farmers;` in phpMyAdmin's SQL tab — the same rows come back.
+4. Delete a row in phpMyAdmin and press F5 — it disappears from the page.
+5. Save the same mobile number twice — PHP accepts the 10 digits and MySQL refuses the row
+   with error 1062.
+
+**Q21. What did Assignment 12 do that Assignment 13 replaced?**
+Assignment 12 kept the farmer in `$_SESSION`, which is a file on the server that dies with
+the browser window and is private to one visitor. Assignment 13 writes to the
+`dairy_management.farmers` table, so the record is **permanent** and **shared** by everyone.
+`session_start()` is still used in A13, but only for the one-time success message.
+
+**Q22. What is not in this assignment, and why?**
+No Node.js or Express (that is Assignment 14), no REST API (Assignment 15), no JavaScript
+on the CRUD pages, no PDO, and no login check. Each assignment is a self-contained piece of
+work, so it deliberately leaves the next one's topics out.
+
+**Q23. Two known weaknesses.**
+1. **No login / authorisation.** Anybody who can reach `farmer-delete.php` can delete a
+   record. A real society would add `session_start()` plus an
+   `if (!isset($_SESSION['staff'])) { ... }` guard — and Assignment 12 already shows the
+   session half of that.
+2. **No CSRF token.** The delete confirmation asks a human to type the farmer's name, which
+   slows a mistake but does not stop a forged request. A real form sends a random code in
+   the session and compares it.
+
+Naming these unprompted is a better answer than being asked about them.
+
+**Q24. How is this different from Assignment 7's form?**
+Assignment 7 validated the **same five values** in JavaScript, in the browser, and stored
+them in a JavaScript array that vanished when the tab closed. Assignment 13 repeats the rules
+in PHP (the browser can be bypassed) and stores the values in MySQL, where they are
+permanent and can be searched, listed and reported on. **The rules are the same; the trust
+boundary and the storage are different.**
+
+**Q25. How was it tested?**
+1. `php -l` on all 19 PHP files of `php/` — 19 passed, 0 failed.
+2. `database/schema.sql` run against MySQL 8.0.45; `SHOW TABLES` and `DESCRIBE farmers`
+   checked.
+3. Each of the four operations run once through a live PHP script: INSERT a new farmer,
+   SELECT it back, UPDATE its milk quantity, then DELETE it — the table was back to its
+   original row count afterwards.
+4. Two deliberate failures: a 5-digit phone number (caught by `checkPhone()`, no SQL run)
+   and a phone number that already existed (MySQL error 1062 turned into a sentence).
+5. The connection was closed on purpose to confirm the error page appears instead of a
+   blank screen.
+
+---
+
+## A13.15 Known issues and honest notes
+
+- **`DB_PASS` is stored in `db-config.php`.** That is normal for a college project but wrong
+  for a real one: the settings would be read from an environment variable or from a file
+  outside the project folder, and the file would be listed in `.gitignore`.
+- **`DB_USER` is `root`.** MySQL's administrator account can damage anything. A real project
+  would create a dedicated account that can only `SELECT`, `INSERT`, `UPDATE` and `DELETE`
+  on `dairy_management.farmers`.
+- **`node-backend/` does not exist yet**, so the CRUD pages are served by PHP's own small
+  development server (`php -S`). That server is for development only.
+- **The Assignment 7 and Assignment 11 forms are still browser-only.** Neither has an
+  `action` attribute pointing at `php/db-crud/`, so joining those screens to the database is
+  part of the final integration (Assignment 16).

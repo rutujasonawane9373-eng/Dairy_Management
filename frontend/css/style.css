@@ -979,3 +979,228 @@ body.page-php .profile-list dd {
         margin-top: 10px;
     }
 }
+/* ============================================================
+   ASSIGNMENT 13 : STYLES FOR THE PHP + MySQL CRUD PAGES
+   ------------------------------------------------------------
+   Every rule below starts with "body.page-db", and the only
+   <body> carrying that class is the five pages of php/db-crud/.
+   So this block adds styles to Assignment 13 WITHOUT touching a
+   single rule of Assignments 1-12 - exactly like the ASSIGNMENT
+   11 and ASSIGNMENT 12 blocks above did.
+
+   Most of the boxes on these pages reuse classes that already
+   existed (.centre-note, .log-window, .farmer-form, .form-grid,
+   .form-row, .field-hint, .error-message, .form-buttons, .btn,
+   .btn-light, .flex-row, .flex-item, .profile-list), so only
+   the genuinely new parts are written here.
+   ============================================================ */
+
+/* The one-line table underneath each explanation, used for the
+   SQL of the statement and for the type letters. */
+.db-code {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border-left: 5px solid #c98a2d;
+    border-radius: 8px;
+    background-color: #fff6dd;
+    color: #4b2e0e;
+    font-size: 13px;
+    overflow-x: auto;
+}
+
+.db-code code {
+    background-color: #ffffff;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+/* The big number of the four summary cards (same idea as
+   .stat-number of Assignment 4, kept separate so the value can be
+   smaller here). */
+.db-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #6b4226;
+    margin: 6px 0;
+}
+
+/* The single message box of a page: neutral, green or red. */
+.db-message {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-left: 6px solid #c98a2d;
+    font-size: 14px;
+    color: #5b4a36;
+}
+
+.db-message.db-ok {
+    background-color: #e8f6ec;
+    border-left-color: #1e7e34;
+    color: #16562a;
+}
+
+.db-message.db-error {
+    background-color: #fdecea;
+    border-left-color: #b03a2e;
+    color: #8f2c22;
+}
+
+/* The list of rejected values, printed under the message box. */
+.db-error-box {
+    margin: 12px 0;
+    padding: 12px 18px;
+    background-color: #fdecea;
+    border: 2px dashed #b03a2e;
+    border-radius: 8px;
+    color: #8f2c22;
+    font-size: 14px;
+}
+
+.db-error-box ul {
+    margin: 8px 0 0 0;
+    padding-left: 22px;
+}
+
+/* The red warning above the delete confirmation. */
+.db-danger-box {
+    margin: 14px 0;
+    padding: 14px 18px;
+    background-color: #fff1e6;
+    border: 2px solid #b03a2e;
+    border-radius: 10px;
+    color: #8f2c22;
+}
+
+.db-danger-box p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+/* The search box of farmer-list.php. */
+.db-search-form {
+    margin: 14px 0;
+    padding: 14px 16px;
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-radius: 8px;
+}
+
+.db-search-form label {
+    display: block;
+    font-weight: bold;
+    color: #6b4226;
+    margin-bottom: 8px;
+}
+
+/* The search input and its two buttons sit in one row. */
+.db-search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.db-search-row input {
+    flex: 1 1 240px;
+    padding: 10px 12px;
+    border: 1px solid #ddc9a5;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #ffffff;
+}
+
+/* The Actions column of the farmer table: the two small links. */
+.log-window tbody td.db-actions {
+    white-space: nowrap;
+}
+
+.db-action-link {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background-color: #fff6dd;
+    border: 1px solid #d9a441;
+    color: #6b4226;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.db-action-link:hover {
+    background-color: #e8b84b;
+    color: #4b2e0e;
+}
+
+/* The Delete link is red, so the destructive action stands out. */
+.db-action-delete {
+    background-color: #fdecea;
+    border-color: #b03a2e;
+    color: #8f2c22;
+}
+
+.db-action-delete:hover {
+    background-color: #b03a2e;
+    color: #ffffff;
+}
+
+/* The "Yes, delete" button - same shape as .btn, red instead of
+   brown. The class is written on top of .btn, so .btn still gives
+   it the padding, the radius and the bold text. */
+.btn-danger {
+    background-color: #b03a2e;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #8f2c22;
+}
+
+/* The confirmation box of farmer-delete.php. */
+.db-confirm-row {
+    grid-column: 1 / -1;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background-color: #fff1e6;
+    border: 1px dashed #b03a2e;
+    border-radius: 8px;
+}
+
+.db-confirm-row label {
+    display: block;
+    font-size: 14px;
+    color: #8f2c22;
+    margin-bottom: 8px;
+}
+
+.db-confirm-row input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddc9a5;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+/* The menu of the CRUD pages carries 11 links, so the labels are
+   shortened here to keep one tidy row. */
+body.page-db nav a {
+    font-size: 13px;
+}
+
+/* ---------- ASSIGNMENT 13 : MEDIA QUERY (mobile friendly) ------- */
+/* Same two adjustments as Assignment 12: the footer buttons go
+   full width and the search row stacks, so nothing overflows on a
+   phone. */
+@media (max-width: 600px) {
+    body.page-db main .btn {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .db-search-row input {
+        flex: 1 1 100%;
+    }
+}
