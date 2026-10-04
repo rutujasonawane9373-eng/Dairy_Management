@@ -819,3 +819,87 @@ body.page-centre footer {
         width: 100%;                 /* full-width tap targets */
     }
 }
+
+/* ============================================================
+   ASSIGNMENT 11 : STYLES FOR THE DOM-MANIPULATED PARTS
+   Used by frontend/pages/collection-centre.html, whose entry form
+   and collection log are controlled by frontend/js/main.js.
+
+   Everything in this block is NEW. No rule above this line has been
+   changed, so Assignments 1-7 look exactly the same.
+
+   Most of the page needs NO rule of its own, because it reuses what
+   is already there:
+     .farmer-form / .form-grid / .form-row / .form-buttons  (A7)
+     .btn / .btn-light                                      (A3, A7)
+     .register-tools / .register-status / .total-value      (A6)
+     .flex-row / .flex-item                                 (A4)
+     .log-window and .log-window tbody tr.selected          (A5, A6)
+     .tank-gauge / .tank-fill                               (A5)
+
+   Only four things are new here:
+     1. a <select> inside .form-row  (the entry form has one)
+     2. .is-pending  - a row whose payment is still due
+     3. .peak-row    - the biggest can of the current view
+     4. a small rule so the five log buttons fit on one line
+   ============================================================ */
+
+/* ---------- 1. the <select> of the entry form ------------------ */
+/* The Assignment 7 rules style .form-row input only, because that
+   form has no dropdown. This gives the select the same look. */
+.form-row select {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #cbb083;
+    border-radius: 6px;
+    background-color: #fffdf8;
+    color: #3f2f1e;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.form-row select:focus {
+    outline: 2px solid #e8b84b;
+    background-color: #ffffff;
+}
+
+/* ---------- 2. the PENDING rows -------------------------------- */
+/* main.js adds the class "is-pending" to a row whose last cell says
+   "Pending", and removes it again when the payment is marked done.
+   :last-child means "the last cell of the row", which is the Status
+   cell of the collection log. */
+.log-window tbody tr.is-pending td:last-child {
+    color: #b03a2e;
+    font-weight: bold;
+}
+
+/* ---------- 3. the BIGGEST can of the view --------------------- */
+/* main.js puts this class on one row at a time, so exactly one row
+   can be the peak. */
+.log-window tbody tr.peak-row {
+    background-color: #fff3d6;
+    box-shadow: inset 4px 0 0 #e8b84b;
+}
+
+/* ---------- 4. the five log buttons --------------------------- */
+/* They share .register-tools with the Assignment 6 toolbar, so they
+   line up and wrap exactly like those controls. Only the size is
+   adjusted, because there are five of them. */
+.log-tools button {
+    padding: 8px 14px;
+    font-size: 13px;
+}
+
+/* .register-tools button sets "border: 0", which is stronger than
+   the single class of .btn-light, so the light buttons get their
+   border back here. */
+.log-tools button.btn-light {
+    border: 1px solid #ddc9a5;
+}
+
+/* ---------- ASSIGNMENT 11 : MEDIA QUERY (mobile friendly) ------ */
+@media (max-width: 600px) {
+    .log-tools button {
+        width: 100%;                 /* full-width tap targets */
+    }
+}

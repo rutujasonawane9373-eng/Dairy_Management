@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 7 - Fetch API + JSON (Assignment 10)
+Current project phase: Phase 8 - DOM Manipulation and Event Handling (Assignment 11)
 
 ## Assignment → File/Feature
 
@@ -19,14 +19,14 @@ Current project phase: Phase 7 - Fetch API + JSON (Assignment 10)
 | 8 | React - components, JSX | `react-app/` - Vite-based React SPA with functional components (Header, Dashboard, FarmerCard, MilkCollectionCard, Footer) and JSX | ✅ Done |
 | 9 | React - props, state, hooks, events | `react-app/src/App.jsx` - 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), `onClick` / `onChange` event handlers, conditional rendering for the badges, details block and "no farmer found" message | ✅ Done |
 | 10 | Fetch API + JSON | `react-app/src/ApiFarmerList.jsx` - `useEffect()` + `fetch()` + `response.json()` + `useState()`, records from `https://jsonplaceholder.typicode.com/users` drawn with `map()` and `key={farmer.id}`, loading message, error message + Retry. Rendered by `react-app/src/App.jsx:575` | ✅ Done |
-| 11 | DOM manipulation + events | `frontend/js/main.js` (planned) | ⏳ Pending |
+| 11 | DOM manipulation + event handling | `frontend/pages/collection-centre.html` (the "Add a Collection Entry" form + the tools and summary of "Today's Collection Log") + `frontend/js/main.js` section 7 | ✅ Done |
 | 12 | PHP - forms, validation, strings, sessions | `php/auth/` (planned) | ⏳ Pending |
 | 13 | PHP + MySQL - CRUD | `php/farmer/` (planned) | ⏳ Pending |
 | 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (planned) | ⏳ Pending |
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 7 — Assignments 8, 9 and 10)
+## Project structure (as of Phase 8 — Assignments 1-11)
 
 ```
 Dairy_Management/
@@ -35,13 +35,14 @@ Dairy_Management/
 │   ├── index.html
 │   ├── pages/
 │   │   ├── about.html
-│   │   ├── dashboard.html
-│   │   ├── collection-centre.html
-│   │   └── farmers.html       Assignment 7 (farmer registration form)
+│   │   ├── dashboard.html       Assignment 6 (loads js/main.js)
+│   │   ├── collection-centre.html  Assignment 5 + Assignment 11
+│   │   │                         (loads js/main.js)
+│   │   └── farmers.html         Assignment 7 (farmer registration form)
 │   ├── css/
-│   │   └── style.css
+│   │   └── style.css            Assignments 3, 4, 5, 6, 7 and 11
 │   ├── js/
-│   │   └── main.js            Assignment 6 + Assignment 7
+│   │   └── main.js              Assignment 6 + Assignment 7 + Assignment 11
 │   └── assets/
 │       ├── cow.svg
 │       ├── farm.svg
@@ -59,6 +60,78 @@ Dairy_Management/
 │   └── viva-notes.md
 └── php/, node-backend/, database/ are not created yet (Assignments 12-15)
 ```
+
+There is still **one** JavaScript file for the whole `frontend/` part - `frontend/js/main.js` -
+and it is now loaded by **three** pages: `dashboard.html` (Assignment 6), `farmers.html`
+(Assignment 7) and `collection-centre.html` (Assignment 11). Every part of the script returns
+at once when the elements it needs are not on the page, so one file can serve all three.
+
+## Assignment 11 detail - DOM manipulation and event handling
+
+Page: `frontend/pages/collection-centre.html`. Two working parts of the ordinary
+collection-centre screen are driven by the DOM, not by a separate demo box:
+
+1. the **"Add a Collection Entry"** form (the weighbridge entry of one can), and
+2. the **tools and summary of "Today's Collection Log"** (search, status filter, five
+   buttons, three numbers and a progress bar).
+
+All the code is `frontend/js/main.js` section 7 (the file header lists it from line 957).
+The page loads the same script as before, with
+`<script src="../js/main.js"></script>` at the end of `<body>`.
+
+### DOM manipulation - what is used where
+
+| What it does | Method | Where in `main.js` | Real use in the page |
+|---|---|---|---|
+| Find one element by its id | `document.getElementById()` | `setTextById()` (1076), `readLogEntryForm()` (1500), `applyLogFilter()` (1229), `updateLogSummary()` (1124) | finds the log body, the form boxes, the summary numbers, the progress bar and the five buttons |
+| Find the first match | `querySelector()` | `markSelectedAsPaid()` (1308), `removeSelectedRow()` (1334) | finds the one row that has the class `selected` |
+| Find every match | `querySelectorAll()` | `logRows()` (1014), `readLogEntry()` (1022), `clearLogSelection()` (1106), `highlightLargestEntry()` (1274), `removeAddedRows()` (1360), `refreshPendingClasses()` (1161) | every log row, the six cells of one row, every selected / peak / added row |
+| Write text | `.textContent =` | `setTextById()` (1076), `createLogEntryRow()` (1449), `markSelectedAsPaid()` (1308), `setEntryMessage()` (1517) | the status strip, the three summary numbers, the progress text, every cell of a new row, one changed status cell |
+| Change a class | `classList.add()` / `.remove()` | `selectLogRow()` (1185), `refreshPendingClasses()` (1161), `highlightLargestEntry()` (1274), `markSelectedAsPaid()` (1308), `resetLogView()` (1377) | `selected` on one row, `is-pending` on unpaid rows, `peak-row` on the biggest can, `ok` / `error` on the message box |
+| Change a style | `.style.display`, `.style.width`, `.style.fontWeight` | `applyLogFilter()` (1229), `updateLogSummary()` (1124), `highlightLargestEntry()` (1274) | hides the rows that do not match, sets the width of the progress bar, bolds the biggest can |
+| Create an element | `document.createElement()` | `createLogEntryRow()` (1449) | one `<tr>` and six `<td>` for every new entry |
+| Put an element on the page | `appendChild()` | `createLogEntryRow()` (1449), `addLogEntry()` (1483) | cell into row, row into `<tbody id="collection-log-body">` |
+| Delete an element | `.remove()` | `removeSelectedRow()` (1334), `removeAddedRows()` (1360) | deletes the selected row, deletes the rows this session added |
+| Mark an element | `setAttribute()` | `createLogEntryRow()` (1449) | `data-added="yes"` - the mark that lets "Remove Added Rows" spare the 19 rows written in the HTML |
+
+### Events
+
+| Event | Element | What it does |
+|---|---|---|
+| `DOMContentLoaded` | the document | `startApp()` -> also calls `startCollectionLog()` (1551), which draws the summary for the first time and connects every event below |
+| `submit` | `<form id="log-entry-form">` | `event.preventDefault()`, checks the four boxes, then `createLogEntryRow()` + `appendChild()` add the row and the summary is rewritten |
+| `input` | `#log-search` | on every keystroke `applyLogFilter()` hides or shows the rows |
+| `input` | the four entry boxes | a box that is already showing an error is re-checked while typing |
+| `change` | `#log-status-filter` | shows only the Paid or only the Pending entries |
+| `change` | `#log-status` | read when the form is submitted (it decides the Status cell of the new row) |
+| `click` | every `<tr>` of the log | `selectLogRow()` - takes the `selected` class off the old row, puts it on the clicked one and describes that can |
+| `click` | `#log-highlight-largest` | `reduce()` finds the biggest can in view; the class moves to its row |
+| `click` | `#log-mark-paid` | the Status cell text is replaced with "Paid" and `is-pending` is removed |
+| `click` | `#log-remove-selected` | the selected row is deleted with `.remove()` |
+| `click` | `#log-remove-added` | every `tr[data-added="yes"]` is deleted; the 19 HTML rows stay |
+| `click` | `#log-reset-view` | the search box and the dropdown are emptied and every class is taken off the rows |
+| `reset` | `<form id="log-entry-form">` | the four error messages are removed (also fires from `form.reset()`) |
+
+### Reuse instead of new code
+
+- The three entry rules reuse the Assignment 7 validators `validateFarmerName()`,
+  `validateMilkQuantity()` and `validateFatPercentage()`, and the rate is worked out by the
+  Assignment 7 rate-board rule `rateForFat()` - only `validateSnf()` is new.
+- The helpers `checkField()`, `clearFieldError()`, `fieldValue()` and `totalLitres()` are
+  shared with Assignment 7 and Assignment 6, so a rule is written once and reused.
+- The page needs almost no new CSS: the form reuses the Assignment 7 `.farmer-form`,
+  `.form-grid`, `.form-row`, `.form-buttons` and `.btn-light`; the toolbar reuses the
+  Assignment 6 `.register-tools` and `.register-status`; the summary reuses `.flex-row`,
+  `.flex-item` and `.total-value`; the progress bar reuses the Assignment 5 `.tank-gauge` /
+  `.tank-fill`; the selected row reuses `.log-window tbody tr.selected`.
+
+### New CSS
+
+`frontend/css/style.css` ends with an `ASSIGNMENT 11` block (about 80 lines, four rules and
+one media query): `.form-row select`, `.log-window tbody tr.is-pending td:last-child`,
+`.log-window tbody tr.peak-row`, `.log-tools button` (+ `.log-tools button.btn-light`), and
+a `max-width: 600px` rule that makes the five buttons full width on a phone. No rule above
+that block was changed, so Assignments 1-7 look exactly the same.
 
 ## Assignment 7 detail — JavaScript frontend functionality and form validation
 
@@ -260,11 +333,12 @@ changed.
 No Axios, no PHP, no MySQL, no Node.js/Express, no local JSON file — only the browser's built-in
 `fetch()` against the public API above.
 
-## Assignments 11–16 — not implemented yet
+## Assignments 12–16 — not implemented yet
 
-- **Assignment 11 (DOM manipulation + events)** onwards have not been started. There is no `php/`,
-  `node-backend/` or `database/` folder in the project, no SQL anywhere and no server.
-- The Assignment 7 form on `farmers.html` is still checked and stored **only in the browser**:
-  there is no `action` attribute and no PHP page behind it.
+- **Assignment 12 (PHP)** onwards have not been started. There is no `php/`, `node-backend/`
+  or `database/` folder in the project, no SQL anywhere and no server.
+- The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
+  `collection-centre.html` are still checked and stored **only in the browser**: neither form
+  has an `action` attribute and there is no PHP page behind it.
 - `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the
   React app is a separate Vite project that does not load it.

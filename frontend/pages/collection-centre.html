@@ -19,6 +19,15 @@
     plus z-index, top/right/bottom/left, width/height, margin,
     padding, border, border-radius, box-shadow, overflow, opacity
 
+  ASSIGNMENT 11 : DOM MANIPULATION AND EVENT HANDLING
+  The "Add a Collection Entry" form and the tools of the
+  collection log below are controlled by frontend/js/main.js:
+    getElementById / querySelector / querySelectorAll to find
+    the elements, textContent to write into them, classList and
+    style to change how they look, createElement + appendChild +
+    remove() to add and delete rows, and click / input / change /
+    submit events to know when the clerk does something.
+
   Assignments 1-4 features used on this page:
     - Assignment 1 : headings, paragraphs, lists, image
     - Assignment 2 : semantic header / nav / main / section / aside / footer
@@ -113,20 +122,146 @@
             </div>
         </section>
 
+<!-- ========================================================
+             ASSIGNMENT 11 : ADD A COLLECTION ENTRY (submit event)
+             This is the ordinary working form of the centre - the
+             weighbridge clerk types one line here for every can
+             that arrives, and the row appears in the collection log
+             below.
+
+             JavaScript does the work with plain DOM methods:
+               document.createElement("tr")  -> a new row
+               row.appendChild(cell)         -> a new cell
+               cell.textContent = value      -> text inside a cell
+               tbody.appendChild(row)        -> row onto the page
+             The form reuses the Assignment 7 .farmer-form styling,
+             so it looks like a part of the same application.
+        ======================================================== -->
+        <section>
+            <h2>Add a Collection Entry</h2>
+
+            <p class="centre-note">
+                Weighbridge entry &bull; one line per can &bull; the rate is worked out
+                from the fat reading &bull; the new row is added at the bottom of the log
+            </p>
+
+            <!-- The single message box for this form. JavaScript adds
+                 the class "ok" (green) or "error" (red) to it. -->
+            <p class="register-status form-message" id="log-entry-message">
+                Fill in the entry and press "Add To Log".
+            </p>
+
+            <!-- novalidate: the browser's own bubbles are switched off so
+                 that the JavaScript messages below are the ones the clerk
+                 actually reads. -->
+            <form id="log-entry-form" class="farmer-form" novalidate>
+
+                <div class="form-grid">
+
+                    <div class="form-row">
+                        <label for="log-farmer">Farmer Name <span class="required-mark">*</span></label>
+                        <input type="text" id="log-farmer" name="farmer"
+                               placeholder="e.g. Ramesh Patil"
+                               autocomplete="off" required minlength="3" maxlength="40">
+                        <p class="error-message" id="log-farmer-error"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="log-quantity">Quantity (L) <span class="required-mark">*</span></label>
+                        <input type="number" id="log-quantity" name="quantity"
+                               placeholder="e.g. 16.5" required min="0.5" max="100" step="0.5">
+                        <p class="error-message" id="log-quantity-error"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="log-fat">Fat % <span class="required-mark">*</span></label>
+                        <!-- The society only tests between 3% and 8% fat. -->
+                        <input type="number" id="log-fat" name="fat"
+                               placeholder="e.g. 4.5" required min="3" max="8" step="0.1">
+                        <p class="error-message" id="log-fat-error"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="log-snf">SNF % <span class="required-mark">*</span></label>
+                        <input type="number" id="log-snf" name="snf"
+                               placeholder="e.g. 8.6" required min="3" max="10" step="0.1">
+                        <p class="error-message" id="log-snf-error"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- A <select> inside the form grid; the change
+                             event is used later on the log filter too. -->
+                        <label for="log-status">Payment Status</label>
+                        <select id="log-status" name="status">
+                            <option value="Pending">Pending</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                        <p class="field-hint">The rate is not typed - it is worked out from the fat reading.</p>
+                    </div>
+
+                    <div class="form-buttons">
+                        <!-- type="submit" fires the submit event, where the
+                             new <tr> is built and added to the log. -->
+                        <button type="submit" class="btn">Add To Log</button>
+                        <button type="reset" class="btn btn-light">Clear Entry</button>
+                    </div>
+
+                </div>
+            </form>
+        </section>
+
         <!-- ========================================================
              TODAY'S COLLECTION LOG
              A long list of collections, so the box has a limited
-             height with its own scrollbar (overflow: auto) instead of
-             making the page endless. The header row is
+             height with its own scrollbar (overflow: auto) instead
+             of making the page endless. The header row is
              position: sticky, so the column titles stay visible while
              the farmer rows scroll.
-             ======================================================== -->
+
+             ASSIGNMENT 11 : the tools above the table and the summary
+             under it are driven by frontend/js/main.js:
+               search box  -> input event  -> rows are hidden / shown
+               dropdown    -> change event -> rows are hidden / shown
+               five buttons-> click event  -> classes, text and rows
+                                                  are updated
+             Every one of them writes its message in the strip below.
+        ======================================================== -->
         <section>
             <h2>Today's Collection Log</h2>
 
             <p class="centre-note">
                 Morning shift &bull; 62 farmers registered till 8:30 AM &bull;
                 weighbridge and lab entries are added as milk arrives
+            </p>
+
+            <!-- ASSIGNMENT 11 : the tools of the log. .register-tools is
+                 the Assignment 6 toolbar style, reused here so the page
+                 keeps one look. -->
+            <div class="register-tools log-tools">
+
+                <!-- input event: fires on every keystroke -->
+                <label for="log-search">Search farmer:</label>
+                <input type="search" id="log-search" placeholder="Type part of a name">
+
+                <!-- change event: fires when a choice is made -->
+                <label for="log-status-filter">Show status:</label>
+                <select id="log-status-filter">
+                    <option value="all">All entries</option>
+                    <option value="Paid">Paid only</option>
+                    <option value="Pending">Pending only</option>
+                </select>
+
+                <!-- click events -->
+                <button type="button" class="btn" id="log-highlight-largest">Highlight Highest Quantity</button>
+                <button type="button" class="btn" id="log-mark-paid">Mark Selected as Paid</button>
+                <button type="button" class="btn" id="log-remove-selected">Remove Selected Row</button>
+                <button type="button" class="btn btn-light" id="log-remove-added">Remove Added Rows</button>
+                <button type="button" class="btn btn-light" id="log-reset-view">Reset Log View</button>
+            </div>
+
+            <!-- Every event on this log writes its message here. -->
+            <p class="register-status" id="log-status-message">
+                Click any row to select it. The search box, the dropdown and the five buttons all report here.
             </p>
 
             <div class="log-window">
@@ -141,7 +276,11 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- ASSIGNMENT 11 : id="collection-log-body" is the hook
+                         used by main.js. The 19 rows below are the original
+                         HTML; new rows are created and added here with
+                         createElement() + appendChild(). -->
+                    <tbody id="collection-log-body">
                         <tr><td>Ramesh Patil</td><td>18.5</td><td>4.6</td><td>8.9</td><td>44</td><td>Paid</td></tr>
                         <tr><td>Sunita Jadhav</td><td>12.0</td><td>3.8</td><td>8.2</td><td>40</td><td>Paid</td></tr>
                         <tr><td>Vilas More</td><td>22.5</td><td>4.9</td><td>9.1</td><td>45</td><td>Paid</td></tr>
@@ -163,6 +302,42 @@
                         <tr><td>Vijay Thorat</td><td>18.0</td><td>4.5</td><td>8.9</td><td>44</td><td>Paid</td></tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- ========================================================
+                 ASSIGNMENT 11 : THE SUMMARY UNDER THE LOG
+                 The three numbers and the progress bar below are written
+                 by main.js with textContent and with style.width, so they
+                 always agree with the rows that are actually on screen
+                 (that is, after the search box and the dropdown are used).
+                 .flex-row / .flex-item / .total-value are reused from
+                 Assignments 4 and 6.
+            ======================================================== -->
+            <h3>Log summary</h3>
+
+            <div class="flex-row" id="log-summary">
+                <div class="flex-item">
+                    <h3>Entries in view</h3>
+                    <p class="total-value" id="log-entries-count">0</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>Litres in view</h3>
+                    <p class="total-value" id="log-litres-total">0.0 L</p>
+                </div>
+
+                <div class="flex-item">
+                    <h3>Payment pending</h3>
+                    <p class="total-value" id="log-pending-count">0</p>
+                </div>
+            </div>
+
+            <!-- Reuses the Assignment 5 .tank-gauge / .tank-fill pair.
+                 The width of the fill is set by main.js. -->
+            <p class="centre-note" id="shift-progress-text">Morning shift target: 1,000 litres</p>
+
+            <div class="tank-gauge">
+                <div class="tank-fill" id="shift-fill" style="width: 0%;"></div>
             </div>
         </section>
 
@@ -247,6 +422,21 @@
         <p>Fat below 3.5% &rarr; 40 Rs / litre</p>
         <p>Last updated: 21 September 2026, 8:30 AM</p>
     </div>
+
+    <!-- ============================================================
+         ASSIGNMENT 11 : THE SAME EXTERNAL SCRIPT FILE
+         There is still only ONE JavaScript file in the project.
+         It is loaded at the END of <body> so the form, the log rows
+         and the summary boxes are already on the page when the
+         script runs. ".." goes up from pages/ to frontend/, then
+         into js/.
+
+         Loading it here does not disturb Assignments 6 and 7: every
+         part of the script checks that its elements exist before
+         using them, so the Assignment 6 register and the
+         Assignment 7 farmer form simply stop at once on this page.
+    ============================================================ -->
+    <script src="../js/main.js"></script>
 
 </body>
 </html>

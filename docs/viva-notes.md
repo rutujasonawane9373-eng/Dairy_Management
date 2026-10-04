@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 10** (Phase 7 - Fetch API and JSON, inside the React app). Assignments 11-16 are not built yet.
+> Last updated after **Assignment 11** (Phase 8 - DOM Manipulation and Event Handling, inside the `frontend/` pages). Assignments 12-16 are not built yet.
 
 ---
 
@@ -39,9 +39,9 @@ butter gold, dark chocolate brown. That is deliberate so the project looks like 
 | App framework | React (Vite) | **Used** â€” Assignments 8, 9 and 10 in `react-app/` |
 | Server / database | PHP, MySQL, Node.js + Express | **Not used yet** â€” later phases |
 
-There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by two pages â€”
-`frontend/pages/dashboard.html` (Assignment 6) and `frontend/pages/farmers.html`
-(Assignment 7). There is **no inline JavaScript** anywhere in the project â€”
+There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by three pages â€”
+`frontend/pages/dashboard.html` (Assignment 6), `frontend/pages/farmers.html` (Assignment 7)
+and `frontend/pages/collection-centre.html` (Assignment 11). There is **no inline JavaScript** anywhere in the project â€”
 no `onclick="..."` or `onchange="..."` attributes exist in any HTML file, and no
 `<script>` block is written inside a page. All behaviour lives in that one external file.
 
@@ -63,12 +63,13 @@ Dairy_Management/
     â”‚   â”œâ”€â”€ dashboard.html          Assignment 4 (Flexbox / Grid / Media Queries)
     â”‚   â”‚                           + Assignment 6 (loads js/main.js)
     â”‚   â”œâ”€â”€ collection-centre.html  Assignment 5 (CSS positions)
+    â”‚                               + Assignment 11 (loads js/main.js)
     â”‚   â””â”€â”€ farmers.html            Assignment 7 (registration form + validation)
     â”‚                               + loads js/main.js
     â”œâ”€â”€ css/
-    â”‚   â””â”€â”€ style.css               Assignments 3, 4, 5, 6 and 7 â€” the ONLY stylesheet
+    â”‚   â””â”€â”€ style.css               Assignments 3, 4, 5, 6, 7 and 11 â€” the ONLY stylesheet
     â”œâ”€â”€ js/
-    â”‚   â””â”€â”€ main.js                 Assignments 6 and 7 â€” the ONLY JavaScript file
+    â”‚   â””â”€â”€ main.js                 Assignments 6, 7 and 11 â€” the ONLY JavaScript file
     â””â”€â”€ assets/
         â”œâ”€â”€ cow.svg
         â”œâ”€â”€ farm.svg
@@ -113,9 +114,9 @@ Each page marks its own menu link with `class="active"` so `style.css` line 99
 **Assets** are only used in two places: the three images on `about.html` (lines 104â€“106) and
 the milk can picture inside `.photo-frame` on `collection-centre.html` (line 216).
 
-**JavaScript** is the third kind of connection. `frontend/pages/dashboard.html` and
-`frontend/pages/farmers.html` link `frontend/js/main.js` as the **last element before `</body>`**
-(`dashboard.html` line 230, `farmers.html` line 250):
+**JavaScript** is the third kind of connection. `frontend/pages/dashboard.html`, `frontend/pages/farmers.html` and
+`frontend/pages/collection-centre.html` link `frontend/js/main.js` as the **last element before `</body>`**
+(`dashboard.html` line 230, `farmers.html` line 250, `collection-centre.html` line 439):
 
 ```html
 <script src="../js/main.js"></script>
@@ -2961,6 +2962,7 @@ change afterwards.
 | Assignment 8 â€” React components and JSX | **Completed** | `react-app/` (Vite + React). Components in `react-app/src/App.jsx`: Header, StatCard, Dashboard, FarmerCard, MilkCollectionCard, Footer, App. Entry point `react-app/src/main.jsx`: `createRoot(document.getElementById('root')).render(<App />)` |
 | Assignment 9 â€” React props, state, hooks, events | **Completed** | `react-app/src/App.jsx` â€” 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), props passed to every child, `onClick` / `onChange` handlers, conditional rendering (high/normal badge, paid/pending badge, details block, "no farmer found") |
 | Assignment 10 â€” Fetch API + JSON | **Completed** | `react-app/src/ApiFarmerList.jsx` â€” `useEffect()` + `fetch('https://jsonplaceholder.typicode.com/users')` + `response.json()` + `useState()`, `.map()` with `key={farmer.id}`, loading message, friendly error message + Retry button. Styles: `Assignment 10` block at the end of `react-app/src/App.css` |
+| Assignment 11 - DOM manipulation and event handling | **Completed** | `frontend/pages/collection-centre.html` - the "Add a Collection Entry" form (`submit` event) + the tools of "Today's Collection Log" (`input`, `change`, `click` events) + the summary under the log. Code in `frontend/js/main.js` section 7 (from line 957): `getElementById()`, `querySelector()`, `querySelectorAll()`, `textContent`, `classList.add()/remove()`, `style.display / style.width / style.fontWeight`, `createElement()`, `appendChild()`, `remove()`, `setAttribute()`. Styles: `ASSIGNMENT 11` block at the end of `frontend/css/style.css` (from line 824) |
 
 ### 11.1 Known issues and gaps in Assignments 1â€“5
 
@@ -3327,3 +3329,185 @@ page is open. Real storage comes later with PHP + MySQL (Assignments 12 and 13).
    (name, username, email, city).
 3. Turn off the network (or stop the dev server) and press **Retry**: the friendly error
    message appears instead of the cards.
+
+
+# Assignment 11 - DOM Manipulation and Event Handling
+
+## A11.1 Which file proves this assignment
+- `frontend/pages/collection-centre.html` - two ordinary working parts of the collection
+  centre screen, not a separate demo box:
+  1. the **"Add a Collection Entry"** form (weighbridge entry of one can), lines 125-211;
+  2. the **tools, status strip and summary of "Today's Collection Log"**, lines 213-342.
+- `frontend/js/main.js` **section 7** - all the code, from line 957 (`startCollectionLog()`
+  is called from `startApp()` on line 443).
+- `frontend/css/style.css` - the `ASSIGNMENT 11` block, from line 824 (only four new rules
+  and one media query; the page mostly reuses the Assignment 4, 5, 6 and 7 classes).
+- The page loads the same single script as before: `<script src="../js/main.js"></script>`
+  on line 439, at the end of `<body>`.
+
+## A11.2 What the DOM is, and why the log is read back from the page
+- The **DOM** (Document Object Model) is the browser's live tree of the HTML: every tag on the
+  page is an *object* that JavaScript can read, change, create or delete.
+- `document` is the object that holds the whole tree. `document.getElementById(...)` and
+  `document.querySelector(...)` **search** it; the returned element can then be changed.
+- The 19 rows of the collection log are written **in the HTML file**, so the only honest way to
+  count, filter, update or delete them is to read them back **out of the page**. That is why
+  this assignment reads the DOM instead of using the `collections` array of Assignment 6.
+
+## A11.3 Finding elements - the selectors used
+
+| Method | Selector used in my project | Returns | Where |
+|---|---|---|---|
+| `document.getElementById("collection-log-body")` | id | the one `<tbody>` | `addLogEntry()` line 1483 |
+| `document.getElementById("log-status-message")` | id | the status strip | `setTextById()` line 1076 |
+| `document.getElementById("shift-fill")` | id | the progress bar | `updateLogSummary()` line 1124 |
+| `document.getElementById("log-entry-form")` | id | the entry form | `startLogEntryForm()` line 1590 |
+| `querySelectorAll("#collection-log-body tr")` | id + tag | a **list** of every row | `logRows()` line 1014 |
+| `querySelectorAll("td")` | tag | the six cells of **one** row | `readLogEntry()` line 1022 |
+| `querySelectorAll("#collection-log-body tr.selected")` | id + tag + class | the chosen row | `clearLogSelection()` line 1106 |
+| `querySelectorAll("#collection-log-body tr.peak-row")` | id + tag + class | the biggest can | `highlightLargestEntry()` line 1274 |
+| `querySelectorAll("#collection-log-body tr[data-added='yes']")` | **attribute** selector | the rows JavaScript created | `removeAddedRows()` line 1360 |
+| `querySelector("#collection-log-body tr.selected")` | id + tag + class | the **first** match only | `removeSelectedRow()` line 1334 |
+
+- `getElementById` is the fastest way to find one element, because `id` is unique.
+- `querySelector(All)` takes a **CSS selector** - the same selectors used in `style.css`.
+- `querySelector` returns **one** element (or `null`); `querySelectorAll` returns a **list**
+  that can be walked with `forEach()`, exactly like an array.
+- The list is **static**: it is a snapshot, so after a row is added or deleted the function is
+  called again to get a fresh list.
+
+## A11.4 Changing the page
+
+| What changes | Code | Visible result |
+|---|---|---|
+| **Text** | `element.textContent = "..."` | the status strip, the three summary numbers, the progress sentence, every cell of a new row, and one replaced Status cell |
+| **A class** | `classList.add("selected")` / `.remove("is-pending")` / `.remove("peak-row")` / `.add("ok")` | the row is highlighted, an unpaid row shows its Status in red, the biggest can is marked, the message box turns green or red |
+| **A style** | `row.style.display = "none"` (and `= ""` to show it again) | a filtered-out row disappears |
+| **A style** | `progressBar.style.width = percent + "%"` | the gold bar grows or shrinks |
+| **A style** | `row.style.fontWeight = "bold"` (and `= ""`) | the biggest can is printed bold |
+| **An attribute** | `row.setAttribute("data-added", "yes")` | marks a row as "made by JavaScript", so the HTML rows are never deleted by mistake |
+| **Create** | `document.createElement("tr")`, `document.createElement("td")`, `row.appendChild(cell)`, `tbody.appendChild(row)` | a new line at the bottom of the log for every entry typed in the form |
+| **Delete** | `row.remove()` | "Remove Selected Row" and "Remove Added Rows" take the row off the page |
+| **Read** | `cell.textContent`, `Number(cell.textContent)` | the six cells become a JavaScript object again |
+
+- `textContent` is used everywhere and **`innerHTML` is never used with typed text**. If the
+  farmer types `<b>hello</b>`, `textContent` shows those characters literally, while
+  `innerHTML` would turn them into bold text - that is the XSS (cross-site scripting) risk.
+- `row.remove()` is the short form of `row.parentNode.removeChild(row)`. After `remove()` the
+  element object still exists in memory, but it is no longer in the page.
+
+## A11.5 The events used
+
+| Event | Element | What happens |
+|---|---|---|
+| `DOMContentLoaded` | document | `startApp()` -> `startCollectionLog()` (line 1551): first summary, then every listener is connected |
+| `submit` | `#log-entry-form` | `preventDefault()`, four checks, then the new `<tr>` is created and appended; on failure the message box turns red and the cursor goes to the first wrong box |
+| `input` | `#log-search` | on **every keystroke** `applyLogFilter()` (line 1229) hides or shows the rows - the summary follows automatically |
+| `input` | the four entry boxes | a box that is already showing an error is re-checked while typing, so the message disappears as soon as the value is right |
+| `change` | `#log-status-filter` | shows only the Paid or only the Pending entries |
+| `click` | any `<tr>` of the log | `selectLogRow()` (line 1185): removes `selected` from the old row, adds it to the clicked one, writes the details of that can |
+| `click` | `#log-highlight-largest` | `reduce()` finds the biggest can of the current view and moves the `peak-row` class onto it |
+| `click` | `#log-mark-paid` | the Status cell of the selected row becomes "Paid" and `is-pending` is removed |
+| `click` | `#log-remove-selected` | the selected row is deleted with `.remove()` |
+| `click` | `#log-remove-added` | every `tr[data-added="yes"]` is deleted; the 19 HTML rows stay |
+| `click` | `#log-reset-view` | the search box and the dropdown are emptied, every class and inline style is taken off |
+| `reset` | `#log-entry-form` | the four error messages are removed (also fires from `form.reset()`) |
+
+- `click` is used for **buttons and rows**; `input` fires while typing; `change` fires when a
+  `<select>` choice is finished; `submit` is the only event that could send a form anywhere.
+- `element.addEventListener("click", function () { ... })` connects an event to a function.
+  `onButtonClick(id, fn)` (line 1095) is the small helper used for the five buttons.
+
+## A11.6 Reuse - what was NOT written again
+- Validation: `validateFarmerName()`, `validateMilkQuantity()` and `validateFatPercentage()`
+  from Assignment 7, plus `checkField()`, `clearFieldError()`, `fieldValue()` and the rate
+  board rule `rateForFat()`. Only `validateSnf()` (3% to 10%) is new.
+- Array functions from Assignment 6: `totalLitres()` (reduce) and `filter()` for the pending
+  count and the biggest can.
+- CSS: `.farmer-form`, `.form-grid`, `.form-row`, `.form-buttons`, `.btn-light` (A7);
+  `.register-tools`, `.register-status`, `.total-value`, `.log-window tbody tr.selected` (A6);
+  `.flex-row`, `.flex-item` (A4); `.tank-gauge`, `.tank-fill`, `.log-window` (A5).
+- New CSS is only: `.form-row select`, `.log-window tbody tr.is-pending td:last-child`,
+  `.log-window tbody tr.peak-row`, `.log-tools button`, `.log-tools button.btn-light` and one
+  `max-width: 600px` rule.
+
+## A11.7 Safety and what is NOT stored
+- `startCollectionLog()` returns immediately when `#collection-log-body` is not on the page,
+  which is why the same `main.js` can be loaded by `dashboard.html` and `farmers.html`
+  without any change - Assignment 6 and Assignment 7 keep working exactly as before.
+- Every button is connected through `onButtonClick()`, which checks the element first.
+- Nothing is sent anywhere: there is no `action` on the form, no PHP page and no database
+  (that is Assignment 13), so `preventDefault()` keeps everything in the browser and a row
+  added here disappears when the page is closed.
+
+## A11.8 Viva questions and answers
+
+**Q: What is the DOM?**
+A: The browser's tree of the HTML page. Every tag becomes an object that JavaScript can read
+or change. `document` holds the tree, and each element can hold child elements.
+
+**Q: `getElementById` or `querySelector` - which one and why?**
+A: `getElementById` for a single known element (fastest, `id` is unique).
+`querySelector`/`querySelectorAll` when I need a CSS selector, several elements, or a
+descendant such as `"#collection-log-body tr"`.
+
+**Q: `textContent` or `innerHTML`?**
+A: `textContent`. It writes plain text and can never interpret what is typed as HTML, so it is
+safe. `innerHTML` would execute markup typed into a box - that is the XSS risk.
+
+**Q: How do you add an element to the page?**
+A: `createElement()` to build it in memory, fill it, then `appendChild()` on its parent. It
+only appears on the page at the moment of `appendChild()`.
+
+**Q: How do you delete one?**
+A: `row.remove()` - it deletes the element and all its children. `removeChild()` on the parent
+is the older, longer form of the same thing.
+
+**Q: Why hide a filtered row with `style.display` instead of deleting it?**
+A: The clerk may want the whole log back. `Reset Log View` clears the search box and the
+dropdown and every row returns, which is much safer than reloading the page.
+
+**Q: `classList.add()` or `className = "..."`?**
+A: `classList` changes one class and leaves the others alone; `className = "..."` would throw
+every other class away. That matters here, because `tr` already has classes from the table.
+
+**Q: What is event bubbling / why connect a listener to each row?**
+A: An event travels up from the element that was clicked to its parents. The rows are created
+by JavaScript, so each new row is connected by `connectRowClicks()` after it is added - the
+listeners keep working for rows that did not exist when the page loaded.
+
+**Q: Where is the data of this assignment?**
+A: In the page itself. The rows are read back out of the DOM for every calculation, so the
+HTML and the displayed numbers can never disagree. Real storage comes with Assignment 13
+(PHP + MySQL).
+
+**Q: Which Assignment 6 and 7 features are still working?**
+A: All of them. `main.js` is still the only script, the Assignment 6 register on
+`dashboard.html` and the Assignment 7 farmer form on `farmers.html` were not changed, and
+section 7 simply stops at once on a page that has no collection log.
+
+## A11.9 Files created / modified for Assignment 11
+- Created: none - no new file was needed.
+- Modified: `frontend/pages/collection-centre.html` (entry form, log tools, status strip,
+  summary, `id="collection-log-body"`, the script tag), `frontend/js/main.js` (section 7 and
+  the `startCollectionLog()` call), `frontend/css/style.css` (new `ASSIGNMENT 11` block),
+  `docs/assignment-mapping.md`, `docs/viva-notes.md`.
+- Assignments 1-10 were not changed: `index.html`, `about.html`, `dashboard.html` and
+  `farmers.html` are untouched, every CSS rule above the new block is unchanged, and
+  `react-app/` was not opened.
+
+## A11.10 How to test it
+1. Open `frontend/pages/collection-centre.html` in a browser (no server needed).
+2. **Add a Collection Entry**: type a name, quantity, fat and SNF, press **Add To Log** - a
+   new row appears at the bottom of the log, the summary counts go up and the progress bar
+   grows. Type a fat % of 12% to see the red message and the red border.
+3. **Click a row** - it is highlighted and its details appear in the status strip.
+4. **Mark Selected as Paid** - the last cell of that row changes to "Paid" and the pending
+   count drops by one.
+5. **Search box**: type `pat` - only rows whose name contains "pat" stay, and the summary
+   counts only those. Clear it and all rows return.
+6. **Dropdown**: choose "Pending only" - only unpaid rows stay.
+7. **Highlight Highest Quantity** - the biggest visible can is marked and printed bold.
+8. **Remove Selected Row**, then **Remove Added Rows** - rows disappear; the 19 rows written
+   in the HTML file are never removed by the second button.
+9. **Reset Log View** - everything is shown again with no marks.
