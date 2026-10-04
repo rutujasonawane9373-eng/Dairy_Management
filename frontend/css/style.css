@@ -903,3 +903,79 @@ body.page-centre footer {
         width: 100%;                 /* full-width tap targets */
     }
 }
+
+/* ============================================================
+   ASSIGNMENT 12 : STYLES FOR THE PHP PAGES
+   Used by php/index.php, php/register.php, php/profile.php and
+   php/logout.php. Those pages print their HTML with PHP but link
+   this very stylesheet:
+
+       <link rel="stylesheet" href="../frontend/css/style.css">
+
+   so the project keeps ONE look and ONE stylesheet.
+
+   Everything in this block is NEW. No rule above this line has
+   been changed, so Assignments 1-11 look exactly the same.
+
+   Almost nothing is needed, because the pages reuse what already
+   exists:
+     .centre-note / .register-status / .log-window      (A5, A6)
+     .farmer-form / .form-grid / .form-row              (A7)
+     .form-message.ok / .form-message.error             (A7)
+     .form-row input.field-error / .error-message       (A7)
+     .btn / .btn-light                                   (A3, A7)
+     .flex-row / .flex-item / .total-value              (A4, A6)
+
+   Only two small things are new here:
+     1. the pointer cursor of Assignment 6 must be switched off,
+        because a table printed by PHP cannot be clicked
+     2. the <dl> list of the profile page (dt = label, dd = value)
+   ============================================================ */
+
+/* ---------- 1. PHP tables have no clickable rows ---------------- */
+/* Assignment 6 gave every .log-window row cursor: pointer, because
+   main.js listens for a click on those rows. The tables of the PHP
+   pages are printed by the server and cannot be clicked, so the
+   cursor goes back to the arrow. The rule is written for
+   body.page-php only, so the HTML pages are untouched. */
+body.page-php .log-window tbody tr {
+    cursor: auto;
+}
+
+/* ---------- 2. the <dl> profile list ----------------------------- */
+body.page-php .profile-list {
+    margin: 14px 0 0 0;
+    padding: 14px 16px;
+    background-color: #fdf8ee;
+    border: 1px solid #ddc9a5;
+    border-left: 6px solid #e8b84b;
+    border-radius: 8px;
+}
+
+/* dt = the label of one value ("Farmer Code"). */
+body.page-php .profile-list dt {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #6b4226;
+}
+
+/* The first label should not have space above it. */
+body.page-php .profile-list dt:first-child {
+    margin-top: 0;
+}
+
+/* dd = the value that belongs to the label above it. */
+body.page-php .profile-list dd {
+    margin: 2px 0 0 0;
+    color: #3f2f1e;
+}
+
+/* ---------- ASSIGNMENT 12 : MEDIA QUERY (mobile friendly) -------- */
+/* On a phone the two buttons of the footer would be squeezed, so
+   they are made full width - the same idea as Assignment 7 and 11. */
+@media (max-width: 600px) {
+    body.page-php main .btn {
+        display: block;
+        margin-top: 10px;
+    }
+}
