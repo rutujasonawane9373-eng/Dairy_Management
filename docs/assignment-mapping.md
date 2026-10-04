@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 6 - React (Assignment 8)
+Current project phase: Phase 7 - Fetch API + JSON (Assignment 10)
 
 ## Assignment → File/Feature
 
@@ -17,8 +17,8 @@ Current project phase: Phase 6 - React (Assignment 8)
 | 6 | JavaScript - basic events + array functions | External file: `frontend/js/main.js`; linked from `frontend/pages/dashboard.html` with `<script src="../js/main.js"></script>` at the end of `<body>`; UI = the "Today's Collection Register" section | ✅ Done |
 | 7 | JavaScript frontend functionality + form validation | `frontend/pages/farmers.html` (the Farmer Registration form) + `frontend/js/main.js` (section 6) | ✅ Done |
 | 8 | React - components, JSX | `react-app/` - Vite-based React SPA with functional components (Header, Dashboard, FarmerCard, MilkCollectionCard, Footer) and JSX | ✅ Done |
-| 9 | React - props, state, hooks, events | `react-app/` (planned) | ⏳ Pending |
-| 10 | Fetch API + JSON | `frontend/js/api.js` (planned) | ⏳ Pending |
+| 9 | React - props, state, hooks, events | `react-app/src/App.jsx` - 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), `onClick` / `onChange` event handlers, conditional rendering for the badges, details block and "no farmer found" message | ✅ Done |
+| 10 | Fetch API + JSON | `react-app/src/ApiFarmerList.jsx` - `useEffect()` + `fetch()` + `response.json()` + `useState()`, records from `https://jsonplaceholder.typicode.com/users` drawn with `map()` and `key={farmer.id}`, loading message, error message + Retry. Rendered by `react-app/src/App.jsx:575` | ✅ Done |
 | 11 | DOM manipulation + events | `frontend/js/main.js` (planned) | ⏳ Pending |
 | 12 | PHP - forms, validation, strings, sessions | `php/auth/` (planned) | ⏳ Pending |
 | 13 | PHP + MySQL - CRUD | `php/farmer/` (planned) | ⏳ Pending |
@@ -26,7 +26,7 @@ Current project phase: Phase 6 - React (Assignment 8)
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 5 — Assignments 6 and 7)
+## Project structure (as of Phase 7 — Assignments 8, 9 and 10)
 
 ```
 Dairy_Management/
@@ -46,10 +46,18 @@ Dairy_Management/
 │       ├── cow.svg
 │       ├── farm.svg
 │       └── milk-can.svg
+├── react-app/                 Vite + React single page application
+│   ├── package.json
+│   ├── vite.config.js
+│   └── src/
+│       ├── main.jsx           entry point - createRoot(...).render(<App />)
+│       ├── App.jsx            Assignment 8 + Assignment 9 (+ renders Assignment 10)
+│       ├── App.css            styles of the React page, incl. the Assignment 10 block
+│       └── ApiFarmerList.jsx  Assignment 10 (fetch + JSON)
 ├── docs/
 │   ├── assignment-mapping.md
 │   └── viva-notes.md
-└── later-phase folders are not created yet
+└── php/, node-backend/, database/ are not created yet (Assignments 12-15)
 ```
 
 ## Assignment 7 detail — JavaScript frontend functionality and form validation
@@ -210,12 +218,53 @@ Notes:
   menu does not fill the phone screen.
 - The fixed rate board becomes a full-width bottom strip on phones.
 
-## Assignments 8 and later — not implemented yet
+## Assignment 10 detail — Fetch API and JSON
 
-- **Assignment 8 and onwards have not been started.** There is no `react-app/`, `php/`,
-  `node-backend/` or `database/` folder, no React component, no `fetch()` / API call, no
-  server and no SQL anywhere in the project.
-- The form on `farmers.html` is checked and stored **only in the browser**: there is no
-  `action` attribute and no PHP page behind it.
-- The only JavaScript file is still `frontend/js/main.js`, now loaded by two pages
-  (`dashboard.html` for Assignment 6 and `farmers.html` for Assignment 7).
+Component: `react-app/src/ApiFarmerList.jsx`, rendered by `react-app/src/App.jsx:575` as the
+last section of `<main>` ("Farmer Information from API"). Assignments 8 and 9 keep working
+unchanged — `App.jsx` only gained one import and one line of JSX.
+
+### The whole flow in one line
+
+```
+API URL -> fetch() -> HTTP response -> response.json() -> JSON data -> useState() -> .map() -> UI
+```
+
+### Step by step
+
+| Step | Code in `ApiFarmerList.jsx` | What it does |
+|---|---|---|
+| API URL | `const API_URL = 'https://jsonplaceholder.typicode.com/users'` (line 36) | free public test API, read-only, no key, answers with a JSON array of 10 user objects |
+| `fetch()` | `const response = await fetch(API_URL)` (line 49) | browser's built-in HTTP client; returns a Promise that resolves later with a **response**, not with the data |
+| status check | `if (!response.ok) throw new Error(...)` (lines 56-58) | `fetch()` only rejects on a dead network; a 404/500 arrives as a normal response, so `response.ok` (true for 200-299) is tested by hand |
+| `response.json()` | `const data = await response.json()` (line 65) | the body arrives as **text**; `response.json()` parses it into real JavaScript data (an array of objects) and is itself a Promise, so it needs `await` |
+| `useState()` | `useState([])`, `useState(true)`, `useState('')` (lines 103, 108, 113) | three states: `apiFarmers` (the data), `loading` (true while the request runs), `error` (friendly message, `''` when fine) |
+| `useEffect()` | `useEffect(() => { loadFarmerData() }, [])` (lines 152-158) | runs the request **once**, when the component loads; the empty dependency array `[]` is why a state change does not re-fetch |
+| loading | `{loading && <p className="api-message">Loading farmer data...</p>}` (line 173) | the message shows while the request is in flight |
+| error handling | `try / catch / finally` in `loadFarmerData()` (lines 119-137) | `catch` writes the real error to `console.error` and the friendly text `"Unable to load farmer data. Please try again."` to the page; `finally` always clears `loading`; the **Retry** button re-runs the same fetch |
+| `map()` + `key` | `apiFarmers.map((farmer) => <ApiFarmerCard key={farmer.id} farmer={farmer} />)` (lines 193-195) | one card per record; `key={farmer.id}` is the unique identity React needs to update a list correctly |
+
+### Fields displayed
+
+`ApiFarmerCard` reads `name`, `username`, `email`, `address.city` (nested object — it shows how
+nested JSON is used) and `id` from each record.
+
+### New CSS
+
+`react-app/src/App.css` ends with an `Assignment 10` block: `.api-section`, `.api-note` (+ `code`),
+`.api-message`, `.api-message-box`, `.api-error`, `.api-farmer-card .card-text`. No earlier rule was
+changed.
+
+### Not used
+
+No Axios, no PHP, no MySQL, no Node.js/Express, no local JSON file — only the browser's built-in
+`fetch()` against the public API above.
+
+## Assignments 11–16 — not implemented yet
+
+- **Assignment 11 (DOM manipulation + events)** onwards have not been started. There is no `php/`,
+  `node-backend/` or `database/` folder in the project, no SQL anywhere and no server.
+- The Assignment 7 form on `farmers.html` is still checked and stored **only in the browser**:
+  there is no `action` attribute and no PHP page behind it.
+- `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the
+  React app is a separate Vite project that does not load it.

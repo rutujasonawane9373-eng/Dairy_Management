@@ -5,6 +5,7 @@
 //               (components, JSX, expressions, className)
 // ASSIGNMENT 9 : React props, state, hooks, event handling
 //               and conditional rendering
+//               (see src/ApiFarmerList.jsx for Assignment 10)
 //
 // Demonstrates:
 // - PROPS              : App passes data down to Header, Dashboard,
@@ -12,8 +13,12 @@
 // - STATE              : useState() - selected farmer, milk quantity,
 //                        search text, farmer details, payment status,
 //                        high collection threshold
-// - HOOKS              : only useState is used
-//                        (fetch / API is Assignment 10, so no useEffect)
+// - HOOKS              : only useState is used in this file, so the
+//                        farmer register below works without any
+//                        network request. Assignment 10 (useEffect +
+//                        fetch) lives in its own file,
+//                        src/ApiFarmerList.jsx, and is rendered at the
+//                        end of <main>.
 // - EVENT HANDLING     : onClick on the buttons, onChange on the search
 //                        box and on the threshold drop-down
 // - CONDITIONAL RENDERING : High / Normal collection message,
@@ -22,13 +27,17 @@
 // ============================================================
 
 import { useState } from 'react'
+// ASSIGNMENT 10 : the section that fetches farmer data as JSON
+// from a public API with fetch() inside useEffect().
+import ApiFarmerList from './ApiFarmerList.jsx'
 import './App.css'
 
 // ============================================================
 // Demo data
 // The farmers registered with the society. This is plain data kept
 // in this file - Assignment 13 will store it in MySQL. There is no
-// fetch() call and no JSON file in this assignment.
+// fetch() call and no JSON file in THIS file: the API farmer list
+// of Assignment 10 is a separate component, src/ApiFarmerList.jsx.
 // ============================================================
 const farmersData = [
   {
@@ -557,6 +566,13 @@ function App() {
             onDecrease={decreaseMilk}
           />
         </section>
+
+        {/* ASSIGNMENT 10 : FETCH API + JSON
+            This section gets its farmer records from a public API with
+            fetch() inside useEffect(), converts the answer with
+            response.json() and keeps the data in state. All of that
+            code is in src/ApiFarmerList.jsx. */}
+        <ApiFarmerList />
       </main>
 
       {/* PROPS: App gives Footer the year and the contact line */}

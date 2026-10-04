@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 6** (Phase 5 â€” JavaScript). Assignment 7 not started.
+> Last updated after **Assignment 10** (Phase 7 - Fetch API and JSON, inside the React app). Assignments 11-16 are not built yet.
 
 ---
 
@@ -36,7 +36,8 @@ butter gold, dark chocolate brown. That is deliberate so the project looks like 
 | Styling | CSS3 (Flexbox, Grid, Media Queries, positions) | Used â€” Assignments 3, 4, 5 |
 | Behaviour | JavaScript (events, array functions, DOM) | Used â€” **Assignment 6** |
 | Images | Hand-written inline SVG | Used |
-| Server / database | PHP, MySQL, Node.js + Express, React | **Not used yet** â€” later phases |
+| App framework | React (Vite) | **Used** â€” Assignments 8, 9 and 10 in `react-app/` |
+| Server / database | PHP, MySQL, Node.js + Express | **Not used yet** â€” later phases |
 
 There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by two pages â€”
 `frontend/pages/dashboard.html` (Assignment 6) and `frontend/pages/farmers.html`
@@ -74,7 +75,7 @@ Dairy_Management/
         â””â”€â”€ milk-can.svg
 ```
 
-Folders that do **not** exist yet and must not be mentioned as if they do:
+Folders that do **not** exist yet and must not be mentioned as if they do (note: `react-app/` DOES exist â€” Assignments 8, 9 and 10):
 `react-app/`, `php/`, `node-backend/`, `database/`.
 
 ### 1.4 How the frontend files are connected
@@ -2957,6 +2958,9 @@ change afterwards.
 | Assignment 5 â€” CSS positions and other properties | **Completed** | `frontend/pages/collection-centre.html` with `style.css` lines 323â€“584 â€” static 355, relative 369 & 466, absolute 377 & 487, fixed 503, sticky 345 & 455, plus z-index, top/right/bottom/left, width, height, margin, padding, border, border-radius, box-shadow, overflow, opacity |
 | Assignment 6 â€” JavaScript events and array functions | **Completed** | `frontend/js/main.js` â€” `collections` array (8 records), `DOMContentLoaded` start, events: `change` / `input` / `click` / `mouseover` / `mouseout`, functions: `forEach()` / `map()` / `filter()` / `find()` / `reduce()`. UI in `frontend/pages/dashboard.html`; styles appended to `frontend/css/style.css` |
 | Assignment 7 â€” JavaScript frontend functionality and form validation | **Completed** | `frontend/pages/farmers.html` â€” the Farmer Registration form (6 fields, `novalidate`, HTML5 attributes) + the "Farmers Registered in This Session" table. Logic in `frontend/js/main.js` section 6 â€” `formRules` list, checks `validateFarmerName()` / `validateMobile()` / `validateEmail()` / `validateVillage()` / `validateMilkQuantity()` / `validateFatPercentage()` / `rateForFat()`, interface `checkField()` / `checkWholeForm()` / `showFieldError()` / `clearFieldError()` / `clearAllFieldErrors()` / `focusFirstError()` / `setFormStatus()` / `readFormValues()` / `registerFarmer()` / `renderRegisteredFarmers()` / `successText()` / `startFarmerForm()`, events `submit` / `blur` / `input` / `reset`, `preventDefault()`. Styles appended to `frontend/css/style.css` |
+| Assignment 8 â€” React components and JSX | **Completed** | `react-app/` (Vite + React). Components in `react-app/src/App.jsx`: Header, StatCard, Dashboard, FarmerCard, MilkCollectionCard, Footer, App. Entry point `react-app/src/main.jsx`: `createRoot(document.getElementById('root')).render(<App />)` |
+| Assignment 9 â€” React props, state, hooks, events | **Completed** | `react-app/src/App.jsx` â€” 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), props passed to every child, `onClick` / `onChange` handlers, conditional rendering (high/normal badge, paid/pending badge, details block, "no farmer found") |
+| Assignment 10 â€” Fetch API + JSON | **Completed** | `react-app/src/ApiFarmerList.jsx` â€” `useEffect()` + `fetch('https://jsonplaceholder.typicode.com/users')` + `response.json()` + `useState()`, `.map()` with `key={farmer.id}`, loading message, friendly error message + Retry button. Styles: `Assignment 10` block at the end of `react-app/src/App.css` |
 
 ### 11.1 Known issues and gaps in Assignments 1â€“5
 
@@ -3033,11 +3037,10 @@ weakness.
   end of `style.css`.
 - `startFarmerForm()` returns immediately when `#farmer-form` is missing, so `dashboard.html`,
   `index.html`, `about.html` and `collection-centre.html` are unaffected and stay error-free.
-- There is still **no** backend: no `action` attribute, no PHP, no MySQL, no `fetch()`, no JSON
+- The static `frontend/` part still has **no** backend of its own: no `action` attribute, no PHP, no MySQL, no Node/Express. A registered farmer only lives in the `registeredFarmers` array until the page is closed, and the aside on the page says so. (The `fetch()` call of Assignment 10 lives in the separate `react-app/` project, not in `frontend/`.)
   file, no Node/Express. A registered farmer only lives in the `registeredFarmers` array until the
   page is closed, and the aside on the page says so.
-- Assignments 8â€“16 are untouched: there is no `react-app/`, `php/`, `node-backend/` or
-  `database/` folder in the project.
+- Assignments 8, 9 and 10 are implemented inside `react-app/` (see section A8 and the Assignment 10 section at the end of this file). Assignments 11-16 are still untouched: there is no `php/`, `node-backend/` or `database/` folder in the project, and the project has no server of its own.
 
 ---
 
@@ -3094,7 +3097,7 @@ cd react-app && npm run dev. Build: npm run build. Preview: npm run preview.
 ## A8.8 Testing performed
 - Starts and renders correctly; all components render; no console errors.
 - Existing frontend/ (Assignments 1–7) remains untouched.
-- Assignment 9 features (useState/useEffect/props/events) NOT implemented.
+- Assignment 9 features (useState, props, events, conditional rendering) are implemented in `App.jsx`.
 
 ## A8.9 Files created/modified
 - Created: react-app/ (entire Vite React project).
@@ -3103,3 +3106,224 @@ cd react-app && npm run dev. Build: npm run build. Preview: npm run preview.
 
 Update this file after every future assignment.*
 
+
+# Assignment 10 - Fetch API and JSON
+
+## A10.1 Which file proves this assignment
+- `react-app/src/ApiFarmerList.jsx` - the whole Assignment 10 code.
+- Rendered by `react-app/src/App.jsx` as the last section inside `<main>` (the
+  `<ApiFarmerList />` element), so it appears at the bottom of the Dairy Management page
+  under the heading **"Farmer Information from API"**.
+- Styles for it are at the end of `react-app/src/App.css` in the
+  `Assignment 10: styles of the API farmer section` block.
+
+## A10.2 The whole flow in one line
+
+```
+API URL -> fetch() -> HTTP response -> response.json() -> JSON data -> useState() -> .map() -> UI
+```
+
+## A10.3 API (Application Programming Interface)
+- An **API** is a set of rules one program follows to ask another program for data.
+  The second program (the **server**) does not belong to my project - I only call it.
+- The API used here is **JSONPlaceholder**: `https://jsonplaceholder.typicode.com/users`
+  (a free public test API). It is read-only, needs no key or login, and is safe to show
+  in a college demonstration.
+- It answers with a **JSON array of 10 user objects**. Other useful endpoints of the same
+  API are `/posts` and `/comments`.
+- My project has **no backend of its own** for this assignment - no PHP page, no MySQL
+  database, no Node.js/Express server.
+
+## A10.4 JSON (JavaScript Object Notation)
+- **JSON** is the text format in which an API sends data. It looks like a JavaScript
+  object but it is only text: `"name"` in double quotes, no comments, no functions.
+- One record from this API looks like this:
+
+```json
+{
+  "id": 1,
+  "name": "Leanne Graham",
+  "username": "Bret",
+  "email": "Sincere@april.biz",
+  "address": { "city": "Gwenborough" }
+}
+```
+
+- The result is an **array** of 10 such objects, so `data[0]` is the first farmer.
+- `address` is a **nested object**, which is why the city is read as `farmer.address.city`.
+- `JSON.stringify(object)` turns JavaScript data into JSON text;
+  `response.json()` (see A10.6) is the opposite direction - JSON text into JavaScript data.
+
+## A10.5 Fetch API and `fetch()`
+- The **Fetch API** is the browser's built-in way to make HTTP requests. It needs no
+  library and no installation - no Axios, no jQuery.
+- `fetch(url)` **starts** the request and immediately returns a **Promise**; it does
+  **not** return the data. The data arrives later, so the code must wait for it with
+  `await`, and the function that uses `await` must be marked `async`.
+
+```js
+async function fetchFarmerData() {
+  const response = await fetch(API_URL)   // <- the request happens here
+  // ... the data is available from here on
+}
+```
+
+- `response` is a **Response** object, not the data. Two members are used:
+  - `response.ok` - `true` for status codes 200-299.
+  - `response.status` - the HTTP code, used in the error message.
+
+```js
+if (!response.ok) {
+  throw new Error('API request failed with status ' + response.status)
+}
+```
+
+- **Why this check is needed:** `fetch()` only *rejects* when the network is completely
+  broken. A 404 (wrong address) or a 500 (server error) arrives as a perfectly normal
+  response, so without this test a broken page would be shown as if it were data.
+
+## A10.6 `response.json()`
+- The body of a response arrives as **text**. `response.json()` reads that text and
+  converts it into real JavaScript data (here: an array of objects).
+- It is itself asynchronous, so it also needs `await`:
+
+```js
+const data = await response.json()
+return data
+```
+
+- The alternative would be `await response.text()` (plain text) followed by
+  `JSON.parse(text)` - both lines together do exactly what `response.json()` does in one.
+
+## A10.7 `useState()` - storing the data
+Three states are used in `ApiFarmerList`:
+
+```js
+const [apiFarmers, setApiFarmers] = useState([])    // the records from the API
+const [loading, setLoading] = useState(true)         // is the request still running?
+const [error, setError] = useState('')               // friendly message, '' = no error
+```
+
+- `useState(initialValue)` returns **two** values: the current value and the setter.
+- Calling the setter (`setApiFarmers(data)`) changes the value, and React draws the
+  component again with the new value.
+- The array starts as `[]` (empty) so `.map()` has nothing to draw until the data arrives.
+- `loading` starts as `true`, so the loading text appears immediately instead of a blank
+  section, and `error` starts as `''` (empty string) meaning "no problem".
+
+## A10.8 `useEffect()` - fetching when the component loads
+
+```js
+useEffect(() => {
+  loadFarmerData()
+}, [])
+```
+
+- `useEffect(fn)` registers work that must happen **after** the component has been drawn
+  on the screen. It is the right place for a network request, because a request must never
+  be written directly in the body of a component (that would repeat on every render).
+- The second argument is the **dependency array**. `[]` (empty) means "run this effect only
+  once, when the component loads". If a value were written inside `[ ]`, the effect would
+  run again whenever that value changed.
+- The effect calls `loadFarmerData()`, the `async` function that does
+  `fetch()` + `response.json()` and then calls the setters.
+
+## A10.9 Loading state
+- `{loading && <p className="api-message">Loading farmer data...</p>}` shows the message
+  while the request is in flight.
+- `setLoading(false)` is written in the **`finally`** block, so the message disappears
+  whether the request **succeeded or failed** - otherwise a failed request would leave
+  "Loading..." on the screen forever.
+
+## A10.10 Error handling
+`loadFarmerData()` uses `try / catch / finally`:
+
+```js
+try {
+  const data = await fetchFarmerData()
+  setApiFarmers(data)                          // success
+} catch (technicalError) {
+  console.error('Could not load farmer data from the API:', technicalError)
+  setError('Unable to load farmer data. Please try again.')   // user-friendly message
+} finally {
+  setLoading(false)
+}
+```
+
+- **Three states, one request:** loading, success, error. Only one of the three blocks is
+  drawn on the page at a time (conditional rendering).
+- The real technical error goes to `console.error` (the browser console); the page shows
+  only the simple sentence **"Unable to load farmer data. Please try again."**
+- A **Retry** button sets the states back to loading and calls the same fetch again - the
+  simplest possible way to recover without reloading the page.
+
+## A10.11 `map()` and the React `key`
+```jsx
+{apiFarmers.map((farmer) => (
+  <ApiFarmerCard key={farmer.id} farmer={farmer} />
+))}
+```
+- `.map()` is an **array function**: it goes through every record and returns a new array
+  of JSX, which React then renders. (The same array function was used for Assignment 6.)
+- `key={farmer.id}` gives each item a **unique identity**. `id` is unique in the API data
+  (1 to 10), so it is the correct key.
+- **Why the key is needed:** React compares the old list with the new one by key. Without
+  a unique key React cannot tell which card is which, and it may reuse the wrong card, lose
+  the state of an item or warn in the console.
+- A key must be a **string or a number**, **unique among the siblings**, and **stable**
+  (never the array index, because the index changes when the list is reordered or filtered).
+
+## A10.12 The component in short
+
+| Piece | Where | Purpose |
+|---|---|---|
+| `API_URL` | line 36 | the public API address |
+| `fetchFarmerData()` | lines 45-68 | async: `fetch()` -> check `response.ok` -> `response.json()` -> return data |
+| `ApiFarmerCard` | lines 76-89 | draws one record: name, username, email, city, record id |
+| `ApiFarmerList` | lines 97-200 | owns the three states, the `useEffect()`, the retry button and the `map()` |
+| `App.jsx` | line 575 | renders `<ApiFarmerList />` at the end of `<main>` |
+
+## A10.13 Viva questions and answers
+
+**Q: What is the difference between an API and JSON?**
+A: An API is the *interface* - the rules and the address at which I ask for data. JSON is
+the *format* in which that data is written. One API can answer in several formats; this one
+answers in JSON.
+
+**Q: What does `fetch()` return?**
+A: A Promise that resolves with a `Response` object - not the data. The data is read from
+the response with `response.json()`.
+
+**Q: Why do we need `await` twice?**
+A: Once for `fetch()` (waiting for the response headers to arrive) and once for
+`response.json()` (waiting for the body to be downloaded and parsed).
+
+**Q: Why is `useEffect()` used and not just a normal function call?**
+A: A component body runs again on every render, so a request written there would fire
+repeatedly. `useEffect` with `[]` runs it exactly once, after the first render.
+
+**Q: What happens if the internet is off?**
+A: `fetch()` rejects, the `catch` block runs, the page shows "Unable to load farmer data.
+Please try again." and the Retry button appears.
+
+**Q: Why not Axios?**
+A: `fetch()` is built into the browser, needs no installation and no extra dependency, and
+this assignment asks for Fetch and JSON. Axios is only an alternative wrapper library.
+
+**Q: Is this data really stored anywhere?**
+A: No. The API is a public test service and the records only live in React state while the
+page is open. Real storage comes later with PHP + MySQL (Assignments 12 and 13).
+
+## A10.14 Files created / modified for Assignment 10
+- Created: `react-app/src/ApiFarmerList.jsx`.
+- Modified: `react-app/src/App.jsx` (import + `<ApiFarmerList />`), `react-app/src/App.css`
+  (new `Assignment 10` block at the end), `docs/assignment-mapping.md`, `docs/viva-notes.md`.
+- Assignments 1-9 were not changed: `frontend/` is untouched and every Assignment 8 and 9
+  feature in `App.jsx` (state, props, events, conditional rendering) still works.
+
+## A10.15 How to test it
+1. `cd react-app` then `npm run dev`, open the printed local URL.
+2. The section first shows **"Loading farmer data..."**, then 10 farmer cards
+   (name, username, email, city).
+3. Turn off the network (or stop the dev server) and press **Retry**: the friendly error
+   message appears instead of the cards.

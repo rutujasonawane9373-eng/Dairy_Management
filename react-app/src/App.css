@@ -213,3 +213,61 @@ main {
   color: #5b4a36;
   font-size: 15px;
 }
+
+/* ---------- Assignment 10: styles of the API farmer section ---------- */
+
+/* The section that shows the farmer records received from the API */
+.api-section {
+  margin-top: 24px;
+}
+
+/* Small grey line that names the API endpoint above the records */
+.api-note {
+  margin: 8px 0 4px 0;
+  color: #7b6a52;
+  font-size: 14px;
+  text-align: left;
+}
+
+.api-note code {
+  background-color: #f4e9d4;
+  color: #5c3a12;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* "Loading farmer data..." - shown while fetch() is still running */
+.api-message {
+  margin: 12px 0;
+  padding: 12px 18px;
+  background-color: #fdf8ee;
+  border: 1px solid #ddc9a5;
+  border-left: 6px solid #e8b84b;
+  border-radius: 8px;
+  color: #5b4a36;
+  font-size: 15px;
+  text-align: left;
+}
+
+/* The same box in its error state, next to the Retry button */
+.api-message-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.api-message-box .api-message {
+  flex: 1 1 260px;
+}
+
+.api-error {
+  background-color: #fde8d7;
+  border-left-color: #d98c5f;
+  color: #9b3f14;
+}
+
+/* One card per farmer record received from the API */
+.api-farmer-card .card-text {
+  margin: 2px 0;
+}
