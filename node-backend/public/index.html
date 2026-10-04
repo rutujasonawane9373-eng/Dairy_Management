@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     DAIRY MANAGEMENT SYSTEM
+     ASSIGNMENT 14 : STATIC FILE DEMONSTRATION
+
+     This page is NOT written by server.js. It is a plain HTML file
+     sitting in node-backend/public/, and express.static() sends it
+     to the browser when the address /index.html is requested.
+
+     Proof that static serving works:
+       - /style.css    the stylesheet below is loaded from public/
+       - /milk-can.svg the image below is loaded from public/
+
+     Note the URLs have no "public/" in them. The folder name is not
+     part of the address - public/style.css is requested as /style.css.
+     ============================================================ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static File | Dairy Management System</title>
+
+    <!-- STATIC FILE 1 : a CSS file served from public/ -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Dairy Management System</h1>
+        <p>Static file served by Node.js + Express &mdash; Assignment 14</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>This is a static file, not a route</h2>
+            <p>
+                The HTML of this page was written by hand in
+                <strong>node-backend/public/index.html</strong>. The server did not build it.
+                <code>express.static()</code> simply found the file on disk and sent it.
+            </p>
+
+            <h3>Files served from public/</h3>
+            <ul>
+                <li><code>/index.html</code> &mdash; this page (HTML)</li>
+                <li><code>/style.css</code> &mdash; the stylesheet used by this page (CSS)</li>
+                <li><code>/milk-can.svg</code> &mdash; the image below (image)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>STATIC FILE 2 : an image loaded from public/</h3>
+            <img src="/milk-can.svg" alt="Milk can" width="120" height="150">
+            <p>
+                If the can appears, Express is serving image files correctly.
+                If it does not appear, the file is missing from <code>public/</code>.
+            </p>
+        </section>
+
+        <section>
+            <h3>Go back to the routes</h3>
+            <ul>
+                <li><a href="/">/</a> &mdash; written by the <code>app.get('/')</code> route</li>
+                <li><a href="/about">/about</a> &mdash; written by the <code>app.get('/about')</code> route</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>Dairy Management System &mdash; Assignment 14 (Node.js + Express). College project.</p>
+    </footer>
+
+</body>
+</html>

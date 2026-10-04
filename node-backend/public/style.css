@@ -1,0 +1,119 @@
+/* ================================================================
+   DAIRY MANAGEMENT SYSTEM - ASSIGNMENT 14
+   Static stylesheet served by Express.
+
+   This file is NOT imported by server.js. It lives inside
+   node-backend/public/, so express.static() sends it to the browser
+   when a page asks for /style.css. That is exactly what
+   "serving static files" means: the server only reads the file from
+   disk and hands it over - there is no code running here.
+
+   The colours are the same dairy theme as frontend/css/style.css:
+   cream background, butter gold border, dark chocolate text.
+   ================================================================ */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fdf6ec;   /* cream / milk colour */
+    color: #3f2f1e;              /* dark chocolate brown text */
+    margin: 0;
+    padding: 0 20px 40px 20px;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #6b4226;   /* chocolate brown banner */
+    color: #fff6dd;              /* cream text */
+    padding: 20px;
+    margin: 0 -20px 25px -20px;  /* pull the banner to the page edges */
+    text-align: center;
+}
+
+header h1 {
+    margin: 0 0 6px 0;
+}
+
+header p {
+    margin: 0;
+}
+
+main {
+    max-width: 760px;
+    margin: 0 auto;              /* centre the content on the page */
+}
+
+section {
+    background-color: #ffffff;
+    border: 2px solid #e8b84b;   /* butter gold border */
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #6b4226;
+    margin-top: 0;
+}
+
+h3 {
+    color: #6b4226;
+}
+
+a {
+    color: #8a5a20;
+}
+
+/* Tables used on the home page to compare routes and static files */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+th, td {
+    border: 1px solid #e8b84b;
+    padding: 8px 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #fff6dd;
+}
+
+/* The code font used for /about, /index.html and similar addresses */
+code {
+    background-color: #fff6dd;
+    border: 1px solid #e8b84b;
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+
+img {
+    margin-top: 10px;
+}
+
+footer {
+    text-align: center;
+    color: #6b4226;
+    border-top: 2px solid #e8b84b;
+    padding-top: 12px;
+    margin-top: 10px;
+}
+
+/* On a phone the table text gets tight, so give the page more room */
+@media (max-width: 600px) {
+    body {
+        padding: 0 12px 30px 12px;
+    }
+
+    header {
+        margin-left: -12px;
+        margin-right: -12px;
+    }
+
+    th, td {
+        padding: 6px;
+        font-size: 14px;
+    }
+}

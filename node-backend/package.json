@@ -1,0 +1,20 @@
+{
+  "name": "dairy-management-node-backend",
+  "version": "1.0.0",
+  "description": "Assignment 14 - Node.js + Express web server for the Dairy Management System (routing + static files)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "dairy-management",
+    "college-project"
+  ],
+  "author": "Dairy Management Team",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 13** (Phase 9 - PHP + MySQL Database Connectivity and CRUD, inside `php/db-crud/` and `database/schema.sql`). Assignment 12 (PHP) is also built, in `php/`. Assignments 14-16 are not built yet.
+> Last updated after **Assignment 14** (Phase 10 - Node.js + Express web server, inside `node-backend/`). Assignments 12 and 13 (PHP + MySQL) are also built, in `php/` and `database/`. Assignments 15-16 are not built yet.
 
 ---
 
@@ -39,7 +39,8 @@ butter gold, dark chocolate brown. That is deliberate so the project looks like 
 | App framework | React (Vite) | **Used** â€” Assignments 8, 9 and 10 in `react-app/` |
 | Server language | PHP 8 | **Used** — Assignment 12 in `php/`, Assignment 13 in `php/db-crud/` |
 | Database | MySQL 8 + MySQLi | **Used** — Assignment 13: database `dairy_management`, table `farmers` |
-| REST API server | Node.js + Express | **Not used yet** â€” later phases |
+| Web server | Node.js + Express | **Used** — Assignment 14 in `node-backend/` (routing + static files) |
+| REST API server | Node.js + Express + DB | **Not used yet** — Assignment 15 |
 
 There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by three pages â€”
 `frontend/pages/dashboard.html` (Assignment 6), `frontend/pages/farmers.html` (Assignment 7)
@@ -76,11 +77,24 @@ Dairy_Management/
         â”œâ”€â”€ cow.svg
         â”œâ”€â”€ farm.svg
         â””â”€â”€ milk-can.svg
+├── node-backend/              Assignment 14 (Node.js + Express web server)
+│   ├── package.json           "npm start" -> "node server.js"; dependency: express
+│   ├── server.js              routes (GET /, GET /about), static files, 404 page
+│   └── public/                the files express.static() sends to the browser
+│       ├── index.html         static page       -> /index.html
+│       ├── style.css          static stylesheet -> /style.css
+│       └── milk-can.svg       static image      -> /milk-can.svg
 ```
 
-Folders that do **not** exist yet and must not be mentioned as if they do (note: `react-app/` DOES exist â€” Assignments 8, 9 and 10):
-Only `node-backend/` is still missing (Assignments 14 and 15). `react-app/`, `php/` and
-`database/` all exist now — see section A13.13 for the verified tree.
+Every folder of the project now exists: `frontend/`, `react-app/`, `php/`, `database/` and
+`node-backend/`. Two things must not be described as finished:
+
+- `node-backend/routes/` is **empty on purpose** — it is reserved for Assignment 15 (the REST
+  API) and nothing has been written in it. See section A14.10.
+- `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html`, but the
+  file has not been created yet.
+
+For the verified `react-app/`, `php/` and `database/` trees see sections A13.13 and A14.9.
 
 ### 1.4 How the frontend files are connected
 
@@ -2966,6 +2980,11 @@ change afterwards.
 | Assignment 9 â€” React props, state, hooks, events | **Completed** | `react-app/src/App.jsx` â€” 6 `useState` hooks (selected farmer, milk quantity, search text, show details, paid farmers, high-collection threshold), props passed to every child, `onClick` / `onChange` handlers, conditional rendering (high/normal badge, paid/pending badge, details block, "no farmer found") |
 | Assignment 10 â€” Fetch API + JSON | **Completed** | `react-app/src/ApiFarmerList.jsx` â€” `useEffect()` + `fetch('https://jsonplaceholder.typicode.com/users')` + `response.json()` + `useState()`, `.map()` with `key={farmer.id}`, loading message, friendly error message + Retry button. Styles: `Assignment 10` block at the end of `react-app/src/App.css` |
 | Assignment 11 - DOM manipulation and event handling | **Completed** | `frontend/pages/collection-centre.html` - the "Add a Collection Entry" form (`submit` event) + the tools of "Today's Collection Log" (`input`, `change`, `click` events) + the summary under the log. Code in `frontend/js/main.js` section 7 (from line 957): `getElementById()`, `querySelector()`, `querySelectorAll()`, `textContent`, `classList.add()/remove()`, `style.display / style.width / style.fontWeight`, `createElement()`, `appendChild()`, `remove()`, `setAttribute()`. Styles: `ASSIGNMENT 11` block at the end of `frontend/css/style.css` (from line 824) |
+| Assignment 12 — PHP forms, validation, strings, sessions | **Completed** | `php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php` + shared `php/includes/{header,footer,functions}.php` |
+| Assignment 13 — PHP + MySQL CRUD | **Completed** | `php/db-crud/` (12 files) + `database/schema.sql` — prepared statements, server-side validation, Post/Redirect/Get, two-step delete |
+| Assignment 14 — Node.js + Express | **Completed** | `node-backend/server.js` — `express()`, `GET /`, `GET /about`, `express.static('public')`, 404 page, `app.listen()`; `node-backend/package.json`; static files `node-backend/public/{index.html,style.css,milk-can.svg}`. See section A14 below |
+| Assignment 15 — REST API | **Not started** | `node-backend/routes/` is empty on purpose. No `res.json()`, no body parsing, no database connection in `node-backend/` yet |
+| Assignment 16 — Complete integration | **Not started** | Needs Assignment 15 first |
 
 ### 11.1 Known issues and gaps in Assignments 1â€“5
 
@@ -4238,9 +4257,10 @@ the browser window and is private to one visitor. Assignment 13 writes to the
 `session_start()` is still used in A13, but only for the one-time success message.
 
 **Q22. What is not in this assignment, and why?**
-No Node.js or Express (that is Assignment 14), no REST API (Assignment 15), no JavaScript
-on the CRUD pages, no PDO, and no login check. Each assignment is a self-contained piece of
-work, so it deliberately leaves the next one's topics out.
+No REST API (Assignment 15), no JavaScript on the CRUD pages, no PDO, and no login check.
+Each assignment is a self-contained piece of work, so it deliberately leaves the next one's
+topics out. Assignment 14 exists separately in `node-backend/` — it does not replace or touch
+the PHP pages of Assignment 13.
 
 **Q23. Two known weaknesses.**
 1. **No login / authorisation.** Anybody who can reach `farmer-delete.php` can delete a
@@ -4282,8 +4302,485 @@ boundary and the storage are different.**
 - **`DB_USER` is `root`.** MySQL's administrator account can damage anything. A real project
   would create a dedicated account that can only `SELECT`, `INSERT`, `UPDATE` and `DELETE`
   on `dairy_management.farmers`.
-- **`node-backend/` does not exist yet**, so the CRUD pages are served by PHP's own small
-  development server (`php -S`). That server is for development only.
+- **The CRUD pages are served by PHP's own small development server (`php -S`).** That server
+  is for development only. Assignment 14 added a Node.js + Express server in `node-backend/`,
+  but it serves only its own routes and `public/` files — it does not run PHP, so it cannot
+  serve the Assignment 13 pages. The two servers stay separate until the final integration.
 - **The Assignment 7 and Assignment 11 forms are still browser-only.** Neither has an
   `action` attribute pointing at `php/db-crud/`, so joining those screens to the database is
   part of the final integration (Assignment 16).
+
+---
+
+# Assignment 14 - Node.js + Express Web Server
+
+> Folder: `node-backend/`. Everything for this assignment was built **inside that folder only**.
+> No file of Assignments 1-13 was modified, so the PHP pages, the React app and the `frontend/`
+> pages all behave exactly as before.
+
+## A14.1 Which files prove this assignment
+
+| File | Job |
+|---|---|
+| `node-backend/package.json` | the project file — `"start": "node server.js"`, one dependency: `express` |
+| `node-backend/server.js` | the whole server, in four numbered parts |
+| `node-backend/public/index.html` | a **static** page, reached at `/index.html` |
+| `node-backend/public/style.css` | a **static** stylesheet, reached at `/style.css` |
+| `node-backend/public/milk-can.svg` | a **static** image, reached at `/milk-can.svg` (copy of `frontend/assets/milk-can.svg`) |
+| `node-backend/.gitignore` | keeps `node_modules/` out of git |
+| `node-backend/routes/` | **empty** — reserved for Assignment 15 |
+
+## A14.2 Why is a server needed at all?
+
+Assignments 1-11 are **client-side** work. The HTML, CSS and JavaScript are downloaded to the
+visitor's computer and run there. Anything those pages "store" lives only in the browser and is
+gone when the window is closed.
+
+A **server** is a program that stays running on a machine and answers requests over the network.
+It can hold data that outlives the browser — which is what Assignments 12-14 start doing:
+
+```
+browser  ---  request (GET /about)  --->  server
+browser  <--  response (HTML page)  <---  server
+```
+
+The browser never sees the server's code or its files. It only sees the answers.
+
+## A14.3 What Node.js is
+
+Node.js runs **JavaScript outside the browser**.
+
+| | In the browser | In Node.js |
+|---|---|---|
+| Who runs the code | the visitor's browser | the server's computer |
+| Which JavaScript | always the same for everyone | can use files, folders, a database |
+| What it can reach | only what the visitor's browser can reach | the file system, the network, MySQL |
+| Started by | opening an HTML file | `node server.js` |
+
+So `console.log()` and `fetch()` exist in **both**. What Node.js adds on top is the ability to
+use Node's own modules (the `fs` module for files, the `http` module for a server) and packages
+downloaded from npm.
+
+Node.js has a built-in web server module called `http`. Express is built on top of it.
+
+## A14.4 What Express is
+
+Express is a **web framework for Node.js** — a package downloaded from npm.
+
+| Without Express | With Express |
+|---|---|
+| you must import Node's `http` module yourself | `const express = require('express')` |
+| you must read the URL string and compare it by hand | `app.get('/about', ...)` |
+| you must set the headers and the status code by hand | `res.send()` / `res.status(404)` |
+| you must look up the file and stream it by hand | `express.static('public')` |
+
+Express does **not** replace Node.js or the browser. It is a shortcut library on top of Node's
+own `http` module. The full pipeline in this project is:
+
+```
+browser -> Node's http module -> Express -> public/ files or the route handlers in server.js
+```
+
+## A14.5 `package.json` and `node_modules` — what `npm install` really does
+
+**`npm` is the package manager that comes with Node.js.** `npm install express` does three things:
+
+1. reads `package.json`,
+2. downloads the express package **and every package express itself needs** into a new folder
+   called `node_modules/`,
+3. writes the exact versions it downloaded into `package-lock.json`, so the next person gets the
+   identical set.
+
+Three things to be able to say about `node_modules/`:
+
+- It is **not** our code. It is downloaded, and it must never be edited or committed.
+- It is **not** on Git. `node-backend/.gitignore` lists `node_modules/` for that reason.
+- It can be **deleted at any time** and rebuilt with `npm install`. Nothing is lost.
+
+`npm start` is just a shortcut: it runs the command written in `"scripts"` of `package.json`,
+which here is `node server.js`.
+
+## A14.6 The four parts of `server.js`
+
+| Part | Code | What it does |
+|---|---|---|
+| Setup | `const app = express();` | creates the application object |
+| Port | `const PORT = process.env.PORT \|\| 3000;` | 3000 by default; any other value can be given from outside |
+| Folder | `path.join(__dirname, 'public')` | the absolute path of the static folder |
+| Routes | `app.get('/')`, `app.get('/about')` | two GET routes, each answering with `res.send()` |
+| Static files | `app.use(express.static(PUBLIC_FOLDER))` | sends any file found in `public/` |
+| 404 page | `app.use((req, res) => res.status(404).send(...))` | answers only if nothing above did |
+| Start | `app.listen(PORT, () => console.log(...))` | keeps the program alive and prints the addresses |
+
+**`require()` vs `import`** — this project uses the older CommonJS form, `const x = require('x')`.
+It is the standard in plain Node.js tutorials and works in every Node project. `import ... from`
+is the newer ES Module form; both are valid, they are simply not mixed inside one file.
+
+**`__dirname`** is a variable Node.js gives for free: the absolute folder of the file you are
+looking at. So `path.join(__dirname, 'public')` always resolves to `node-backend/public`,
+whether the server was started from inside `node-backend/` or from the project root. Without it,
+the server would only find `public/` if it happened to be started from the right folder.
+
+**`path.join()` instead of `__dirname + '/public'`** — `join()` inserts the right separator for
+the operating system (`\` on Windows, `/` on Mac and Linux), so one line works everywhere.
+
+## A14.7 `req` and `res`
+
+Every handler receives two objects:
+
+- **`req` — the request.** What the browser asked for: the address (`req.originalUrl`), the
+  method (`req.method`), any query values (`req.query`), any form data (`req.body`).
+- **`res` — the response.** What we send back. `res.send(html)` sends HTML, `res.status(404)`
+  sets the status code first.
+
+The order matters: **`res.status(404)` must come before `res.send()`**, because `send()` ends the
+response. Once the response has been sent, nothing can be added to it. In this project
+`res.send()` is used everywhere; `res.json()` is deliberately **not** used — that is
+Assignment 15.
+
+## A14.8 Routing — how Express decides which page to send
+
+A **route** is one rule: *this method + this address -> this handler*.
+
+```js
+app.get('/about', (req, res) => { ... })
+//  ^      ^        ^        ^
+//  |      |        |        + the function that builds the answer
+//  |      |        + the address the visitor typed
+//  |      + the HTTP method (GET = asking for a page, not changing anything)
+//  + attach a route to the app
+```
+
+The two kinds of handlers used here:
+
+| Call | Used for | Runs when |
+|---|---|---|
+| `app.get(path, handler)` | an **exact** address — a route | the address matches exactly |
+| `app.use(handler)` | anything, including **middleware** | every request, unless an earlier handler already answered |
+
+`app.use(express.static(...))` is middleware: it looks at every request, and answers only if the
+file exists. The 404 handler is also `app.use()`, which is why it must be written **last** — it
+has no address to match, so it catches whatever is left over.
+
+## A14.9 Serving static files
+
+```js
+app.use(express.static(path.join(__dirname, 'public')));
+```
+
+One line, and Express now answers any request whose address matches a file inside `public/`:
+
+| Address asked for | File on disk | Sent as |
+|---|---|---|
+| `/style.css` | `public/style.css` | `text/css` |
+| `/milk-can.svg` | `public/milk-can.svg` | `image/svg+xml` |
+| `/index.html` | `public/index.html` | `text/html` |
+
+Two rules to remember:
+
+1. **The folder name is not part of the address.** `public/style.css` is requested as
+   `/style.css`, never `/public/style.css`. What is inside `public/` becomes the top level of
+   the website.
+2. **Express decides the file type from the extension.** `.css`, `.svg`, `.png`, `.jpg` and
+   `.html` all work with no extra code. The file's **content is never executed** — the server
+   only reads it from disk and writes it to the socket. That is the difference between a static
+   file and a route: a route *builds* an answer, `express.static()` *finds and copies* one.
+
+`express.static()` also serves `index.html` automatically when the address is a folder — that
+detail caused the one bug in this assignment; see A14.10.
+
+## A14.10 Route order — the one real bug in this assignment
+
+**Express checks its handlers from top to bottom and uses the FIRST one that answers.**
+`app.get()` answers only an exact address. `app.use()` looks at every request.
+
+The first draft of `server.js` had this order:
+
+```js
+app.use(express.static('public'));   // <- registered FIRST
+app.get('/', (req, res) => res.json({...}));   // <- never reached
+```
+
+What happened: the visitor asked for `/`. `express.static()` ran first, found
+`public/index.html` (because a folder's `index.html` is served automatically), sent it, and
+**ended the response**. Express never checked `app.get('/')` again, so the home route was dead
+code — the route existed in the file and could never run.
+
+The fix was to register the routes **before** the static middleware:
+
+```js
+app.get('/', ...);                    // 1. exact address / -> answered here
+app.get('/about', ...);               // 2. exact address /about -> answered here
+app.use(express.static('public'));    // 3. anything that is a real file in public/
+app.use((req, res) => res.status(404).send(...));   // 4. anything left over
+```
+
+The result is the table a viva examiner should be able to recite:
+
+| Address | Answered by |
+|---|---|
+| `/` | the `app.get('/')` route in `server.js` |
+| `/about` | the `app.get('/about')` route in `server.js` |
+| `/index.html` | `express.static()` reading `public/index.html` |
+| `/style.css` | `express.static()` reading `public/style.css` |
+| `/milk-can.svg` | `express.static()` reading `public/milk-can.svg` |
+| `/anything-else` | the 404 handler |
+
+Because the routes now answer `/` first, the static page is reached at the full name
+`/index.html`, and the home page links to it. **This is not an accident — it is the proof that
+the route wins.** The home page also links to `/style.css`, so if the stylesheet does not load,
+`express.static()` is broken.
+
+The general lesson, worth saying out loud in a viva: *in Express, registration order decides who
+answers. `app.get()` is precise, `app.use()` is greedy, so the greedy ones go last.*
+
+## A14.11 The 404 page and status codes
+
+The last handler answers every request nothing else answered:
+
+```js
+app.use((req, res) => {
+  res.status(404).send(`... ${escapeHtml(req.originalUrl)} ...`);
+});
+```
+
+A **status code** is a number that tells the browser what happened. The important ones:
+
+| Code | Meaning | Where it appears in this project |
+|---|---|---|
+| 200 | OK — the page was found | every route and every static file |
+| 404 | Not Found — the address does not exist | the last handler in `server.js` |
+| 500 | Internal Server Error — the code itself broke | not produced on purpose |
+
+404 means *"I am alive and working, but that address does not exist"*. It is different from a
+server crash, and different from a 500. Saying this correctly in a viva is worth marks.
+
+**Why `escapeHtml()` is needed here.** The 404 page prints back the address the visitor typed.
+If someone visits `/<script>alert(1)</script>`, and that text is placed straight into the HTML,
+their own browser would run it as code — that is **XSS**, the same danger `safeText()` prevents
+in Assignment 13. `escapeHtml()` turns `<` into `&lt;` and so on, so the text can only ever be
+words. It is five `replace()` calls, and it is the same lesson taught in PHP and now in Node.
+
+## A14.12 How to run and check it
+
+```
+cd C:\...\Dairy_Management\node-backend
+npm install      (first time only)
+npm start
+```
+
+```
+=================================================
+ Dairy Management System - Assignment 14
+ Node.js + Express server is running
+=================================================
+ Open in the browser : http://localhost:3000
+ Route  GET /        : http://localhost:3000/
+ Route  GET /about   : http://localhost:3000/about
+ Static files folder : C:\...\node-backend\public
+ Stop the server     : press Ctrl + C
+=================================================
+```
+
+Then check, in the browser:
+
+| Check | Expected |
+|---|---|
+| `/` | brown banner, table comparing routes and static files |
+| `/about` | the about page, linked from `/` |
+| `/index.html` | the static demo page |
+| `/style.css` | the stylesheet opens as text — **the proof that `public/` is served** |
+| `/milk-can.svg` | the milk can image appears |
+| `/no-such-page` | the 404 page, showing the address that was asked for |
+
+To use a different port without editing the file:
+
+```
+$env:PORT=3100; npm start          (PowerShell)
+PORT=3100 npm start                 (macOS / Linux)
+```
+
+Stopping the server is always `Ctrl + C` in the terminal.
+
+**If the server refuses to start with `EADDRINUSE`** — port 3000 is already taken. Either stop
+the program that is holding it (usually an older copy of this same server still running in
+another terminal), or start on another port as shown above.
+
+## A14.13 Node.js + Express compared with PHP (from Assignment 12/13)
+
+| Point | PHP (A12/A13) | Node.js + Express (A14) |
+|---|---|---|
+| Runs on | a web server such as Apache, or `php -S` | Node.js itself: `node server.js` |
+| Language | PHP | JavaScript — the same language as the frontend |
+| Entry file | many `.php` files, each one is a request | one `server.js` that creates the app |
+| How a page is reached | the file name *is* the address | `app.get('/about')` decides it |
+| Adding a page | create a new `.php` file | add one more `app.get()` in the same file |
+| Setup before running | install XAMPP, start Apache, configure MySQL | `npm install` |
+| Data source | MySQL through MySQLi | none yet — that is Assignment 15 |
+
+Both are **server-side**, so both can read a database safely; the browser can do neither.
+The real difference here is that Assignment 14 writes **no** HTML file for its two pages — the
+HTML lives inside `server.js` and is sent by `res.send()`.
+
+## A14.14 Practical changes I can try (Assignment 14)
+
+| # | Change | What should happen |
+|---|---|---|
+| 34 | `node-backend/server.js` — move `app.use(express.static(PUBLIC_FOLDER));` **above** the two routes | `/` now shows `public/index.html` and the "Static vs route" table disappears — this is the A14.10 bug, reproduced on purpose |
+| 35 | `node-backend/server.js` — delete the last `app.use(...)` block | an unknown address now shows Express's own default error page instead of our 404 page |
+| 36 | `node-backend/server.js` — change `'public'` to `'publicx'` and restart | every static file 404s, but `/` and `/about` still work — proves the routes and the static folder are independent |
+| 37 | `node-backend/server.js` — delete `escapeHtml()` around `req.originalUrl` and visit `/<b>hi</b>` | the typed text appears as bold text, proving the escaping was doing the work (XSS) |
+| 38 | `node-backend/public/style.css` — change `background-color: #fdf6ec;` to any other colour | all three pages change at once — one file, three pages, no HTML edited |
+| 39 | delete `node-backend/public/milk-can.svg` | the home page shows a broken image, proving the file really was read from disk |
+| 40 | `node-backend/server.js` — add `app.get('/farmers', (req, res) => res.send('...'))` | a third route works immediately; note this is a page, not JSON — Assignment 15 will do the JSON version |
+
+## A14.15 Viva questions and answers — Assignment 14
+
+**Q1. What is Node.js?**
+A runtime that executes JavaScript outside the browser, on a server. It has no `window` and no
+DOM, but it adds file-system access, networking and npm packages. My `node-backend/server.js`
+runs on it.
+
+**Q2. What is Express?**
+A web framework for Node.js, installed from npm. It wraps Node's built-in `http` module so that
+routing (`app.get`), sending (`res.send`) and static files (`express.static`) take one line
+instead of manual code.
+
+**Q3. What is the difference between a route and a static file?**
+A route is a rule I wrote: `app.get('/about', handler)` matches one exact address and the
+handler *builds* the answer. A static file already exists on disk and `express.static()` just
+finds it and copies it out — nothing is executed. In this project `/` and `/about` are routes;
+`/index.html`, `/style.css` and `/milk-can.svg` are static files.
+
+**Q4. What does `app.listen(3000)` do?**
+It starts the server on port 3000 and **keeps the program running** while it waits for
+requests. Without it the file would run once and exit immediately. It returns at once; the
+program stays alive in the background.
+
+**Q5. Why did you put the routes before `express.static()`?**
+Because Express uses the first handler that answers. `express.static()` serves a folder's
+`index.html` automatically, so if it were registered first it would answer `/` and end the
+response — `app.get('/')` would never run. In the first draft that is exactly what happened.
+The order now is: routes, then static, then the 404 handler.
+
+**Q6. Why is `public/style.css` requested as `/style.css` and not `/public/style.css`?**
+Because `express.static()` makes the folder the root of the website. Anything inside `public/`
+is one level down from the root, and the folder's own name never appears in the address.
+
+**Q7. What is `node_modules`? Is it my code? Should it be in Git?**
+It is the folder npm downloads packages into. It is not my code, it is never edited, and it must
+not be committed — `node-backend/.gitignore` lists it. It can be deleted and rebuilt at any time
+with `npm install`.
+
+**Q8. What does `npm install express` actually do?**
+Reads `package.json`, downloads express plus all of express's own dependencies into
+`node_modules/`, and records the exact versions in `package-lock.json` so the next install is
+identical.
+
+**Q9. What is `npm start`?**
+A shortcut for the `"start"` script in `package.json`, which here is `node server.js`.
+
+**Q10. What are `req` and `res`?**
+`req` is the incoming request — the address, the method, any query values or form data.
+`res` is the outgoing response — `res.status()` sets the code, `res.send()` writes the page and
+ends the response.
+
+**Q11. Why must `res.status(404)` come before `res.send()`?**
+Because `res.send()` ends the response. After it, nothing can be added — not even the status
+code. Set the code first, then send.
+
+**Q12. What is the difference between `app.get()` and `app.use()`?**
+`app.get(path, fn)` matches one exact path. `app.use(fn)` is called for **every** request that
+reaches it, which is why middleware and the 404 handler use `app.use()` and are written last.
+
+**Q13. What does the 404 handler mean, and how is it different from an error?**
+404 means the server is working but that address does not exist. It is not a crash. A 500 would
+mean the server's own code broke. This project returns 404 for any unknown address.
+
+**Q14. Why does the project use `res.send()` and not `res.json()`?**
+`res.json()` sends data for a program to read, and it belongs to the REST API, which is
+Assignment 15. Assignment 14 only proves that the server runs, routes and serves files, so it
+sends HTML.
+
+**Q15. What is `path.join(__dirname, 'public')` and why not write `'public'`?**
+`__dirname` is the absolute folder of `server.js`, so the joined path is correct no matter which
+folder the server was started from. A bare `'public'` would only work if the terminal happened
+to be in the right folder. `path.join()` also inserts the correct separator for Windows or Mac.
+
+**Q16. Why does the 404 page need `escapeHtml()`?**
+Because it prints the address the visitor typed. Without escaping, a visitor could type HTML
+into the address bar and have their own browser run it — XSS, the same attack `safeText()`
+prevents in Assignment 13. `escapeHtml()` turns `<` into `&lt;` so the text can only be words.
+
+**Q17. Does this server read the MySQL database?**
+No. There is no database code in `node-backend/`. The Assignment 13 pages read and write
+`dairy_management.farmers` through PHP + MySQLi, on a different server. Connecting this server
+to the data is Assignment 15.
+
+**Q18. Does this server serve the `frontend/` pages or the PHP pages?**
+No. It answers only its own routes and the files inside `node-backend/public/`. It cannot run
+PHP, and it does not read `frontend/`.
+
+**Q19. Which HTTP methods does this server accept?**
+Only `GET`, on `/` and `/about`. There is no `POST`, `PUT` or `DELETE` — those come with the
+REST API in Assignment 15.
+
+**Q20. What happens if two requests arrive at the same moment?**
+`app.listen()` queues them and each is handled one after the other, in order. JavaScript runs
+one piece of code at a time on the main thread, so handlers never overlap. A slow database call
+would block the others — the reason a real project moves slow work to `async` functions, which
+Assignment 15 will need.
+
+**Q21. How is this different from the PHP server of Assignment 12?**
+PHP answers a request by running a `.php` file whose name is the address, so a new page means a
+new file. Here one `server.js` holds every rule, so a new page means one more `app.get()` in the
+same file. PHP also needs XAMPP/Apache and a database; this needs `npm install`.
+
+**Q22. What is the weakest part of this assignment?**
+1. **No database and no API** — the server proves routing and static files only; nothing can be
+   created or saved yet. That is exactly the boundary of Assignment 14.
+2. **The HTML lives inside `server.js`** — good for a small teaching server, but a real project
+   keeps HTML in files and uses a template engine, or serves the `frontend/` pages.
+3. **`PORT=3000` is hard-coded as the default** — fine for college, but a real deployment gets
+   the port from the hosting service. `process.env.PORT` already allows that.
+
+**Q23. What would you add next, and why that order?**
+Assignment 15 first: a `routes/` folder, `express.json()` and `GET`/`POST`/`PUT`/`DELETE`
+endpoints for the `farmers` table, reusing the prepared statements from Assignment 13. Only after
+the data can be read and written does the integration (Assignment 16) mean anything — the
+Assignment 7 and Assignment 11 forms would post to real endpoints instead of storing data in the
+browser.
+
+## A14.16 Files created / modified for Assignment 14
+
+**Created (6):**
+
+- `node-backend/server.js`
+- `node-backend/package.json`
+- `node-backend/public/index.html`
+- `node-backend/public/style.css`
+- `node-backend/public/milk-can.svg`
+- `node-backend/.gitignore`
+
+**Modified (2 — both documentation):**
+
+- `docs/assignment-mapping.md` — A14 Done, A15 and A16 Pending, project tree updated, plus the
+  A14 detail section
+- `docs/viva-notes.md` — this section, the "last updated" line, the technology table, the project
+  structure tree, the status table and two stale "not built yet" corrections
+
+**Deliberately NOT touched:** every file of `frontend/`, `react-app/`, `php/` and `database/`;
+`AGENTS.md`; nothing was committed or pushed.
+
+## A14.17 Honest notes
+
+- `node-backend/routes/` exists but is **empty**. It is a placeholder for Assignment 15 — do not
+  describe it as an implemented API.
+- The `GET /` and `GET /about` pages are **not connected** to the farmers table. They are
+  hand-written HTML inside `server.js`, and they will still be there after a restart.
+- The Express server and the PHP development server run **separately** (Express on 3000, PHP on
+  8000). They are not connected yet.
+- An older copy of this server may still be running in another terminal holding port 3000; that
+  is why `EADDRINUSE` can appear. Stop it with `Ctrl + C`, or start on a different port.
+- No test framework is used. A14 was checked by opening the five addresses in A14.12 and by
+  `node --check server.js`.

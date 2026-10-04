@@ -1,0 +1,11 @@
+# Dependencies installed by npm - never commit these.
+# They are re-created by running "npm install" in this folder.
+node_modules/
+
+# Any log file npm or Node.js may create
+npm-debug.log*
+*.log
+
+# Windows / macOS clutter
+Thumbs.db
+.DS_Store

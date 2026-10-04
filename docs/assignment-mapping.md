@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 9 - PHP + MySQL Database Connectivity and CRUD (Assignment 13)
+Current project phase: Phase 10 - Node.js + Express Web Server (Assignment 14)
 
 ## Assignment → File/Feature
 
@@ -22,11 +22,11 @@ Current project phase: Phase 9 - PHP + MySQL Database Connectivity and CRUD (Ass
 | 11 | DOM manipulation + event handling | `frontend/pages/collection-centre.html` (the "Add a Collection Entry" form + the tools and summary of "Today's Collection Log") + `frontend/js/main.js` section 7 | ✅ Done |
 | 12 | PHP - forms, validation, strings, sessions | `php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php` + `php/includes/{header,footer,functions}.php` | ✅ Done |
 | 13 | PHP + MySQL - CRUD | `php/db-crud/` (db-config, db-connect, db-farmers, db-validate, db-helpers, db-header, db-footer) + `php/db-crud/{index,farmer-create,farmer-list,farmer-edit,farmer-delete}.php` + `database/schema.sql` | ✅ Done |
-| 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (planned) | ⏳ Pending |
+| 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (`GET /`, `GET /about`, `express.static('public')`, 404 page) + `node-backend/package.json` + static files `node-backend/public/{index.html,style.css,milk-can.svg}` | ✅ Done |
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 9 — Assignments 1-13)
+## Project structure (as of Phase 10 — Assignments 1-14)
 
 ```
 Dairy_Management/
@@ -80,12 +80,20 @@ Dairy_Management/
 ├── database/
 │   └── schema.sql             Assignment 13: CREATE DATABASE + CREATE TABLE
 │                             + 6 sample farmers
+├── node-backend/              Assignment 14: Node.js + Express web server
+│   ├── package.json           "npm start" -> "node server.js"; dependency: express
+│   ├── server.js              the whole server - routes, static files, 404 page
+│   └── public/                files served by express.static()
+│       ├── index.html         a STATIC page (reachable at /index.html)
+│       ├── style.css          a STATIC stylesheet (reachable at /style.css)
+│       └── milk-can.svg       a STATIC image (reachable at /milk-can.svg)
 └── docs/
     ├── assignment-mapping.md
     └── viva-notes.md
 ```
 
-`node-backend/` is not created yet (Assignments 14 and 15).
+`node-backend/routes/` is an empty folder kept ready for **Assignment 15** (the REST API).
+Nothing is in it yet — Assignment 15 has not been started.
 
 There is still **one** JavaScript file for the whole `frontend/` part - `frontend/js/main.js` -
 and it is now loaded by **three** pages: `dashboard.html` (Assignment 6), `farmers.html`
@@ -466,16 +474,95 @@ changed.
 No Axios, no PHP, no MySQL, no Node.js/Express, no local JSON file — only the browser's built-in
 `fetch()` against the public API above.
 
-## Assignments 14–16 — not implemented yet
+## Assignment 14 detail — Node.js + Express web server
 
-- **Assignment 14 (Node.js + Express)** and **Assignment 15 (REST API)** have not been started.
-  There is no `node-backend/` folder in the project, no `package.json` outside `react-app/`,
-  and no API of any kind.
-- **Assignment 16 (complete integration)** cannot begin until 14 and 15 exist.
+Folder: `node-backend/`. Nothing in `frontend/`, `react-app/`, `php/` or `database/` was
+touched to build it, so Assignments 1-13 are unchanged.
+
+### How to run it
+
+```
+cd C:\...\Dairy_Management\node-backend
+npm install     (only the first time - it creates node_modules/)
+npm start
+```
+
+then open `http://localhost:3000`. Stop the server with `Ctrl + C`.
+
+### Files
+
+| File | Job |
+|---|---|
+| `package.json` | the project file. `"start": "node server.js"` and one dependency, `express` |
+| `server.js` | the whole server — 4 numbered parts, explained below |
+| `public/index.html` | a **static** page, reached at `/index.html` |
+| `public/style.css` | a **static** stylesheet, reached at `/style.css` |
+| `public/milk-can.svg` | a **static** image, reached at `/milk-can.svg` (a copy of `frontend/assets/milk-can.svg`) |
+| `.gitignore` | keeps `node_modules/` out of git |
+| `routes/` | **empty** — reserved for Assignment 15 |
+
+### 1. The four parts of `server.js`
+
+| Part | Code | What it does |
+|---|---|---|
+| Setup | `require('express')`, `express()`, `const PORT = process.env.PORT \|\| 3000` | creates the app; the port can be changed from outside with `PORT=3100 npm start` |
+| Routes | `app.get('/')`, `app.get('/about')` | two GET routes, each answers with `res.send()` and an HTML page written inside `server.js` |
+| Static files | `app.use(express.static(PUBLIC_FOLDER))` | any file that exists in `public/` is sent as-is — no code runs |
+| 404 page | `app.use((req, res) => res.status(404).send(...))` | runs only if nothing above answered; prints the address that was asked for |
+| Start | `app.listen(PORT, () => console.log(...))` | keeps the program alive and prints the addresses to visit |
+
+`PUBLIC_FOLDER` is built with `path.join(__dirname, 'public')`. `__dirname` is the folder of
+`server.js`, so the path is right on Windows, Mac and Linux.
+
+### 2. The one thing that matters — route order
+
+Express checks its handlers **from top to bottom** and uses the **first one that answers**.
+So `app.get('/')` is written **before** `express.static()`:
+
+```
+GET /            ->  the route in server.js answers        (home page)
+GET /about       ->  the route in server.js answers        (about page)
+GET /style.css   ->  no route matches, express.static() reads public/style.css
+GET /milk-can.svg->  no route matches, express.static() reads public/milk-can.svg
+GET /index.html  ->  no route matches, express.static() reads public/index.html
+GET /oops        ->  nothing matches, the 404 page answers
+```
+
+If the order were reversed, `express.static()` would answer `/` with `public/index.html`
+(because a folder's `index.html` is served automatically) and `app.get('/')` would never run.
+That was the one real bug found while building this assignment.
+
+### 3. Static file URLs are short
+
+The folder name is **not** part of the address. A file at `public/style.css` is requested as
+`/style.css`, never `/public/style.css`.
+
+### 4. Safety
+
+The 404 page prints back the address the visitor typed. That text goes through `escapeHtml()`
+before it is placed in the HTML, so it can never become a tag — the same idea as `safeText()`
+in `php/db-crud/db-helpers.php` (Assignment 13).
+
+### What is deliberately NOT here — that is Assignment 15
+
+No `res.json()`, no `express.json()` or `express.urlencoded()`, no `POST`/`PUT`/`DELETE`,
+no database connection, no reading or writing of farmer records. Assignment 14 only proves
+that the server runs, that it routes, and that it serves files.
+
+## Assignments 15–16 — not implemented yet
+
+- **Assignment 15 (REST API)** has not been started. `node-backend/routes/` is empty on
+  purpose. There is no JSON response, no request body parsing and no database connection
+  anywhere in `node-backend/`.
+- **Assignment 16 (complete integration)** cannot begin until 15 exists.
 - The Assignment 13 CRUD screens read and write the `dairy_management.farmers` table through
   PHP + MySQLi. The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
   `collection-centre.html` are still checked and stored **only in the browser** — neither has
   an `action` attribute pointing at `php/db-crud/`, so joining those two screens to the database
   is part of the final integration work.
+- The Assignment 14 server does **not** read the `frontend/` pages or the MySQL database yet.
+  It runs on its own port and answers only its own three kinds of address.
+- `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html` but the
+  file does not exist yet.
 - `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the
   React app is a separate Vite project that does not load it, and no PHP page loads it either.
