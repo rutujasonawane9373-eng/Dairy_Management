@@ -25,3 +25,191 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
+
+/* ---------- Assignment 9: styles of the interactive dashboard ---------- */
+
+.section-title {
+  color: #7a4a21;
+  border-bottom: 2px solid #d9c4a3;
+  padding-bottom: 6px;
+}
+
+/* Overview cards (StatCard) */
+.stat-card,
+.farmer-card,
+.milk-card {
+  background-color: #fdf8ee;
+  border: 1px solid #ddc9a5;
+  border-left: 6px solid #e8b84b;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin: 12px 0;
+}
+
+.stat-card-alert {
+  background-color: #fde8d7;
+  border: 2px solid #d98c5f;
+}
+
+.stat-card-title,
+.card-title {
+  margin: 0 0 6px 0;
+  color: #6b4226;
+  font-size: 18px;
+}
+
+.stat-card-text,
+.card-text {
+  margin: 0;
+  color: #5b4a36;
+  font-size: 15px;
+}
+
+/* The card of the farmer that is being worked on */
+.farmer-card-selected {
+  border: 2px solid #e8b84b;
+  box-shadow: 0 4px 12px rgba(75, 46, 14, 0.18);
+}
+
+/* Details block shown by "Show Farmer Details" */
+.farmer-details {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #ddc9a5;
+  color: #5b4a36;
+  font-size: 15px;
+}
+
+.farmer-details p {
+  margin: 2px 0;
+}
+
+/* Badges: high / normal collection and paid / pending */
+.badge {
+  display: inline-block;
+  margin: 10px 0 0 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.badge-high,
+.badge-paid {
+  background-color: #e6f4ea;
+  color: #1e6b34;
+  border: 1px solid #7fbf92;
+}
+
+.badge-normal {
+  background-color: #fdf3dd;
+  color: #7a4a21;
+  border: 1px solid #e0b95f;
+}
+
+.badge-pending {
+  background-color: #fde8d7;
+  color: #9b3f14;
+  border: 1px solid #d98c5f;
+}
+
+/* Toolbar above the register */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px 16px;
+  background-color: #fdf8ee;
+  border: 1px solid #ddc9a5;
+  border-radius: 8px;
+}
+
+.toolbar label {
+  color: #6b4226;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.toolbar-note {
+  color: #7b6a52;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+.field-input {
+  padding: 7px 10px;
+  border: 1px solid #c9b48c;
+  border-radius: 6px;
+  background-color: #ffffff;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+/* Buttons used with onClick */
+.btn {
+  background-color: #e8b84b;
+  color: #4b2e0e;
+  border: 1px solid #c98a2d;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #d9a52f;
+}
+
+.btn-secondary {
+  background-color: #f4e6cd;
+  color: #5c3a12;
+  border-color: #c9b48c;
+}
+
+.btn-secondary:hover {
+  background-color: #ecd8b2;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* + / - quantity box of the selected collection */
+.quantity-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 4px 0;
+}
+
+.quantity-value {
+  min-width: 110px;
+  color: #4b2e0e;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Message shown when the search matches no farmer */
+.no-result {
+  margin: 12px 0;
+  padding: 12px 18px;
+  background-color: #fdf8ee;
+  border: 1px solid #ddc9a5;
+  border-left: 6px solid #d98c5f;
+  border-radius: 8px;
+  color: #5b4a36;
+  font-size: 15px;
+}
