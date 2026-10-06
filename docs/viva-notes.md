@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 14** (Phase 10 - Node.js + Express web server, inside `node-backend/`). Assignments 12 and 13 (PHP + MySQL) are also built, in `php/` and `database/`. Assignments 15-16 are not built yet.
+> Last updated after **Assignment 15** (Phase 11 - REST API, inside `node-backend/`). Assignments 12 and 13 (PHP + MySQL) and Assignment 14 (Express server) are also built, in `php/`, `database/` and `node-backend/`. Assignment 16 (final integration) is not built yet.
 
 ---
 
@@ -40,7 +40,7 @@ butter gold, dark chocolate brown. That is deliberate so the project looks like 
 | Server language | PHP 8 | **Used** — Assignment 12 in `php/`, Assignment 13 in `php/db-crud/` |
 | Database | MySQL 8 + MySQLi | **Used** — Assignment 13: database `dairy_management`, table `farmers` |
 | Web server | Node.js + Express | **Used** — Assignment 14 in `node-backend/` (routing + static files) |
-| REST API server | Node.js + Express + DB | **Not used yet** — Assignment 15 |
+| REST API server | Node.js + Express + mysql2 | **Used** — Assignment 15: `/api/farmers` in `node-backend/routes/farmers.js` |
 
 There is **one** JavaScript file: `frontend/js/main.js`. It is loaded by three pages â€”
 `frontend/pages/dashboard.html` (Assignment 6), `frontend/pages/farmers.html` (Assignment 7)
@@ -77,9 +77,13 @@ Dairy_Management/
         â”œâ”€â”€ cow.svg
         â”œâ”€â”€ farm.svg
         â””â”€â”€ milk-can.svg
-├── node-backend/              Assignment 14 (Node.js + Express web server)
-│   ├── package.json           "npm start" -> "node server.js"; dependency: express
-│   ├── server.js              routes (GET /, GET /about), static files, 404 page
+├── node-backend/              Assignments 14 + 15 (Express server + REST API)
+│   ├── package.json           "npm start" -> "node server.js"; deps: express, mysql2
+│   ├── server.js              A14 routes/static/404 + A15: express.json(), /api/farmers
+│   ├── db-config.js           MySQL settings (GITIGNORED - holds the password)
+│   ├── db.js                  mysql2 connection pool + query() helper
+│   ├── routes/
+│   │   └── farmers.js         Assignment 15: the five /api/farmers endpoints
 │   └── public/                the files express.static() sends to the browser
 │       ├── index.html         static page       -> /index.html
 │       ├── style.css          static stylesheet -> /style.css
@@ -89,8 +93,9 @@ Dairy_Management/
 Every folder of the project now exists: `frontend/`, `react-app/`, `php/`, `database/` and
 `node-backend/`. Two things must not be described as finished:
 
-- `node-backend/routes/` is **empty on purpose** — it is reserved for Assignment 15 (the REST
-  API) and nothing has been written in it. See section A14.10.
+- `node-backend/routes/farmers.js` is the Assignment 15 REST API, but no page calls it yet —
+  the frontend still stores its data in the browser only. Wiring the pages to real data is
+  Assignment 16.
 - `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html`, but the
   file has not been created yet.
 
@@ -2983,7 +2988,7 @@ change afterwards.
 | Assignment 12 — PHP forms, validation, strings, sessions | **Completed** | `php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php` + shared `php/includes/{header,footer,functions}.php` |
 | Assignment 13 — PHP + MySQL CRUD | **Completed** | `php/db-crud/` (12 files) + `database/schema.sql` — prepared statements, server-side validation, Post/Redirect/Get, two-step delete |
 | Assignment 14 — Node.js + Express | **Completed** | `node-backend/server.js` — `express()`, `GET /`, `GET /about`, `express.static('public')`, 404 page, `app.listen()`; `node-backend/package.json`; static files `node-backend/public/{index.html,style.css,milk-can.svg}`. See section A14 below |
-| Assignment 15 — REST API | **Not started** | `node-backend/routes/` is empty on purpose. No `res.json()`, no body parsing, no database connection in `node-backend/` yet |
+| Assignment 15 — REST API | **Completed** | `node-backend/routes/farmers.js` — `GET /api/farmers`, `GET /api/farmers/:id`, `POST /api/farmers`, `PUT /api/farmers/:id`, `DELETE /api/farmers/:id`; prepared statements via `mysql2` pool in `node-backend/db.js`; settings in `node-backend/db-config.js` (gitignored); mounted in `node-backend/server.js` with `express.json()`. See section A15 below |
 | Assignment 16 — Complete integration | **Not started** | Needs Assignment 15 first |
 
 ### 11.1 Known issues and gaps in Assignments 1â€“5
@@ -4327,8 +4332,8 @@ boundary and the storage are different.**
 | `node-backend/public/index.html` | a **static** page, reached at `/index.html` |
 | `node-backend/public/style.css` | a **static** stylesheet, reached at `/style.css` |
 | `node-backend/public/milk-can.svg` | a **static** image, reached at `/milk-can.svg` (copy of `frontend/assets/milk-can.svg`) |
-| `node-backend/.gitignore` | keeps `node_modules/` out of git |
-| `node-backend/routes/` | **empty** — reserved for Assignment 15 |
+| `node-backend/.gitignore` | keeps `node_modules/` and `db-config.js` (the password) out of git |
+| `node-backend/routes/farmers.js` | the REST API of Assignment 15 (added after A14 was written) |
 
 ## A14.2 Why is a server needed at all?
 
@@ -4713,17 +4718,18 @@ into the address bar and have their own browser run it — XSS, the same attack 
 prevents in Assignment 13. `escapeHtml()` turns `<` into `&lt;` so the text can only be words.
 
 **Q17. Does this server read the MySQL database?**
-No. There is no database code in `node-backend/`. The Assignment 13 pages read and write
-`dairy_management.farmers` through PHP + MySQLi, on a different server. Connecting this server
-to the data is Assignment 15.
+Assignment 14 on its own did not — there was no database code in `node-backend/`. Assignment 15
+added `db.js` (mysql2 pool) and `routes/farmers.js`, so the same server now reads and writes
+`dairy_management.farmers`. The PHP pages of Assignment 13 are unchanged and still work on
+their own.
 
 **Q18. Does this server serve the `frontend/` pages or the PHP pages?**
 No. It answers only its own routes and the files inside `node-backend/public/`. It cannot run
 PHP, and it does not read `frontend/`.
 
 **Q19. Which HTTP methods does this server accept?**
-Only `GET`, on `/` and `/about`. There is no `POST`, `PUT` or `DELETE` — those come with the
-REST API in Assignment 15.
+Assignment 14 accepted only `GET`, on `/` and `/about`. Assignment 15 added `POST`, `PUT` and
+`DELETE` — but only for the `/api/farmers` addresses; the HTML pages are still read-only.
 
 **Q20. What happens if two requests arrive at the same moment?**
 `app.listen()` queues them and each is handled one after the other, in order. JavaScript runs
@@ -4774,8 +4780,9 @@ browser.
 
 ## A14.17 Honest notes
 
-- `node-backend/routes/` exists but is **empty**. It is a placeholder for Assignment 15 — do not
-  describe it as an implemented API.
+- `node-backend/routes/` was **empty** when Assignment 14 was written; it now holds
+  `farmers.js`, the Assignment 15 REST API. Do not describe A14 itself as having an API — the
+  endpoints, `express.json()` and the database all arrived with Assignment 15 (see A15).
 - The `GET /` and `GET /about` pages are **not connected** to the farmers table. They are
   hand-written HTML inside `server.js`, and they will still be there after a restart.
 - The Express server and the PHP development server run **separately** (Express on 3000, PHP on
@@ -4784,3 +4791,373 @@ browser.
   is why `EADDRINUSE` can appear. Stop it with `Ctrl + C`, or start on a different port.
 - No test framework is used. A14 was checked by opening the five addresses in A14.12 and by
   `node --check server.js`.
+
+---
+
+# Assignment 15 - REST API (Node.js + Express + MySQL)
+
+> Folder: `node-backend/`. Three new files (`routes/farmers.js`, `db.js`, `db-config.js`) and a
+> few added lines in `server.js` + `package.json`. No file of Assignments 1-13 was modified, and
+> every Assignment 14 route still answers exactly as before (checked in A15.9).
+
+## A15.1 Which files prove this assignment
+
+| File | Job |
+|---|---|
+| `node-backend/routes/farmers.js` | the five endpoints (`GET`, `GET/:id`, `POST`, `PUT/:id`, `DELETE/:id`) + the five validation rules |
+| `node-backend/db.js` | `mysql2.createPool()` and `query(sql, params)` — the only file that talks to MySQL |
+| `node-backend/db-config.js` | MySQL settings (host, user, password, database, port, table) — **gitignored**, the same rule as `php/db-crud/db-config.php` |
+| `node-backend/server.js` | `express.json()`, `app.use('/api/farmers', farmersRouter)`, JSON 404 for `/api/*`, JSON error handler |
+| `node-backend/package.json` | dependencies: `express`, `mysql2` |
+| `node-backend/.gitignore` | `node_modules/` + `db-config.js`, so the MySQL password is never committed |
+
+## A15.2 What REST is
+
+**REST** = **RE**presentational **S**tate **T**ransfer, an architectural style for APIs invented
+by Roy Fielding in 2000. It is not a library or a protocol — it is a set of conventions:
+
+| Convention | Meaning | In this project |
+|---|---|---|
+| A **resource** | one "thing" the API offers, named by a URL | the farmers collection: `/api/farmers` |
+| A **collection item** | the same URL plus an id | `/api/farmers/4` |
+| The **HTTP method** says the action | not the URL | `GET` reads, `POST` creates, `PUT` replaces, `DELETE` removes |
+| The **response** carries the current state of the resource | usually JSON | `{"id":4,"name":"...","milk_quantity":12.5,...}` |
+| **Stateless** | every request must be complete by itself; the server remembers nothing between requests | no session, no login memory — each call sends everything needed |
+| Standard **status codes** | the result is in the code, not in the message text | `200`, `201`, `400`, `404`, `409`, `500` |
+
+CRUD and HTTP methods map directly:
+
+| CRUD (Assignment 13) | HTTP method | Endpoint | Success code |
+|---|---|---|---|
+| Read all — `farmer-list.php` | `GET` | `/api/farmers` | 200 |
+| Read one — SELECT by id | `GET` | `/api/farmers/:id` | 200 |
+| Create — `farmer-create.php` (INSERT) | `POST` | `/api/farmers` | **201** |
+| Update — `farmer-edit.php` (UPDATE) | `PUT` | `/api/farmers/:id` | 200 |
+| Delete — `farmer-delete.php` (DELETE) | `DELETE` | `/api/farmers/:id` | 200 |
+
+The same three questions separate REST from ordinary web pages:
+
+1. The URL names a **thing**, never an action (`/api/farmers`, not `/api/deleteFarmer`).
+2. The **method** carries the action — the same URL answers `GET`, `POST`, `PUT`, `DELETE`.
+3. The answer is **data** (JSON), not HTML. A human reads HTML; a program reads JSON.
+
+## A15.3 The five endpoints and their status codes
+
+| Method | URL | Body sent | Success | Errors used |
+|---|---|---|---|---|
+| `GET` | `/api/farmers` (optional `?search=`) | — | **200** + JSON array | 500 |
+| `GET` | `/api/farmers/:id` | — | **200** + JSON object | 400 bad id, 404 no row |
+| `POST` | `/api/farmers` | JSON with the 5 fields | **201** + the new farmer + `Location` header | 400 validation, 409 duplicate phone |
+| `PUT` | `/api/farmers/:id` | JSON with the 5 fields | **200** + the farmer after update | 400, 404, 409 |
+| `DELETE` | `/api/farmers/:id` | — | **200** + `{"message":"Farmer 4 was deleted."}` | 400 bad id, 404 no row |
+| any other `/api/...` | — | — | — | **404** + JSON `Unknown API endpoint` |
+
+Why each code:
+
+- **200 OK** — the request was understood and accepted.
+- **201 Created** — a new resource now exists. The `Location: /api/farmers/12` header tells the
+  client where to read it back.
+- **400 Bad Request** — the client sent something the server cannot accept: a non-numeric id,
+  a failed validation, or broken JSON. The `details` object says exactly which field failed.
+- **404 Not Found** — the URL and format were fine, but that id does not exist (or the whole
+  `/api/...` path is unknown).
+- **409 Conflict** — the request is valid but clashes with the current state of the data:
+  the phone number already belongs to another farmer (MySQL error 1062 on `uq_farmers_phone`).
+- **500 Internal Server Error** — something on our side failed (e.g. MySQL is not running).
+  The message is deliberately generic so no SQL or file paths leak to the client.
+
+## A15.4 Routing — mounting a Router under a prefix
+
+A `Router` is a mini-Express application. `routes/farmers.js` writes short paths; `server.js`
+attaches the whole router under a prefix:
+
+```js
+// server.js
+const farmersRouter = require('./routes/farmers');
+app.use('/api/farmers', farmersRouter);
+
+// routes/farmers.js
+router.get('/', ...)      // -> GET    /api/farmers
+router.get('/:id', ...)   // -> GET    /api/farmers/4
+router.post('/', ...)     // -> POST   /api/farmers
+router.put('/:id', ...)   // -> PUT    /api/farmers/4
+router.delete('/:id', ...)// -> DELETE /api/farmers/4
+```
+
+Benefits a teacher may ask for: each resource gets its own file, paths stay short, and the
+mounting line shows exactly which prefix the API owns. `:id` is a **route parameter** — Express
+puts its value in `req.params.id`, always as a string, which is why `parseId()` checks it is a
+positive whole number before it reaches SQL.
+
+The mount order in `server.js` matters, exactly as in Assignment 14: HTML routes → **API
+router** → JSON 404 for `/api/*` → `express.static()` → HTML 404 → error handler. The API is
+before `express.static()` so `/api/...` can never receive an HTML answer, and the error handler
+is last because Express only looks for error handlers after every route.
+
+## A15.5 JSON in and JSON out
+
+```js
+app.use(express.json());      // read:  JSON body  ->  req.body (a JS object)
+res.status(201).json(row);    // write: JS object  ->  JSON body + Content-Type: application/json
+```
+
+- `express.json()` is a built-in Express middleware. It only runs when the request carries
+  `Content-Type: application/json`, so the plain HTML `GET` routes of Assignment 14 are
+  unaffected.
+- A missing body, an array instead of an object, or broken JSON like `{"name":` answers
+  **400** — never a crash and never an HTML stack trace.
+- Compare with Assignment 13: PHP got the values already parsed in `$_POST` (Apache or
+  `php -S` did it) and answered HTML with `echo`. Here the parsing is explicit and the answer
+  is data.
+
+## A15.6 The database connection — mysql2 pool vs PHP MySQLi
+
+| | PHP (Assignment 13) | Node.js (Assignment 15) |
+|---|---|---|
+| Driver | MySQLi, built into PHP | `mysql2`, installed with `npm install mysql2` |
+| Config file | `php/db-crud/db-config.php` (gitignored) | `node-backend/db-config.js` (gitignored) |
+| Connection | `new mysqli(host, user, pass, db, port)` inside `dbConnect()` | `mysql.createPool({...})` in `db.js` |
+| Lifetime | one connection per page load, closed at the end | the pool stays open while the server runs |
+| Running query | `$connection->prepare(...)` then `bind_param` + `execute` | `pool.execute(sql, params)` |
+| Errors | `mysqli_sql_exception` / error number | the Promise rejects; the route calls `next(error)` |
+
+**Why a pool?** PHP starts fresh for every request, so one connection is enough. A Node server
+never stops — `connectionLimit: 10` keeps up to ten connections ready, so two API calls that
+arrive at the same moment do not have to wait for each other.
+
+**Password safety:** `db-config.js` is listed in `node-backend/.gitignore`, so `git status`
+never shows it and it can never be committed — the same discipline as `db-config.php`. The
+value can also come from the environment (`$env:DB_PASS = '...'`), which is how the tests in
+A15.9 ran without the password ever appearing in code or in the terminal output.
+
+## A15.7 Prepared statements
+
+Every SQL statement in `routes/farmers.js` uses `?` placeholders:
+
+```js
+const rows = await query('SELECT ... FROM farmers WHERE id = ? LIMIT 1', [id]);
+await query('INSERT INTO farmers (name, phone, village, milk_quantity, fat_percentage) VALUES (?, ?, ?, ?, ?)',
+            [value.name, value.phone, value.village, value.milk_quantity, value.fat_percentage]);
+```
+
+`query()` (in `db.js`) calls `pool.execute(sql, params)`. MySQL then works in two steps:
+
+1. send and compile the **SQL with the holes** — the statement's structure is fixed;
+2. send the **values separately**, strictly as data.
+
+So a value like `' OR '1'='1` is just text being compared to a column — it can never become
+SQL. The only field that cannot be a placeholder is the **table name**: MySQL does not accept a
+value there, so `farmers` is a fixed constant in `db-config.js` (`farmersTable`), never user
+input. The search term in `?search=` is passed as `%term%` through three placeholders — the
+wildcards are part of the value, the statement stays the same. This is the same protection the
+MySQLi prepared statements of Assignment 13 give (`php/db-crud/db-farmers.php`).
+
+## A15.8 Validation and error handling
+
+`validateFarmer(body)` repeats the five rules of `php/db-crud/db-validate.php`, because an API
+client can be a script, not a person filling a form:
+
+| Field | Rule (same as A13) |
+|---|---|
+| `name` | required, 3-60, letters/spaces/dot/apostrophe/hyphen only |
+| `phone` | required, exactly 10 digits starting 6/7/8/9 (`-`, spaces and `+` stripped first) |
+| `village` | required, 3-60 |
+| `milk_quantity` | required number, 0.5 - 100 |
+| `fat_percentage` | required number, 3 - 8 (the range of `schema.sql`'s CHECK constraint) |
+
+Failures answer **400** with the rejected fields named:
+
+```json
+{ "error": "Validation failed.",
+  "details": { "phone": "Mobile number must be exactly 10 digits and must start with 6, 7, 8 or 9." } }
+```
+
+Uniqueness of the phone is left to MySQL (`uq_farmers_phone`); the route catches `errno ===
+1062` and answers **409** — the friendly-message idea from the duplicate handling in A13.
+Unexpected failures fall through to `next(error)` and reach the error-handling middleware in
+`server.js`, which logs them and answers a plain JSON 500.
+
+## A15.9 How to run and check it
+
+```
+cd C:\...\Dairy_Management\node-backend
+npm install      (first time only — brings in express + mysql2)
+npm start
+```
+
+MySQL must be running and `db-config.js` (or the `DB_PASS` environment variable) must hold the
+password of the `dairy_management` database. Checks done for this assignment:
+
+1. `node --check server.js`, `node --check db.js`, `node --check db-config.js`,
+   `node --check routes\farmers.js` → all four parse cleanly.
+2. A `curl` smoke script ran **36 checks, 36 passed** against the running server, including:
+
+| Check | Result |
+|---|---|
+| `GET /`, `/about`, `/style.css`, `/index.html` | 200 (Assignment 14 still works) |
+| `GET /no-such-page` | 404 **HTML** page (A14 behaviour unchanged) |
+| `GET /api/farmers` | 200, JSON array of 6 farmers |
+| `GET /api/farmers/6` | 200, `milk_quantity` sent as a JSON **number** |
+| `GET /api/farmers/99999` / `abc` / `0` | 404 / 400 / 400 |
+| `POST /api/farmers` (valid) | 201 + the stored row |
+| `POST` with 5 bad fields | 400 + `details` naming all 5 fields |
+| `POST` with an already-used phone | 409 |
+| `POST` with broken JSON / no body | 400 |
+| `PUT /api/farmers/:id` (valid / missing / bad id / invalid fields) | 200 / 404 / 400 / 400 |
+| `DELETE` twice | 200, then 404 |
+| `GET /api/unknown` | 404 **JSON** (not the HTML page) |
+| `GET /api/farmers?search=ramesh` | 200, only Ramesh Patil |
+| `?search=' OR 1=1--` | 200 — treated as text, query unchanged |
+| row count after all tests | 6, i.e. the created test farmer was deleted again |
+
+## A15.10 Viva questions and answers — Assignment 15
+
+**Q1. What is a REST API?**
+An API that follows the REST conventions: resources named by URLs, actions carried by HTTP
+methods, data exchanged as representations (here JSON), and every request carrying everything
+it needs (stateless). Ours exposes the `farmers` resource at `/api/farmers`.
+
+**Q2. What is the difference between this and the Assignment 14 server?**
+Assignment 14 answered HTML pages to `GET` requests and touched no data. Assignment 15 keeps
+those pages and adds JSON endpoints that read and write the MySQL `farmers` table —
+`express.json()`, `res.json()`, `POST`/`PUT`/`DELETE` and a database pool.
+
+**Q3. What is a resource and what is a collection?**
+A resource is one thing the API manages — farmer 4, at `/api/farmers/4`. The collection is the
+group of all farmers, at `/api/farmers`. The same collection URL answers `GET` (list) and
+`POST` (add to the collection).
+
+**Q4. Why does POST return 201 and not 200?**
+200 means "fine", 201 means "created" — a more precise code. REST APIs use it so a client can
+tell a creation from a plain success without reading the body. The `Location` header
+(`/api/farmers/12`) then says where the new resource lives.
+
+**Q5. When would you use 404 and when 400?**
+400 = the request itself is wrong: id `abc`, missing field, broken JSON. 404 = the request was
+well-formed but the resource does not exist: id `99999`. The client can fix a 400 by sending
+better data; a 404 only means "not there".
+
+**Q6. Why 409 for a duplicate phone?**
+The data is valid, but saving it would clash with what is already stored — that is exactly
+what "409 Conflict" means. MySQL reports it as error 1062 on the unique key
+`uq_farmers_phone`, and the route converts that to a friendly JSON message.
+
+**Q7. What is the difference between PUT and POST here?**
+`POST /api/farmers` creates a new farmer (the server decides the id). `PUT
+/api/farmers/:id` replaces the farmer that already has that id. This project does a **full**
+update — the PUT body carries all five fields; a partial update would be `PATCH`.
+
+**Q8. What is a prepared statement and why must you use one?**
+SQL sent to MySQL in two steps: the statement with `?` holes first, the values afterwards as
+plain data. The server can then never confuse data with commands, so
+`' OR '1'='1` cannot change the query. Ours is `pool.execute(sql, params)` in `db.js` — the
+same idea as `bind_param` in Assignment 13.
+
+**Q9. Why can't the table name be a `?` placeholder?**
+Placeholders are only allowed where a **value** is expected. A table name is part of the
+statement's structure, so MySQL rejects `FROM ?`. That is why the table name is a fixed
+constant in `db-config.js` and never comes from a request.
+
+**Q10. What does `express.json()` do?**
+It is middleware that reads a request body with `Content-Type: application/json`, converts it
+to a JavaScript object and puts it in `req.body`. Without it `req.body` would be `undefined`
+and `POST`/`PUT` could never see the data. It ignores HTML requests, so A14's pages are
+untouched.
+
+**Q11. Why a connection pool instead of one connection?**
+A pool keeps several connections ready. Node handles requests one at a time while a database
+call waits, so without a pool a second request would have to wait for the first connection to
+be free. PHP does not need a pool because it opens and closes a connection per page.
+
+**Q12. Where is the MySQL password stored? Is it safe?**
+In `node-backend/db-config.js`, which is in `.gitignore`, so it is never committed — the same
+rule as `php/db-crud/db-config.php` in Assignment 13. It can also come from the `DB_PASS`
+environment variable, which is how the tests ran without the password appearing anywhere in
+code or output. In a real project the file would not exist on the server at all — only the
+environment variable would.
+
+**Q13. How does an error inside a route reach the client?**
+The route catches nothing it understands and calls `next(error)`. Express then skips normal
+middleware and jumps to the error-handling middleware at the end of `server.js`
+(`(error, req, res, next) => ...`), which answers 400 for broken JSON, and 500 otherwise —
+always as JSON, never as an HTML page or a stack trace.
+
+**Q14. How is this different from the Assignment 13 CRUD?**
+Same table, same five rules, same prepared-statement idea — different language and different
+shape: PHP renders HTML and uses redirects (`Post/Redirect/Get`, sessions, flash messages);
+this returns JSON and status codes for programs (fetch, Postman, curl). Assignment 13 owns the
+browser pages; Assignment 15 owns `/api/farmers`.
+
+**Q15. Is this API secure?**
+No, and I would say so plainly: no login, no tokens, no HTTPS, no rate limiting, CORS not
+configured. It is a college REST API that proves routing, JSON, status codes, validation and
+prepared statements. Authentication and hardening would be the next step after Assignment 16.
+
+**Q16. What is stateless — is this API stateless?**
+Every request must contain all the information needed to answer it; the server keeps no memory
+of earlier requests. Ours is stateless: no session or login, and each call repeats the id or
+the body it needs. The database itself stores data — that is not "state" in the REST sense.
+
+**Q17. What happens if MySQL is switched off?**
+`pool.execute()` rejects, the route calls `next(error)`, the error middleware logs it and
+answers `500 {"error":"Internal server error. Check that MySQL is running."}`. The A14 HTML
+pages keep working — only the API answers fail.
+
+**Q18. What did the tests prove?**
+`node --check` on all four files, then 36 `curl` checks against the live server: every status
+code above, both A14 page sets unchanged, the SQL-injection string coming back as plain text,
+and the row count back to 6 after the test farmer was created and deleted.
+
+**Q19. What is the weakest part of this assignment?**
+1. **No authentication** — anybody who can reach port 3000 can change the data.
+2. **Full updates only** — `PUT` needs all five fields; a real API usually offers `PATCH`.
+3. **No pagination** — `GET /api/farmers` returns everything; fine for 6 rows, not for 60,000.
+4. **Two servers still** — the PHP pages and this API are not connected to each other or to
+   the frontend forms. That is exactly the gap Assignment 16 has to close.
+
+**Q20. What comes next?**
+Assignment 16 — integration: point the Assignment 7 and Assignment 11 forms at real endpoints
+(fetch to `/api/farmers`, or the PHP CRUD), agree on one home for the data, and make the whole
+project look like one application instead of four separate demonstrations.
+
+## A15.11 Files created / modified for Assignment 15
+
+**Created (3):**
+
+- `node-backend/routes/farmers.js` — the five endpoints + validation
+- `node-backend/db.js` — mysql2 pool + `query()` helper
+- `node-backend/db-config.js` — MySQL settings (**gitignored**, holds the password locally,
+  never committed)
+
+**Modified (5):**
+
+- `node-backend/server.js` — `express.json()`, the router mount, JSON 404 for `/api/*`, the
+  error handler, updated header/startup text; A14 routes untouched
+- `node-backend/package.json` — `mysql2` dependency + description
+- `node-backend/package-lock.json` — updated by `npm install mysql2`
+- `node-backend/.gitignore` — added `db-config.js`
+- `docs/assignment-mapping.md` — A15 Done, phase line, project tree, new A15 detail section,
+  the "not implemented" section now only covers Assignment 16
+- `docs/viva-notes.md` — this section, the "last updated" line, the technology table, the
+  structure tree, the status table, and three stale A14 statements corrected
+
+**Deliberately NOT touched:** every file of `frontend/`, `react-app/`, `php/` and `database/`;
+`AGENTS.md`; nothing was committed or pushed. No Assignment 16 work was started.
+
+## A15.12 Honest notes
+
+- `db-config.js` is gitignored, so a fresh clone has **no password** — the next person must set
+  `DB_PASS` or type it into their local copy, otherwise every API call answers 500 while the
+  A14 pages still work.
+- DECIMAL columns (`milk_quantity`, `fat_percentage`) arrive from mysql2 as strings, so
+  `toApiFarmer()` converts them with `Number()` — JSON consumers get real numbers, the same
+  values PHP showed as `"18.50"`.
+- A failed `POST` with a duplicate phone still consumes one id from MySQL's auto-increment
+  counter (InnoDB allocates the id before the unique key rejects the row). Harmless, but ids
+  are not consecutive.
+- The tests ran against port **3500**, not 3000, to avoid a stale server holding port 3000
+  (the known `EADDRINUSE` issue from A14.17).
+- The test farmer created by the smoke test was deleted again; the table ended with the same
+  6 rows it started with.
+- No test framework (no Jest, no Supertest) — checks are `node --check` plus a `curl` script,
+  which matches the beginner level of the project. A16 could add a real test runner.

@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 10 - Node.js + Express Web Server (Assignment 14)
+Current project phase: Phase 11 - REST API (Assignment 15)
 
 ## Assignment → File/Feature
 
@@ -23,10 +23,10 @@ Current project phase: Phase 10 - Node.js + Express Web Server (Assignment 14)
 | 12 | PHP - forms, validation, strings, sessions | `php/index.php`, `php/register.php`, `php/profile.php`, `php/logout.php` + `php/includes/{header,footer,functions}.php` | ✅ Done |
 | 13 | PHP + MySQL - CRUD | `php/db-crud/` (db-config, db-connect, db-farmers, db-validate, db-helpers, db-header, db-footer) + `php/db-crud/{index,farmer-create,farmer-list,farmer-edit,farmer-delete}.php` + `database/schema.sql` | ✅ Done |
 | 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (`GET /`, `GET /about`, `express.static('public')`, 404 page) + `node-backend/package.json` + static files `node-backend/public/{index.html,style.css,milk-can.svg}` | ✅ Done |
-| 15 | REST API (Node.js + Express + DB) | `node-backend/routes/` (planned) | ⏳ Pending |
+| 15 | REST API (Node.js + Express + DB) | `node-backend/routes/farmers.js` (GET, GET/:id, POST, PUT/:id, DELETE/:id on `/api/farmers`) + `node-backend/db.js` (mysql2 pool, prepared statements) + `node-backend/db-config.js` (gitignored MySQL settings, like A13's `db-config.php`) + `express.json()` and the router mount in `node-backend/server.js` | ✅ Done |
 | 16 | Complete project integration | All modules together | ⏳ Pending |
 
-## Project structure (as of Phase 10 — Assignments 1-14)
+## Project structure (as of Phase 11 — Assignments 1-15)
 
 ```
 Dairy_Management/
@@ -80,9 +80,14 @@ Dairy_Management/
 ├── database/
 │   └── schema.sql             Assignment 13: CREATE DATABASE + CREATE TABLE
 │                             + 6 sample farmers
-├── node-backend/              Assignment 14: Node.js + Express web server
-│   ├── package.json           "npm start" -> "node server.js"; dependency: express
-│   ├── server.js              the whole server - routes, static files, 404 page
+├── node-backend/              Assignments 14 + 15: Express server + REST API
+│   ├── package.json           "npm start" -> "node server.js"; deps: express, mysql2
+│   ├── server.js              Express app - A14 routes/static/404 + A15 API mount
+│   ├── db-config.js           Assignment 15: MySQL settings (GITIGNORED - has the
+│   │                          password, like php/db-crud/db-config.php)
+│   ├── db.js                  Assignment 15: mysql2 connection pool + query() helper
+│   ├── routes/
+│   │   └── farmers.js         Assignment 15: the five /api/farmers endpoints
 │   └── public/                files served by express.static()
 │       ├── index.html         a STATIC page (reachable at /index.html)
 │       ├── style.css          a STATIC stylesheet (reachable at /style.css)
@@ -92,8 +97,8 @@ Dairy_Management/
     └── viva-notes.md
 ```
 
-`node-backend/routes/` is an empty folder kept ready for **Assignment 15** (the REST API).
-Nothing is in it yet — Assignment 15 has not been started.
+`node-backend/routes/farmers.js` is **Assignment 15** - a JSON REST API for the same
+`dairy_management.farmers` table that Assignment 13 reads and writes through PHP.
 
 There is still **one** JavaScript file for the whole `frontend/` part - `frontend/js/main.js` -
 and it is now loaded by **three** pages: `dashboard.html` (Assignment 6), `farmers.html`
@@ -498,8 +503,8 @@ then open `http://localhost:3000`. Stop the server with `Ctrl + C`.
 | `public/index.html` | a **static** page, reached at `/index.html` |
 | `public/style.css` | a **static** stylesheet, reached at `/style.css` |
 | `public/milk-can.svg` | a **static** image, reached at `/milk-can.svg` (a copy of `frontend/assets/milk-can.svg`) |
-| `.gitignore` | keeps `node_modules/` out of git |
-| `routes/` | **empty** — reserved for Assignment 15 |
+| `.gitignore` | keeps `node_modules/` and `db-config.js` (the MySQL password) out of git |
+| `routes/farmers.js` | **Assignment 15** — the five REST endpoints (see the A15 section below) |
 
 ### 1. The four parts of `server.js`
 
@@ -543,25 +548,129 @@ The 404 page prints back the address the visitor typed. That text goes through `
 before it is placed in the HTML, so it can never become a tag — the same idea as `safeText()`
 in `php/db-crud/db-helpers.php` (Assignment 13).
 
-### What is deliberately NOT here — that is Assignment 15
+### What was deliberately left out of Assignment 14 — and added by 15
 
-No `res.json()`, no `express.json()` or `express.urlencoded()`, no `POST`/`PUT`/`DELETE`,
-no database connection, no reading or writing of farmer records. Assignment 14 only proves
-that the server runs, that it routes, and that it serves files.
+`server.js` as Assignment 14 shipped had no `res.json()`, no `express.json()`, no
+`POST`/`PUT`/`DELETE` and no database connection — Assignment 14 only proved that the server
+runs, that it routes, and that it serves files. **Assignment 15 added exactly those four
+things** (`express.json()`, the `/api/farmers` router, the MySQL pool and the JSON error
+handler) without changing any of the A14 behaviour: `GET /`, `GET /about`, the static files
+and the HTML 404 page still answer exactly as before.
 
-## Assignments 15–16 — not implemented yet
+## Assignment 15 detail — REST API (Node.js + Express + MySQL)
 
-- **Assignment 15 (REST API)** has not been started. `node-backend/routes/` is empty on
-  purpose. There is no JSON response, no request body parsing and no database connection
-  anywhere in `node-backend/`.
-- **Assignment 16 (complete integration)** cannot begin until 15 exists.
+Folder: `node-backend/`. Same server as Assignment 14, one new dependency (`mysql2`) and three
+new files. Nothing in `frontend/`, `react-app/`, `php/` or `database/` was touched, so
+Assignments 1-14 are unchanged.
+
+### How to run it
+
+```
+cd C:\...\Dairy_Management\node-backend
+npm install        (first time only - downloads express + mysql2)
+npm start
+```
+
+MySQL must be running (the same `dairy_management` database that Assignment 13 uses).
+Put your MySQL password in the environment variable `DB_PASS`, or type it once into the
+local (gitignored) `db-config.js`. Then try:
+
+```
+GET    http://localhost:3000/api/farmers
+GET    http://localhost:3000/api/farmers/1
+GET    http://localhost:3000/api/farmers?search=ramesh
+POST   http://localhost:3000/api/farmers          (JSON body)
+PUT    http://localhost:3000/api/farmers/1         (JSON body)
+DELETE http://localhost:3000/api/farmers/1
+```
+
+### Files
+
+| File | Job |
+|---|---|
+| `routes/farmers.js` | the five endpoints + the five validation rules, all in one `Router` |
+| `db.js` | `mysql2.createPool()` connection pool + `query(sql, params)` — the only place that talks to MySQL |
+| `db-config.js` | MySQL settings (host, user, password, database, port, table) — **gitignored**, exactly like `php/db-crud/db-config.php` |
+| `server.js` | `express.json()`, mounts the router at `/api/farmers`, JSON 404 for `/api/*`, JSON error handler |
+| `package.json` | dependencies: `express`, `mysql2` |
+| `.gitignore` | `node_modules/` + `db-config.js` (so the password is never committed) |
+
+### 1. The five endpoints
+
+| Method | URL | Does | Success | Errors |
+|---|---|---|---|---|
+| GET | `/api/farmers` | list all (optional `?search=`) | 200 + JSON array | 500 |
+| GET | `/api/farmers/:id` | read one | 200 + JSON object | 400 bad id, 404 no row |
+| POST | `/api/farmers` | create | **201** + the new farmer + `Location` header | 400 validation, 409 duplicate phone |
+| PUT | `/api/farmers/:id` | update (full) | 200 + the farmer after update | 400, 404, 409 |
+| DELETE | `/api/farmers/:id` | delete | 200 + `{"message": ...}` | 400 bad id, 404 no row |
+| — | any other `/api/...` | — | — | 404 + JSON `Unknown API endpoint` |
+
+### 2. Prepared statements — where and why
+
+Every SQL statement in `routes/farmers.js` sends `?` placeholders and passes the values as a
+separate array:
+
+```js
+await query('SELECT ... FROM farmers WHERE id = ? LIMIT 1', [id]);
+await query('INSERT INTO farmers (name, phone, ...) VALUES (?, ?, ...)', [...]);
+```
+
+`query()` (in `db.js`) calls `pool.execute(sql, params)` from `mysql2`, which lets MySQL
+compile the statement **before** the values arrive, so a value like `' OR '1'='1` is compared
+as text and can never become SQL. Same guarantee as the MySQLi prepared statements of
+Assignment 13 (`php/db-crud/db-farmers.php`). The table name is the one thing that cannot be
+a placeholder — it is a fixed constant (`farmers`) taken from `db-config.js`, never user input.
+
+### 3. Validation — the same five rules as Assignment 13
+
+`validateFarmer()` in `routes/farmers.js` repeats the rules of `php/db-crud/db-validate.php`:
+name 3-60 letters/spaces/dot/-/', phone exactly 10 digits starting 6-9 (spaces/dashes/`+`
+stripped first), village 3-60, `milk_quantity` 0.5-100, `fat_percentage` 3-8. Failures answer
+**400** with a `details` object naming each bad field, e.g.:
+
+```json
+{ "error": "Validation failed.",
+  "details": { "phone": "Mobile number must be exactly 10 digits and must start with 6, 7, 8 or 9." } }
+```
+
+Uniqueness of the phone is left to MySQL (the `uq_farmers_phone` unique key); the resulting
+error code 1062 is caught and answered with **409 Conflict**.
+
+### 4. JSON in, JSON out
+
+`app.use(express.json())` in `server.js` turns a request with
+`Content-Type: application/json` into `req.body`; every answer uses `res.status(...).json(...)`.
+A missing/malformed body is **400**, an unexpected failure (MySQL down, ...) is **500** from
+the error-handling middleware — an API client never receives an HTML page.
+
+### 5. Route order still matters
+
+The order in `server.js` is now: `express.json()` → A14 HTML routes → **A15 `/api/farmers`
+router** → JSON 404 for `/api/*` → `express.static()` → HTML 404 → error handler. The API is
+mounted before the static folder so `/api/...` never gets an HTML answer, and the A14 routes
+are untouched, so Assignment 14 still works exactly as documented above.
+
+### What is deliberately NOT here — that is Assignment 16
+
+No authentication, no pagination, no HTTPS, no frontend page calling the API yet — the
+Assignment 7 form and the Assignment 11 form still store data only in the browser. Joining
+the pages, the PHP screens and this API is the final integration (Assignment 16).
+
+## Assignment 16 — not implemented yet
+
+- **Assignment 16 (complete integration)** is the only assignment left. It needs Assignment 15
+  (now built) as its data layer.
 - The Assignment 13 CRUD screens read and write the `dairy_management.farmers` table through
-  PHP + MySQLi. The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
+  PHP + MySQLi, and the new Assignment 15 API reads and writes the **same table** through
+  Node.js + mysql2 — but the two are still separate: PHP pages on one server, the REST API on
+  port 3000. The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
   `collection-centre.html` are still checked and stored **only in the browser** — neither has
-  an `action` attribute pointing at `php/db-crud/`, so joining those two screens to the database
-  is part of the final integration work.
-- The Assignment 14 server does **not** read the `frontend/` pages or the MySQL database yet.
-  It runs on its own port and answers only its own three kinds of address.
+  an `action` or `fetch()` pointing at a real endpoint, so joining those two screens to the
+  database (PHP or API) is part of the final integration work.
+- The Assignment 14/15 server does **not** read the `frontend/` pages yet. It runs on its own
+  port and answers its own routes, the static files of `node-backend/public/` and the
+  `/api/farmers` endpoints.
 - `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html` but the
   file does not exist yet.
 - `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the

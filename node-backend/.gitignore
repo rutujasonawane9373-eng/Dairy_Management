@@ -2,6 +2,11 @@
 # They are re-created by running "npm install" in this folder.
 node_modules/
 
+# MySQL settings (host, user, password) - Assignment 15.
+# Same rule as php/db-crud/db-config.php: the password must
+# never be committed to git.
+db-config.js
+
 # Any log file npm or Node.js may create
 npm-debug.log*
 *.log
