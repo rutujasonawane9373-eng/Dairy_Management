@@ -2,15 +2,19 @@
 <!-- ============================================================
   DAIRY MANAGEMENT SYSTEM - Homepage / Dashboard
   ASSIGNMENT 2 : Semantic HTML tags demonstration
+  ASSIGNMENT 16 : the "Project Modules" section in <main> links every
+                  part of the project from one page.
 
-  Pages that exist so far (Phase 3):
-    index.html           -> Home / Dashboard (this file) - Assignment 2 + 3
-    pages/about.html     -> About Dairy (Assignment 1) + 3
-    css/style.css        -> External stylesheet (Assignment 3)
+  Pages of the static part (Assignments 1-7 and 11):
+    index.html                  -> Home / Dashboard (this file) - A2 + 3
+    pages/about.html            -> About Dairy (Assignment 1) + 3
+    pages/dashboard.html        -> Assignment 4 + Assignment 6
+    pages/collection-centre.html-> Assignment 5 + Assignment 11
+    pages/farmers.html          -> Assignment 7
+    css/style.css               -> External stylesheet (Assignment 3)
 
-  NOTE: Dashboard, Farmers and Milk Collection pages do not exist
-        yet. They will be added in later phases. For now the nav
-        links to them are just placeholders.
+  NOTE: pages/milk.html is still linked from the menu but has not been
+        created yet (see docs/assignment-mapping.md).
 ============================================================ -->
 <html lang="en">
 <head>
@@ -183,6 +187,76 @@
                     <li>Milk rate for today: 42 Rs/litre (fat above 3.5%).</li>
                     <li>Payment distribution for last week on Friday 26 September.</li>
                     <li>New farmer registration opens every Monday at 9:00 AM.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <!-- ========================================================
+             ASSIGNMENT 16 : PROJECT INTEGRATION
+             One section that points to every module of the project,
+             so the four parts (static site, React, PHP, Node.js) can
+             be reached from a single page. Only links - no module was
+             rewritten, and nothing here needs JavaScript.
+        ======================================================== -->
+        <section>
+            <h2>Project Modules (Assignment 16 - Complete Integration)</h2>
+            <p>
+                The project is built from four parts. Each part keeps its own assignment
+                files; the list below is the one place where all of them can be opened.
+                Start the server you need first - each note says the command.
+            </p>
+
+            <article>
+                <h3>1. Static website (Assignments 1 - 7 and 11)</h3>
+                <p>
+                    HTML, CSS and the single script <code>js/main.js</code>. This is the
+                    site you are reading now - no server is needed, it opens directly in
+                    the browser.
+                </p>
+                <p><a class="btn" href="pages/dashboard.html">Open the Dashboard</a></p>
+            </article>
+
+            <article>
+                <h3>2. React single page application (Assignments 8, 9, 10)</h3>
+                <p>
+                    Run <code>cd react-app &amp;&amp; npm run dev</code>, then open
+                    <a href="http://localhost:5173/">http://localhost:5173/</a>
+                    (components, hooks and the <code>fetch()</code> demo).
+                </p>
+            </article>
+
+            <article>
+                <h3>3. PHP pages and PHP + MySQL CRUD (Assignments 12, 13)</h3>
+                <p>
+                    Start PHP from the <strong>project root</strong>
+                    (<code>php -S localhost:8000</code>), then open
+                    <a href="http://localhost:8000/php/index.php">PHP Home</a> and
+                    <a href="http://localhost:8000/php/db-crud/index.php">PHP + MySQL CRUD</a>.
+                    Both use the database from <code>database/schema.sql</code>.
+                </p>
+            </article>
+
+            <article>
+                <h3>4. Node.js server and REST API (Assignments 14, 15)</h3>
+                <p>
+                    Run <code>cd node-backend &amp;&amp; npm start</code>, then open
+                    <a href="http://localhost:3000/">the Express home page</a>,
+                    <a href="http://localhost:3000/api/farmers">GET /api/farmers</a>, and
+                    this same website served by Node.js at
+                    <a href="http://localhost:3000/frontend/index.html">/frontend/index.html</a>.
+                </p>
+            </article>
+
+            <aside>
+                <h3>One database, two back-ends</h3>
+                <ul>
+                    <li>Assignment 13 (PHP + MySQLi) and Assignment 15 (Node.js + mysql2)
+                        both read and write the same table: <code>dairy_management.farmers</code>.</li>
+                    <li>The MySQL password exists only in <code>php/db-crud/db-config.php</code>
+                        and <code>node-backend/db-config.js</code> - both are gitignored, so it
+                        is never committed.</li>
+                    <li>The map of every assignment is in
+                        <code>docs/assignment-mapping.md</code>.</li>
                 </ul>
             </aside>
         </section>

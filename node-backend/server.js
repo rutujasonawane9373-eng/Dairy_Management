@@ -2,6 +2,8 @@
 //  DAIRY MANAGEMENT SYSTEM
 //  ASSIGNMENT 14 : Node.js + Express  (Web Server)
 //  ASSIGNMENT 15 : REST API  (JSON endpoints + MySQL)
+//  ASSIGNMENT 16 : Complete project integration (this server also
+//                  publishes the static frontend/ and the React build)
 //
 //  What Assignment 14 part of this file demonstrates:
 //    1. Creating an Express application        -> express()
@@ -16,12 +18,19 @@
 //    - POST / PUT / DELETE routes for /api/farmers
 //    - a MySQL connection  (db.js + db-config.js, prepared statements)
 //
+//  What Assignment 16 added (section 3 below):
+//    - app.use('/frontend', ...)  serves the HTML/CSS/JS pages of
+//                                 Assignments 1-7 and 11 from this server
+//    - app.use('/react', ...)     serves the built React app (A8-A10)
+//    - links from the home page to every module
+//
 //  How to run:
 //    cd node-backend
 //    npm install        (only the first time)
 //    npm start
 //  then open http://localhost:3000
 //  API demo: http://localhost:3000/api/farmers
+//  Website:  http://localhost:3000/frontend/index.html
 // ================================================================
 
 // require() loads a module that was installed by npm.
@@ -119,6 +128,11 @@ app.get('/', (req, res) => {
                 <li><a href="/index.html">/index.html</a> - a STATIC file from <code>public/</code></li>
                 <li><a href="/style.css">/style.css</a> - a static CSS file (this page is using it)</li>
                 <li><a href="/milk-can.svg">/milk-can.svg</a> - a static image file</li>
+                <li><a href="/frontend/index.html">/frontend/index.html</a> - the whole static
+                    website (Assignments 1-7 and 11), served by this server - Assignment 16</li>
+                <li><a href="/react/">/react/</a> - the built React app (Assignments 8-10),
+                    after running <code>npm run build</code> in <code>react-app/</code></li>
+                <li><a href="/api/farmers">/api/farmers</a> - the REST API (Assignment 15)</li>
                 <li><a href="/no-such-page">/no-such-page</a> - the 404 page</li>
             </ul>
         </section>
@@ -224,7 +238,36 @@ app.use('/api', (req, res) => {
 
 
 // ================================================================
-//  3. STATIC FILES
+//  3. THE REST OF THE PROJECT  (Assignment 16 - integration)
+//
+//  The same server also publishes the other modules, so one process
+//  can show the whole project:
+//
+//    /frontend/...  ->  the HTML/CSS/JS pages of Assignments 1-7 + 11
+//    /react/...     ->  the built React app of Assignments 8-10
+//                       (create it once with "npm run build" in react-app/)
+//
+//  ".." in path.join() goes up from node-backend/ to the project root,
+//  so both folders are found no matter where the server is started from.
+//
+//  The PHP pages of Assignments 12-13 are NOT mounted here: Node.js
+//  cannot execute .php files - they need their own PHP server
+//  ("php -S localhost:8000" from the project root). They are linked
+//  from /frontend/index.html instead.
+//
+//  These two mounts are registered BEFORE express.static(PUBLIC_FOLDER)
+//  below, so the prefixes /frontend and /react can never be shadowed by
+//  a file of node-backend/public. Route order still matters (A14.10).
+// ================================================================
+const FRONTEND_FOLDER = path.join(__dirname, '..', 'frontend');
+const REACT_BUILD_FOLDER = path.join(__dirname, '..', 'react-app', 'dist');
+
+app.use('/frontend', express.static(FRONTEND_FOLDER));
+app.use('/react', express.static(REACT_BUILD_FOLDER));
+
+
+// ================================================================
+//  4. STATIC FILES
 //
 //  express.static(PUBLIC_FOLDER) tells Express: "whenever a file is
 //  asked for that exists inside node-backend/public, send that file".
@@ -240,7 +283,7 @@ app.use(express.static(PUBLIC_FOLDER));
 
 
 // ================================================================
-//  4. 404 PAGE
+//  5. 404 PAGE
 //
 //  This runs only if nothing above answered the request.
 //  404 means "I am alive, but that page does not exist".
@@ -281,7 +324,7 @@ app.use((req, res) => {
 
 
 // ================================================================
-//  5. ERROR HANDLER  (Assignment 15)
+//  6. ERROR HANDLER  (Assignment 15)
 //
 //  A normal middleware has (req, res); an ERROR middleware also
 //  receives "next" as its fourth argument, which is how Express
@@ -311,7 +354,7 @@ app.use((error, req, res, next) => {
 
 
 // ================================================================
-//  6. START THE SERVER
+//  7. START THE SERVER
 //
 //  app.listen() does not return the running server - it returns
 //  immediately and keeps the program alive in the background while it
@@ -320,7 +363,7 @@ app.use((error, req, res, next) => {
 // ================================================================
 app.listen(PORT, () => {
   console.log('=================================================');
-  console.log(' Dairy Management System - Assignments 14 + 15');
+  console.log(' Dairy Management System - Assignments 14 + 15 + 16');
   console.log(' Node.js + Express server is running');
   console.log('=================================================');
   console.log(` Open in the browser : http://localhost:${PORT}`);
@@ -332,6 +375,10 @@ app.listen(PORT, () => {
   console.log(`   POST   /api/farmers     : JSON body, curl/Postman`);
   console.log(`   PUT    /api/farmers/:id : JSON body, curl/Postman`);
   console.log(`   DELETE /api/farmers/:id : http://localhost:${PORT}/api/farmers/1`);
+  console.log(' Integration (Assignment 16):');
+  console.log(`   Static site (A1-7, 11)  : http://localhost:${PORT}/frontend/index.html`);
+  console.log(`   React build (A8-10)     : http://localhost:${PORT}/react/`);
+  console.log(' PHP (A12-13) runs separately: php -S localhost:8000 (project root)');
   console.log(` Static files folder : ${PUBLIC_FOLDER}`);
   console.log(' Stop the server     : press Ctrl + C');
   console.log('=================================================');

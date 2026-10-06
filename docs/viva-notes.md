@@ -4,7 +4,7 @@
 > Everything in this file is taken from the **actual current code** in this repository.
 > File names, line numbers, selectors and class names are real â€” verify with the file path shown.
 > This document will be updated after every future assignment.
-> Last updated after **Assignment 15** (Phase 11 - REST API, inside `node-backend/`). Assignments 12 and 13 (PHP + MySQL) and Assignment 14 (Express server) are also built, in `php/`, `database/` and `node-backend/`. Assignment 16 (final integration) is not built yet.
+> Last updated after **Assignment 16** (Phase 12 - final integration). All assignments are now built: `frontend/` (1-7, 11), `react-app/` (8-10), `php/` + `database/` (12-13) and `node-backend/` (14-15). Assignment 16 joined them with a "Project Modules" hub section in `frontend/index.html` and by letting the Express server serve the static site (`/frontend`) and the React build (`/react`); the Assignment 7 and 11 forms still store their data in the browser only (see section A16 at the end of this file).
 
 ---
 
@@ -93,9 +93,11 @@ Dairy_Management/
 Every folder of the project now exists: `frontend/`, `react-app/`, `php/`, `database/` and
 `node-backend/`. Two things must not be described as finished:
 
-- `node-backend/routes/farmers.js` is the Assignment 15 REST API, but no page calls it yet —
-  the frontend still stores its data in the browser only. Wiring the pages to real data is
-  Assignment 16.
+- `node-backend/routes/farmers.js` is the Assignment 15 REST API. After Assignment 16 the API
+  is published by the **same server** as the rest of the site (`/frontend`, `/react`), but no
+  page calls it yet - the Assignment 7 and Assignment 11 forms still store their data in the
+  browser only. Pointing those forms at `/api/farmers` (or at the PHP CRUD) is the remaining
+  integration step.
 - `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html`, but the
   file has not been created yet.
 
@@ -2989,7 +2991,7 @@ change afterwards.
 | Assignment 13 — PHP + MySQL CRUD | **Completed** | `php/db-crud/` (12 files) + `database/schema.sql` — prepared statements, server-side validation, Post/Redirect/Get, two-step delete |
 | Assignment 14 — Node.js + Express | **Completed** | `node-backend/server.js` — `express()`, `GET /`, `GET /about`, `express.static('public')`, 404 page, `app.listen()`; `node-backend/package.json`; static files `node-backend/public/{index.html,style.css,milk-can.svg}`. See section A14 below |
 | Assignment 15 — REST API | **Completed** | `node-backend/routes/farmers.js` — `GET /api/farmers`, `GET /api/farmers/:id`, `POST /api/farmers`, `PUT /api/farmers/:id`, `DELETE /api/farmers/:id`; prepared statements via `mysql2` pool in `node-backend/db.js`; settings in `node-backend/db-config.js` (gitignored); mounted in `node-backend/server.js` with `express.json()`. See section A15 below |
-| Assignment 16 — Complete integration | **Not started** | Needs Assignment 15 first |
+| Assignment 16 — Complete integration | **Completed** | `frontend/index.html` — the "Project Modules (Assignment 16 - Complete Integration)" section in `<main>` links all four parts; `node-backend/server.js` — section 3 mounts `/frontend` and `/react` (before `express.static(PUBLIC_FOLDER)`), the `GET /` home page lists them, startup log updated. See section A16 at the end of this file |
 
 ### 11.1 Known issues and gaps in Assignments 1â€“5
 
@@ -5161,3 +5163,182 @@ project look like one application instead of four separate demonstrations.
   6 rows it started with.
 - No test framework (no Jest, no Supertest) — checks are `node --check` plus a `curl` script,
   which matches the beginner level of the project. A16 could add a real test runner.
+
+---
+
+# Assignment 16 - Complete Project Integration
+
+## A16.1 What "integration" means in this project
+
+Assignments 1-15 produced four parts that each work on their own:
+
+| Part | Folder | Assignments | How it runs |
+|---|---|---|---|
+| Static website (HTML + CSS + JS) | `frontend/` | 1-7, 11 | opened directly in the browser |
+| React single page application | `react-app/` | 8, 9, 10 | `npm run dev` (or `npm run build`) |
+| PHP pages + PHP/MySQL CRUD | `php/`, `database/` | 12, 13 | `php -S localhost:8000` |
+| Express server + REST API | `node-backend/` | 14, 15 | `npm start` (port 3000) |
+
+Integration = making those four parts reach each other and look like **one** application,
+without rewriting anything that already worked.
+
+## A16.2 What was already connected (verified first, not changed)
+
+| Connection | Where |
+|---|---|
+| One stylesheet for the HTML **and** PHP pages | `php/includes/header.php` links `../frontend/css/style.css` |
+| PHP nav links back to the static pages | `php/includes/header.php` (`../frontend/*.html`) |
+| One database for A13 (MySQLi) and A15 (mysql2) | `database/schema.sql` -> `dairy_management.farmers` |
+| Passwords never committed | root `.gitignore` (`php/db-crud/db-config.php`) + `node-backend/.gitignore` (`db-config.js`, `node_modules/`) |
+| One script for A6, A7 and A11 | `frontend/js/main.js`, every part guarded by `null` checks |
+| React links out to nothing | `react-app/` is a standalone demo SPA |
+
+## A16.3 What was disconnected - and the two changes made
+
+**Problem 1: no page linked the modules together.** A visitor of `frontend/index.html` had no
+way to reach the React app, the PHP screens or the Node server.
+
+**Change 1:** one new `<section>` in `frontend/index.html`, at the end of `<main>` (after
+"Latest Milk Collections"): **"Project Modules (Assignment 16 - Complete Integration)"**.
+Four `<article>` blocks, one per module, each naming the command that starts it and giving a
+link; one `<aside>` summarising the shared database and the two gitignored config files.
+Only links and text were added - the same semantic tags and existing CSS classes (`.btn`,
+the page's internal `aside` rule) are reused, and the section needs no JavaScript.
+
+**Problem 2: the Express server only knew its own `public/` folder**, so the static site and
+the React build could not be reached from the server that already runs the API.
+
+**Change 2:** section 3 of `node-backend/server.js` (new), registered **before**
+`express.static(PUBLIC_FOLDER)`:
+
+```js
+const FRONTEND_FOLDER    = path.join(__dirname, '..', 'frontend');
+const REACT_BUILD_FOLDER = path.join(__dirname, '..', 'react-app', 'dist');
+
+app.use('/frontend', express.static(FRONTEND_FOLDER));
+app.use('/react',    express.static(REACT_BUILD_FOLDER));
+```
+
+Plus two small text-only edits in the same file: the `Try these` list of `GET /` now links
+`/frontend/index.html` and `/react/`, and the startup log prints an
+`Integration (Assignment 16)` block. The comment sections were renumbered (static files 3->4,
+404 4->5, error handler 5->6, start 6->7).
+
+**Not touched at all:** every file of `frontend/css/`, `frontend/js/`, `react-app/src/`,
+`php/` and `database/`, and the routes/handlers of Assignment 14 and 15.
+
+## A16.4 Why the old relative links still work
+
+A page reached at `/frontend/pages/dashboard.html` links `../css/style.css`; the browser
+resolves that to `/frontend/css/style.css`, which is inside the same mount. Same for
+`../js/main.js` and `../assets/*.svg`. Nothing had to be rewritten - that is the whole point
+of mounting the folder instead of changing the pages.
+
+Route order (the lesson of A14.10) is preserved:
+
+```
+express.json() -> A14 GET / and /about -> A15 /api/farmers -> JSON 404 for /api/*
+  -> /frontend and /react mounts (A16) -> express.static(public) -> HTML 404 -> error handler
+```
+
+## A16.5 What is NOT mounted, and why
+
+| Module | Why not on port 3000 |
+|---|---|
+| PHP (A12, A13) | Node.js cannot execute `.php` files; PHP needs its own server (`php -S localhost:8000` from the project root). The hub section links to it instead. |
+| React **dev** server | Vite has its own dev server (5173). The **built** app is available at `/react/` after `npm run build`. |
+| MySQL | a service, not a file - both back-ends connect to it with their own config file. |
+
+## A16.6 How to run the whole project
+
+```
+# 1. static site + Node server + REST API  (one process)
+cd node-backend
+npm start                -> http://localhost:3000/frontend/index.html
+                             http://localhost:3000/api/farmers
+
+# 2. PHP (A12) and PHP + MySQL CRUD (A13) - started from the PROJECT ROOT
+php -S localhost:8000    -> http://localhost:8000/php/db-crud/
+
+# 3. React dev server (optional - /react/ serves the built app)
+cd react-app
+npm run dev              -> http://localhost:5173/
+```
+
+Database once: run `database/schema.sql`, write the MySQL password into
+`php/db-crud/db-config.php` and `node-backend/db-config.js` (both gitignored).
+
+## A16.7 Viva questions and answers - Assignment 16
+
+**Q1. What exactly did you integrate?**
+Two things: a hub section in `frontend/index.html` that links all four parts, and two static
+mounts (`/frontend`, `/react`) in the existing Express server so one process serves the static
+site and the React build together with the A14 routes and the A15 API.
+
+**Q2. Did you rewrite any working assignment?**
+No. `frontend/css/`, `frontend/js/`, `react-app/src/`, `php/` and `database/` are unchanged.
+In `server.js` only additions were made - the A14 routes, static folder, 404 page and the A15
+API behave exactly as before.
+
+**Q3. Why does route order still matter after your change?**
+Because Express answers with the **first** handler that matches. `/frontend` and `/react` are
+registered before `express.static(public)` so no file of `public/` can shadow them, and after
+`/api/...` so an API address can never fall through to an HTML file.
+
+**Q4. Why not serve the PHP pages from Node.js?**
+Node.js runs JavaScript, not PHP. `.php` files must be executed by a PHP interpreter, so they
+stay on the PHP server and are linked from the hub section. Two servers, one project - that is
+normal and honest.
+
+**Q5. Does the Assignment 7 form now save to MySQL?**
+No. It still stores the farmer in the `registeredFarmers` array in the browser. Wiring the
+form to `/api/farmers` (or to the PHP CRUD) is the next step; it was deliberately left out of
+this step so that every existing assignment keeps working unchanged.
+
+**Q6. Is the database schema unchanged?**
+Yes - still `database/schema.sql`, one table `farmers`. Both back-ends read and write the same
+table.
+
+**Q7. Is any secret in Git?**
+No. `git check-ignore` confirms `php/db-crud/db-config.php`, `node-backend/db-config.js`,
+`node_modules/` and `react-app/dist` are all ignored.
+
+**Q8. How did you check the work without a browser?**
+`node --check` on `server.js`, `routes/farmers.js` and `db.js`, and `npm run build` in
+`react-app/` (18 modules, `dist/` regenerated). No browser automation, no long test runs.
+
+## A16.8 Files created / modified for Assignment 16
+
+**Created: 0.**
+
+**Modified (4):**
+
+- `frontend/index.html` - the header comment was corrected (it still described Phase 3) and one
+  `<section>` "Project Modules (Assignment 16 - Complete Integration)" was added at the end of
+  `<main>`. No existing element, class or link was changed.
+- `node-backend/server.js` - header comment, new section 3 (`/frontend` + `/react` mounts), two
+  links in the `GET /` page, renumbered section comments, startup log.
+- `docs/assignment-mapping.md` - phase line, the A16 row, the structure-tree heading, and the
+  old "not implemented yet" section replaced by the full A16 detail section.
+- `docs/viva-notes.md` - this section, the "last updated" line, the two stale bullets in
+  section 1.3 and the status table row.
+
+**Deliberately NOT touched:** `frontend/css/style.css`, `frontend/js/main.js`,
+`react-app/src/**`, `php/**`, `database/schema.sql`, `node-backend/routes/farmers.js`,
+`node-backend/db.js`, `node-backend/public/**`, `AGENTS.md`; nothing was committed or pushed.
+
+## A16.9 Honest notes / what remains
+
+1. **The forms are still browser-only** - Assignment 7 and Assignment 11 keep their data in
+   JavaScript memory. The endpoint exists (`/api/farmers`) and is now served by the same
+   server as the site, so the next step is a small `fetch()` in `main.js` (plus CORS or
+   same-origin serving) - but that changes a working assignment, so it needs its own decision
+   and its own step.
+2. **`frontend/pages/milk.html` still does not exist**, although every menu links to it.
+3. **`/react/` serves a build, not the sources** - it only works after `npm run build`; the
+   hub section says so.
+4. **PHP stays on its own port (8000)** - showing everything at once needs up to three
+   processes (Node, PHP, Vite).
+5. **No CORS headers, no authentication, no test runner** were added - out of scope for this
+   step.
+6. **`AGENTS.md` still shows "Current state (Phase 2)"** and was left untouched on purpose.

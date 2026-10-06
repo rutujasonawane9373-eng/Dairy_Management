@@ -3,7 +3,7 @@
 This document maps every college practical assignment to the file / feature that demonstrates
 it in the project. Use it to show your teacher exactly where each concept is implemented.
 
-Current project phase: Phase 11 - REST API (Assignment 15)
+Current project phase: Phase 12 - Final integration (Assignment 16)
 
 ## Assignment → File/Feature
 
@@ -24,9 +24,9 @@ Current project phase: Phase 11 - REST API (Assignment 15)
 | 13 | PHP + MySQL - CRUD | `php/db-crud/` (db-config, db-connect, db-farmers, db-validate, db-helpers, db-header, db-footer) + `php/db-crud/{index,farmer-create,farmer-list,farmer-edit,farmer-delete}.php` + `database/schema.sql` | ✅ Done |
 | 14 | Node.js + Express - server, routing, static files | `node-backend/server.js` (`GET /`, `GET /about`, `express.static('public')`, 404 page) + `node-backend/package.json` + static files `node-backend/public/{index.html,style.css,milk-can.svg}` | ✅ Done |
 | 15 | REST API (Node.js + Express + DB) | `node-backend/routes/farmers.js` (GET, GET/:id, POST, PUT/:id, DELETE/:id on `/api/farmers`) + `node-backend/db.js` (mysql2 pool, prepared statements) + `node-backend/db-config.js` (gitignored MySQL settings, like A13's `db-config.php`) + `express.json()` and the router mount in `node-backend/server.js` | ✅ Done |
-| 16 | Complete project integration | All modules together | ⏳ Pending |
+| 16 | Complete project integration | Hub section "Project Modules (Assignment 16)" in `frontend/index.html` (links all four parts) + section 3 of `node-backend/server.js` (`/frontend` and `/react` static mounts, home-page links, startup log). Detail: see the "Assignment 16 detail" section below | ✅ Done |
 
-## Project structure (as of Phase 11 — Assignments 1-15)
+## Project structure (as of Phase 12 — Assignments 1-16)
 
 ```
 Dairy_Management/
@@ -657,21 +657,81 @@ No authentication, no pagination, no HTTPS, no frontend page calling the API yet
 Assignment 7 form and the Assignment 11 form still store data only in the browser. Joining
 the pages, the PHP screens and this API is the final integration (Assignment 16).
 
-## Assignment 16 — not implemented yet
+## Assignment 16 detail — Complete project integration
 
-- **Assignment 16 (complete integration)** is the only assignment left. It needs Assignment 15
-  (now built) as its data layer.
-- The Assignment 13 CRUD screens read and write the `dairy_management.farmers` table through
-  PHP + MySQLi, and the new Assignment 15 API reads and writes the **same table** through
-  Node.js + mysql2 — but the two are still separate: PHP pages on one server, the REST API on
-  port 3000. The Assignment 7 form on `farmers.html` and the Assignment 11 entry form on
-  `collection-centre.html` are still checked and stored **only in the browser** — neither has
-  an `action` or `fetch()` pointing at a real endpoint, so joining those two screens to the
-  database (PHP or API) is part of the final integration work.
-- The Assignment 14/15 server does **not** read the `frontend/` pages yet. It runs on its own
-  port and answers its own routes, the static files of `node-backend/public/` and the
-  `/api/farmers` endpoints.
-- `frontend/pages/milk.html` is still linked from `index.html` and `dashboard.html` but the
-  file does not exist yet.
-- `frontend/js/main.js` is still the only JavaScript file of the static `frontend/` part; the
-  React app is a separate Vite project that does not load it, and no PHP page loads it either.
+Assignment 16 joins the four parts that Assignments 1-15 had built separately, **without
+rewriting any of them**. Two small changes were enough: one hub section in the home page, and
+two static mounts in the existing Express server. No file of `frontend/css/`, `frontend/js/`,
+`react-app/src/`, `php/` or `database/` was edited.
+
+### What was already connected (verified, not changed)
+
+| Connection | Where it lives |
+|---|---|
+| One stylesheet for the HTML pages **and** the PHP pages | `php/includes/header.php` links `../frontend/css/style.css` |
+| PHP pages link back to the static site | the `<nav>` of `php/includes/header.php` (`../frontend/*.html`) |
+| One database for Assignment 13 **and** Assignment 15 | `database/schema.sql` → `dairy_management.farmers` |
+| MySQL passwords kept out of Git | root `.gitignore` (`php/db-crud/db-config.php`) + `node-backend/.gitignore` (`db-config.js`, `node_modules/`) |
+| One script for Assignments 6, 7 and 11 | `frontend/js/main.js`, every part guarded by a `null` check |
+
+### What was disconnected, and the fix
+
+| Disconnected | Fix in Assignment 16 |
+|---|---|
+| The static site could not reach the React / PHP / Node modules | new `<section>` "Project Modules (Assignment 16 - Complete Integration)" at the end of `<main>` in `frontend/index.html` — four `<article>` blocks (one per module, each with the command that starts it and a live link) and one `<aside>` about the shared database and the two gitignored config files |
+| The Express server only knew `node-backend/public/` | section 3 of `node-backend/server.js` now mounts `../frontend` at `/frontend` and `../react-app/dist` at `/react`, both **before** `express.static(PUBLIC_FOLDER)` so the route order of Assignment 14 is preserved |
+| The Node home page did not mention the other modules | two list items added to the `Try these` list of `GET /` (`/frontend/index.html`, `/react/`) plus the existing `/api/farmers` link; the startup log gained an `Integration (Assignment 16)` block |
+
+### The two mounts (node-backend/server.js, section 3)
+
+```js
+app.use('/frontend', express.static(path.join(__dirname, '..', 'frontend')));
+app.use('/react',    express.static(path.join(__dirname, '..', 'react-app', 'dist')));
+```
+
+| URL | Served by | Assignments |
+|---|---|---|
+| `/frontend/index.html`, `/frontend/pages/*.html`, `/frontend/css/style.css`, `/frontend/js/main.js` | the `/frontend` mount | 1-7, 11 |
+| `/react/` | the `/react` mount (build it once with `npm run build` in `react-app/`) | 8-10 |
+| `/`, `/about`, `/index.html`, `/style.css`, `/milk-can.svg`, HTML 404 | unchanged Assignment 14 code | 14 |
+| `/api/farmers`, `/api/farmers/:id`, JSON 404, JSON error handler | unchanged Assignment 15 code | 15 |
+| `http://localhost:8000/php/...` | the PHP server — Node.js cannot execute `.php`, so PHP is **not** mounted, only linked from the hub section | 12, 13 |
+
+Why the existing relative links keep working: a page reached at
+`/frontend/pages/dashboard.html` links `../css/style.css`, which the browser resolves to
+`/frontend/css/style.css` — inside the same mount. Nothing had to be rewritten.
+
+### How to run the whole project
+
+```
+# 1. static site + Node server + REST API (one process)
+cd node-backend
+npm start                       -> http://localhost:3000/frontend/index.html
+                                  http://localhost:3000/api/farmers
+
+# 2. PHP (Assignment 12) and PHP + MySQL CRUD (Assignment 13) - from the project ROOT
+php -S localhost:8000           -> http://localhost:8000/php/db-crud/
+
+# 3. React dev server (or skip it and use the /react/ build above)
+cd react-app
+npm run dev                     -> http://localhost:5173/
+```
+
+Database (once): run `database/schema.sql`, then write the MySQL password into
+`php/db-crud/db-config.php` **and** `node-backend/db-config.js` (both gitignored).
+
+### What Assignment 16 deliberately did NOT do
+
+- **The Assignment 7 form and the Assignment 11 entry form still store data in the browser
+  only.** Pointing them at `/api/farmers` with `fetch()` (or at the PHP CRUD) needs a decision
+  about where the data should live — that is the next step, not this one.
+- `frontend/pages/milk.html` is still linked from the menus but does not exist.
+- No new framework, no new dependency, no schema change, no authentication, no CORS.
+- Nothing was committed or pushed.
+
+### Checks run for Assignment 16
+
+- `node --check` on `server.js`, `routes/farmers.js`, `db.js` — all pass.
+- `npm run build` in `react-app/` — passes (18 modules, `dist/` regenerated).
+- `git check-ignore` confirms `php/db-crud/db-config.php`, `node-backend/db-config.js`,
+  `node_modules/` and `react-app/dist` are all ignored, so no password can be committed.
